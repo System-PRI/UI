@@ -5,6 +5,7 @@ import { ProjectGroupsRoutingModule } from './project-groups-routing.module';
 import { ProjectGroupsListComponent } from './project-groups-list/project-groups-list.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     CommonModule,
     ProjectGroupsRoutingModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatButtonModule
   ]
 })
 export class ProjectGroupsModule { }

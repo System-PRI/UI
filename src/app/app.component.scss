@@ -8,6 +8,19 @@
     right: 0;
 }
 
+mat-sidenav-content {
+   width: auto;
+   display: block;
+
+    > div {
+        margin: 0 auto;
+        width: auto;
+        max-width: 1200px;
+        padding: 50px;
+        box-sizing: border-box;
+    }
+}
+
 mat-toolbar {
     display: flex;
     justify-content: space-between;
