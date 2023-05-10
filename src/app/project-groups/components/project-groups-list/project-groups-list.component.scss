@@ -1,0 +1,23 @@
+:host {
+    max-width: calc(100% - 300px);
+}
+
+.acceptanceStatusHeader {
+    text-align: center;
+}
+
+.ellipse {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ff6a6a;
+    margin: 0 auto;
+}
+
+.ellipse.accepted {
+    background: #82ff6a;
+}
+
+td {
+    white-space: nowrap;
+}
