@@ -7,7 +7,6 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatButtonModule} from '@angular/material/button';
 
-
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -18,7 +17,7 @@ import {MatButtonModule} from '@angular/material/button';
     ProjectGroupsRoutingModule,
     MatTableModule,
     MatPaginatorModule,
-    MatButtonModule
+    MatButtonModule,
   ]
 })
 export class ProjectGroupsModule { }
