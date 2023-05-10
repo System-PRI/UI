@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProjectGroupsRoutingModule } from './project-groups-routing.module';
-import { ProjectGroupsListComponent } from './project-groups-list/project-groups-list.component';
+import { ProjectGroupsListComponent } from './components/project-groups-list/project-groups-list.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatButtonModule} from '@angular/material/button';

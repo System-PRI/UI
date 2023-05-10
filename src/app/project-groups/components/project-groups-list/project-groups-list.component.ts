@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ProjectGroup } from '../models/project-group';
+import { ProjectGroup } from '../../models/project-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
