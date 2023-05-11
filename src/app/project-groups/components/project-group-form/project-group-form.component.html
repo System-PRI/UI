@@ -1,0 +1,30 @@
+<form [formGroup]="projectGroup">
+    <mat-form-field appearance="fill" formControlName="name">
+        <mat-label>Name</mat-label>
+        <input matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill" formControlName="description">
+        <mat-label>Description</mat-label>
+        <textarea matInput></textarea>
+    </mat-form-field>
+    <h3>Members:</h3>
+    <div class="field-and-button">
+        <mat-form-field appearance="fill">
+            <mat-label>Member email</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <button mat-icon-button>
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    <h3>Technologies:</h3>
+    <div class="field-and-button">
+        <mat-form-field appearance="fill">
+            <mat-label>Technology name</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <button mat-icon-button color="primary">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</form>
