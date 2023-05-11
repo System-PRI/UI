@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ProjectGroup } from '../../models/project-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { ProjectGroupsService } from './project-groups-list.service';
+import { ProjectGroupsListService } from './project-groups-list.service';
+import { take, tap } from 'rxjs';
 
 @Component({
   selector: 'project-groups-list',
@@ -15,15 +16,17 @@ export class ProjectGroupsListComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private projectGroupsService: ProjectGroupsService){}
+  constructor(private projectGroupsListService: ProjectGroupsListService){}
 
   ngOnInit(): void {
-    this.projectGroupsService.projectGroups$.subscribe(
-      projectGroups => this.dataSource = new MatTableDataSource<ProjectGroup>(projectGroups)
-    )
+    this.projectGroupsListService.projectGroups$.pipe(
+      take(1),
+      tap(projectGroups => this.dataSource = new MatTableDataSource<ProjectGroup>(projectGroups))
+    ).subscribe()
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
+
 }

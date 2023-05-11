@@ -1,16 +1,16 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError } from "rxjs";
-import { ProjectGroup } from "../../models/project-group";
+import { Student } from "../../models/student";
 
 @Injectable({
     providedIn: 'root'
 })
-export class ProjectGroupsListService {
+export class ProjectGroupFormService {
     constructor(private http: HttpClient) {}
 
-    public projectGroups$: Observable<ProjectGroup[]> = this.http
-        .get<ProjectGroup[]>('/apigateway/project-groups')
+    public students$: Observable<Student[]> = this.http
+        .get<Student[]>('/apigateway/students')
         .pipe(
             retry(3),
             catchError(
