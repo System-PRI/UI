@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule, 
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatChipsModule
   ]
 })
 export class ProjectGroupsModule { }
