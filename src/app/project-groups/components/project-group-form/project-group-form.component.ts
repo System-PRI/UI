@@ -6,7 +6,7 @@ import { Observable, map, startWith } from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatAutocompleteActivatedEvent, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-
+import { Instructor } from '../../models/instructor';
 
 @Component({
   selector: 'project-group-form',
@@ -29,6 +29,20 @@ export class ProjectGroupFormComponent implements OnInit {
     }
   ]
 
+  instructors: Instructor[] = [
+    {
+      name: 'Jan Kowalski',
+      email: 'jankow6@st.amu.edu.pl',
+      indexNumber: 's45678'
+    },
+    {
+      name: 'Anna Nowak',
+      email: 'annnow6@st.amu.edu.pl',
+      indexNumber: 's12345'
+    }
+  ]
+
+
   technologies: string[] = [];
   technologyCtrl = new FormControl('');
   commonTechnologies: string[] = ['Java', 'Javasctipt', 'Python', 'Angular'];
@@ -37,7 +51,8 @@ export class ProjectGroupFormComponent implements OnInit {
 
   selectedMembers: Student[] = []
   filteredStudents!: Observable<Student[]>;
-  member = new FormControl('');
+  memberInput = new FormControl('');
+
 
   projectGroup = this.fb.group({
     name: ['', Validators.required],
@@ -54,7 +69,7 @@ export class ProjectGroupFormComponent implements OnInit {
       students => this.students = students
     )*/
 
-    this.filteredStudents = this.member.valueChanges.pipe(
+    this.filteredStudents = this.memberInput.valueChanges.pipe(
       startWith(null),
       map((value: string | null) => this.filterStudents(value || ''))
     )
@@ -70,18 +85,18 @@ export class ProjectGroupFormComponent implements OnInit {
 
     const filteredValue = value.toLowerCase()
     return this.students.filter( student => 
-        (student.name.includes(filteredValue) || student.email.includes(filteredValue)) && 
+        (student.name.toLowerCase().includes(filteredValue) || student.email.toLowerCase().includes(filteredValue)) && 
         this.selectedMembers.indexOf(student) === -1
     )
   }
 
-  addMember(member: Student): void {
+  onMemberSelect(member: Student): void {
     this.members.push(this.fb.group({
       data: member,
       role: [null, Validators.required]
     }));
     this.selectedMembers.push(member);
-    this.member.reset()
+    this.memberInput.reset()
   }
 
   removeMember(member: AbstractControl){
@@ -91,7 +106,7 @@ export class ProjectGroupFormComponent implements OnInit {
     index = this.selectedMembers.findIndex(iteratedMember => iteratedMember.email === this.getMemberData(member).email)
     if(index !== -1) this.selectedMembers.splice(index, 1)
 
-    this.member.reset()
+    this.memberInput.reset()
   }
 
   get members() {
@@ -154,5 +169,8 @@ export class ProjectGroupFormComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.projectGroup.value)
+
+    this.memberInput.reset()
+
   }
 }

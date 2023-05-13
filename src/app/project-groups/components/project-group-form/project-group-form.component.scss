@@ -51,3 +51,8 @@ mat-chip-row {
 ::ng-deep .mat-mdc-standard-chip {
     background-color: #dde2ff !important;
 }
+
+mat-dialog-content {
+    display: grid;
+    min-width: 600px;
+}
