@@ -54,5 +54,10 @@ mat-chip-row {
 
 mat-dialog-content {
     display: grid;
-    min-width: 600px;
+    min-width: 500px;
+    grid-gap: 10px
+}
+
+h3 {
+    margin: 0px;
 }

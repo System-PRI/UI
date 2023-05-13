@@ -178,6 +178,13 @@ export class ProjectGroupFormComponent implements OnInit {
     );
   }
 
+  getErrorMessage(controlName: string): string {
+    if (this.projectGroup.get(controlName)?.hasError('required')) {
+      return 'You must enter a value';
+    }
+    return ''
+  }
+
   onSubmit(): void {
     console.log(this.projectGroup.value)
 
