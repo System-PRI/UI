@@ -42,6 +42,12 @@ export class ProjectGroupFormComponent implements OnInit {
     }
   ]
 
+  user: Student =  {
+    name: 'Adrian Kuraszkiewicz',
+    email: 'adrkur6@st.amu.edu.pl',
+    indexNumber: 's145654'
+  }
+
 
   technologies: string[] = [];
   technologyCtrl = new FormControl('');
@@ -78,6 +84,11 @@ export class ProjectGroupFormComponent implements OnInit {
       startWith(null),
       map((technology: string | null) => this.filterTechnologies(technology || ''))
     );
+
+    this.members.push(this.fb.group({
+      data: this.user,
+      role: [null, Validators.required]
+    }));
   }
 
   filterStudents(value: string | Student): Student[]{
@@ -86,7 +97,7 @@ export class ProjectGroupFormComponent implements OnInit {
     const filteredValue = value.toLowerCase()
     return this.students.filter( student => 
         (student.name.toLowerCase().includes(filteredValue) || student.email.toLowerCase().includes(filteredValue)) && 
-        this.selectedMembers.indexOf(student) === -1
+        this.selectedMembers.indexOf(student) === -1 && student.email !== this.user.email
     )
   }
 

@@ -22,7 +22,7 @@
                 <mat-option value="Full stack">Full stack</mat-option>
             </mat-select>
         </mat-form-field>
-        <button (click)="removeMember(member)" type="button" mat-icon-button>
+        <button *ngIf="getMemberData(member).email !== user.email" (click)="removeMember(member)" type="button" mat-icon-button>
             <mat-icon>close</mat-icon>
         </button>
     </div>
