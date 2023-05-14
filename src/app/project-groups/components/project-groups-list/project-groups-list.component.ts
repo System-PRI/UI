@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {  Component, OnInit, ViewChild } from '@angular/core';
 import { ProjectGroup } from '../../models/project-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,23 +10,17 @@ import { take, tap } from 'rxjs';
   templateUrl: './project-groups-list.component.html',
   styleUrls: ['./project-groups-list.component.scss']
 })
-export class ProjectGroupsListComponent implements OnInit, AfterViewInit {
+export class ProjectGroupsListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'instructor', 'acceptanceStatus'];
-  dataSource!: MatTableDataSource<ProjectGroup>;
+  dataSource = new MatTableDataSource<ProjectGroup>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private projectGroupsListService: ProjectGroupsListService){}
 
   ngOnInit(): void {
-    this.projectGroupsListService.projectGroups$.pipe(
-      take(1),
+    this.projectGroupsListService.projectGroupsSubject$.pipe(
       tap(projectGroups => this.dataSource = new MatTableDataSource<ProjectGroup>(projectGroups))
-    ).subscribe()
+    ).subscribe(() => this.dataSource.paginator = this.paginator)
   }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
 }

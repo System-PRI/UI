@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Student } from '../../models/student';
 import { ProjectGroupFormService } from './project-group-form.service';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, map, startWith, take, tap } from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatAutocompleteActivatedEvent, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Instructor } from '../../models/instructor';
+import { ProjectGroupsListService } from '../project-groups-list/project-groups-list.service';
+import { ProjectGroup } from '../../models/project-group';
 
 @Component({
   selector: 'project-group-form',
@@ -26,6 +28,16 @@ export class ProjectGroupFormComponent implements OnInit {
       name: 'Dawid Gorkiewicz',
       email: 'dawgru6@st.amu.edu.pl',
       indexNumber: 's2323'
+    },
+    {
+      name: 'Katarzyna Jaroszewska',
+      email: 'katjar2@st.amu.edu.pl',
+      indexNumber: 's34554'
+    },
+    {
+      name: 'Aleksandra Kacprzak',
+      email: 'alekac2@st.amu.edu.pl',
+      indexNumber: 's112333'
     }
   ]
 
@@ -39,6 +51,16 @@ export class ProjectGroupFormComponent implements OnInit {
       name: 'Anna Nowak',
       email: 'annnow6@st.amu.edu.pl',
       indexNumber: 's12345'
+    },
+    {
+      name: 'Marcin Łopatka',
+      email: 'marlop6@st.amu.edu.pl',
+      indexNumber: 's32442'
+    },
+    {
+      name: 'Andrzej Chmura',
+      email: 'andchm6@st.amu.edu.pl',
+      indexNumber: 's43434'
     }
   ]
 
@@ -59,6 +81,8 @@ export class ProjectGroupFormComponent implements OnInit {
   filteredStudents!: Observable<Student[]>;
   memberInput = new FormControl('');
 
+  formIsValid: boolean = false;
+
 
   projectGroup = this.fb.group({
     name: ['', Validators.required],
@@ -68,7 +92,11 @@ export class ProjectGroupFormComponent implements OnInit {
     instructor: ['', Validators.required]
   });
 
-  constructor(private fb: FormBuilder, private projectGroupFormService: ProjectGroupFormService){}
+  constructor(
+    private fb: FormBuilder, 
+    private projectGroupFormService: ProjectGroupFormService,
+    private projectGroupsListService: ProjectGroupsListService
+    ){}
 
   ngOnInit(): void {
     /*this.projectGroupFormService.students$.subscribe(
@@ -187,6 +215,29 @@ export class ProjectGroupFormComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.projectGroup.value)
+
+    if(this.projectGroup.valid){
+
+      let projectGroups: ProjectGroup[] = [];
+
+      this.projectGroupsListService.projectGroupsSubject$.pipe(
+        take(1),
+        tap(pg => {
+          projectGroups = pg.slice();
+          projectGroups.push({
+              name: this.projectGroup.controls.name.value, 
+              instructor: 'Jan Kowalski', 
+              acceptanceStatus: false
+          });
+          this.projectGroupsListService.projectGroupsSubject$.next(projectGroups)
+
+
+        })
+      ).subscribe()
+
+
+      this.formIsValid;
+    }
 
     this.memberInput.reset()
 

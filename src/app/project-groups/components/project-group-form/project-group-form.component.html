@@ -24,7 +24,13 @@
                 <mat-option value="Full stack">Full stack</mat-option>
             </mat-select>
         </mat-form-field>
-        <button *ngIf="getMemberData(member).email !== user.email" (click)="removeMember(member)" type="button" mat-icon-button>
+        <button 
+            [class.hidden]="getMemberData(member).email === user.email"
+            [disabled]="getMemberData(member).email === user.email" 
+            (click)="removeMember(member)" 
+            type="button" 
+            mat-icon-button
+        >
             <mat-icon>close</mat-icon>
         </button>
     </div>
@@ -77,6 +83,6 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button type="submit" mat-button [mat-dialog-close]="true" cdkFocusInitial>Submit</button>
+    <button type="submit" mat-button [mat-dialog-close]="formIsValid"  cdkFocusInitial>Submit</button>
   </mat-dialog-actions>
 </form>
