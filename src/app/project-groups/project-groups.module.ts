@@ -15,12 +15,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
+import { ProjectGroupDetailsComponent } from './components/project-group-details/project-group-details.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     ProjectGroupsListComponent,
-    ProjectGroupFormComponent
+    ProjectGroupFormComponent,
+    ProjectGroupDetailsComponent
   ],
   imports: [
     CommonModule,

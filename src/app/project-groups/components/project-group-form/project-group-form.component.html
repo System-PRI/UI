@@ -83,6 +83,6 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button type="submit" mat-button [mat-dialog-close]="formIsValid"  cdkFocusInitial>Submit</button>
+    <button type="submit" mat-button [mat-dialog-close]="true" [disabled]="!projectGroup.valid"  cdkFocusInitial>Submit</button>
   </mat-dialog-actions>
 </form>

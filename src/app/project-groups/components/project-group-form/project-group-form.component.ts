@@ -73,7 +73,7 @@ export class ProjectGroupFormComponent implements OnInit {
 
   technologies: string[] = [];
   technologyCtrl = new FormControl('');
-  commonTechnologies: string[] = ['Java', 'Javasctipt', 'Python', 'Angular'];
+  commonTechnologies: string[] = ['Java', 'JavaScript', 'Python', 'Angular'];
   filteredTechnologies!: Observable<string[]>;
   activatedTechnologyOption: string | null = null;
 
@@ -236,7 +236,7 @@ export class ProjectGroupFormComponent implements OnInit {
       ).subscribe()
 
 
-      this.formIsValid;
+      this.formIsValid = true;
     }
 
     this.memberInput.reset()

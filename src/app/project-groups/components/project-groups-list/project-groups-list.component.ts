@@ -3,7 +3,9 @@ import { ProjectGroup } from '../../models/project-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ProjectGroupsListService } from './project-groups-list.service';
-import { take, tap } from 'rxjs';
+import { tap } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ProjectGroupDetailsComponent } from '../project-group-details/project-group-details.component';
 
 @Component({
   selector: 'project-groups-list',
@@ -16,11 +18,22 @@ export class ProjectGroupsListComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private projectGroupsListService: ProjectGroupsListService){}
+  constructor(
+    private projectGroupsListService: ProjectGroupsListService,
+    public dialog: MatDialog
+    ){}
 
   ngOnInit(): void {
     this.projectGroupsListService.projectGroupsSubject$.pipe(
       tap(projectGroups => this.dataSource = new MatTableDataSource<ProjectGroup>(projectGroups))
     ).subscribe(() => this.dataSource.paginator = this.paginator)
   }
+
+  openProjectDetailsModal(): void {
+    const dialogRef = this.dialog.open(ProjectGroupDetailsComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+    }
 }

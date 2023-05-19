@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Project of the year</h2>
+<mat-dialog-content class="mat-typography">
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+    </p>
+
+    <h3>Members:</h3>
+
+    <table>
+        <tr>
+            <td>Adrian Kuraszkiewicz</td>
+            <td>adrkur6@st.amu.edu.pl</td>
+            <td>Front-end</td>
+        </tr>
+        <tr>
+            <td>Aleksandra Kacprzak</td>
+            <td>alekac2@st.amu.edu.pl</td>
+            <td>Full stack</td>
+        </tr>
+        <tr>
+            <td>Dawid Gorkiewicz</td>
+            <td>dawgru6@st.amu.edu.pl</td>
+            <td>Back-end</td>
+        </tr>
+        <tr>
+            <td>Katarzyna Jaroszewska</td>
+            <td>katjar2@st.amu.edu.pl</td>
+            <td>Full stack</td>
+        </tr>
+    </table>
+
+
+    <h3>Technologies:</h3>
+
+    <mat-chip-set
+        cdkDropList 
+        cdkDropListOrientation="horizontal">
+    <mat-chip
+      class="example-box"
+      cdkDrag
+      *ngFor="let technology of technologies">
+      {{technology}}
+    </mat-chip>
+  </mat-chip-set>
+
+  <h3>Instructor:</h3>
+  <p>Jan Kowalski jankow6@st.amu.edu.pl</p>
+
+ 
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button type="submit" mat-button [mat-dialog-close]="true"  cdkFocusInitial>Accept project</button>
+</mat-dialog-actions>
+   

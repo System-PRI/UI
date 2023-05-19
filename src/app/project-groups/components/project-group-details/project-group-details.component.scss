@@ -1,0 +1,32 @@
+p {
+    font-size: 14px;
+}
+
+::ng-deep .mat-mdc-standard-chip {
+    background-color: #dde2ff !important;
+}
+
+::ng-deep .mat-mdc-chip-action-label {
+    color: #4758b8 !important;
+}
+
+h3 {
+    margin: 15px 0px 10px 0px;
+}
+
+
+table{
+    table-layout: fixed;
+    width: 600px;
+}
+
+td {
+    font-size: 14px;
+}
+
+
+mat-dialog-content {
+    display: grid;
+    max-width: 800px;
+    grid-gap: 10px
+}
