@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ProjectGroupDetailsComponent } from './components/project-group-details/project-group-details.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ProjectGroupDetailsComponent } from './components/project-group-details
     MatAutocompleteModule,
     MatSelectModule,
     MatChipsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSortModule
   ]
 })
 export class ProjectGroupsModule { }

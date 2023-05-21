@@ -2,6 +2,7 @@ import {  Component, OnInit, ViewChild } from '@angular/core';
 import { ProjectGroup } from '../../models/project-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { ProjectGroupsListService } from './project-groups-list.service';
 import { tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +18,8 @@ export class ProjectGroupsListComponent implements OnInit {
   dataSource = new MatTableDataSource<ProjectGroup>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
 
   constructor(
     private projectGroupsListService: ProjectGroupsListService,
@@ -26,7 +29,10 @@ export class ProjectGroupsListComponent implements OnInit {
   ngOnInit(): void {
     this.projectGroupsListService.projectGroupsSubject$.pipe(
       tap(projectGroups => this.dataSource = new MatTableDataSource<ProjectGroup>(projectGroups))
-    ).subscribe(() => this.dataSource.paginator = this.paginator)
+    ).subscribe(() => {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    })
   }
 
   openProjectDetailsModal(): void {
