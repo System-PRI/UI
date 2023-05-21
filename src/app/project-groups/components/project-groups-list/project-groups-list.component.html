@@ -1,3 +1,25 @@
+<mat-form-field>
+  <mat-label>Search</mat-label>
+  <input [(ngModel)]="searchValue" matInput (keyup)="applySearchFilter()">
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Supervisor</mat-label>
+  <mat-select [(ngModel)]="selectedSupervisor" (selectionChange)="onFiltersChange()">
+      <mat-option *ngFor="let supervisor of supervisors" [value]="supervisor.name">{{ supervisor.name }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Acceptance status</mat-label>
+  <mat-select [(ngModel)]="selectedStatus" (selectionChange)="onFiltersChange()">
+      <mat-option [value]="true">Accepted</mat-option>
+      <mat-option [value]="false">Not accepted</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<button *ngIf="isAnyFilterActivated()" (click)="resetFilters()" mat-raised-button>Reset</button>
+
 <div style="overflow-x:auto;" class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="name">
