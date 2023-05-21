@@ -1,4 +1,4 @@
-import {  Component, OnInit, ViewChild } from '@angular/core';
+import {  Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ProjectGroup } from '../../models/project-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,45 +7,25 @@ import { ProjectGroupsListService } from './project-groups-list.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectGroupDetailsComponent } from '../project-group-details/project-group-details.component';
 import { Supervisor } from '../../models/supervisor';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'project-groups-list',
   templateUrl: './project-groups-list.component.html',
   styleUrls: ['./project-groups-list.component.scss']
 })
-export class ProjectGroupsListComponent implements OnInit {
+export class ProjectGroupsListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'supervisor', 'acceptanceStatus'];
   dataSource = new MatTableDataSource<ProjectGroup>([]);
   searchValue: string = '';
   selectedSupervisor?: string;
   selectedStatus?: boolean;
   projectGroups: ProjectGroup[] = [];
+  supervisors$!: Observable<Supervisor[]>
+  unsubscribe$ = new Subject()
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
-  supervisors: Supervisor[] = [
-    {
-      name: 'Adam Kowalski',
-      email: 'jankow6@st.amu.edu.pl',
-      indexNumber: 's45678'
-    },
-    {
-      name: 'Anna Nowak',
-      email: 'annnow6@st.amu.edu.pl',
-      indexNumber: 's12345'
-    },
-    {
-      name: 'Marcin Łopatka',
-      email: 'marlop6@st.amu.edu.pl',
-      indexNumber: 's32442'
-    },
-    {
-      name: 'Andrzej Chmura',
-      email: 'andchm6@st.amu.edu.pl',
-      indexNumber: 's43434'
-    }
-  ]
 
   constructor(
     private projectGroupsListService: ProjectGroupsListService,
@@ -53,7 +33,7 @@ export class ProjectGroupsListComponent implements OnInit {
     ){}
 
   ngOnInit(): void {
-    this.projectGroupsListService.projectGroupsSubject$.subscribe(
+    this.projectGroupsListService.projectGroupsSubject$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (projectGroups) => {
       this.projectGroups = projectGroups;
       this.dataSource.data = projectGroups;
@@ -61,6 +41,8 @@ export class ProjectGroupsListComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.filterPredicate = this.createSearchFilter();
     })
+
+    this.supervisors$ = this.projectGroupsListService.supervisors$;
   }
 
   openProjectDetailsModal(): void {
@@ -103,5 +85,10 @@ export class ProjectGroupsListComponent implements OnInit {
     this.selectedStatus = undefined;
     this.onFiltersChange()
     this.applySearchFilter()
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete()
   }
 }
