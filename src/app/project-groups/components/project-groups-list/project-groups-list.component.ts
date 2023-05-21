@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { ProjectGroupsListService } from './project-groups-list.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectGroupDetailsComponent } from '../project-group-details/project-group-details.component';
-import { Instructor } from '../../models/instructor';
+import { Supervisor } from '../../models/supervisor';
 
 @Component({
   selector: 'project-groups-list',
@@ -14,7 +14,7 @@ import { Instructor } from '../../models/instructor';
   styleUrls: ['./project-groups-list.component.scss']
 })
 export class ProjectGroupsListComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'instructor', 'acceptanceStatus'];
+  displayedColumns: string[] = ['name', 'supervisor', 'acceptanceStatus'];
   dataSource = new MatTableDataSource<ProjectGroup>([]);
   searchValue: string = '';
   selectedSupervisor?: string;
@@ -24,7 +24,7 @@ export class ProjectGroupsListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  supervisors: Instructor[] = [
+  supervisors: Supervisor[] = [
     {
       name: 'Adam Kowalski',
       email: 'jankow6@st.amu.edu.pl',
@@ -82,15 +82,15 @@ export class ProjectGroupsListComponent implements OnInit {
   onFiltersChange(){
     this.dataSource.data = this.projectGroups.slice().filter(
       projectGroup => 
-        (this.selectedSupervisor === undefined || projectGroup.instructor === this.selectedSupervisor) && 
+        (this.selectedSupervisor === undefined || projectGroup.supervisor === this.selectedSupervisor) && 
         (this.selectedStatus === undefined || projectGroup.acceptanceStatus === this.selectedStatus)
     )
   }
 
   createSearchFilter(): (data: ProjectGroup, filter: string) => boolean {
     return (data, filter): boolean => 
-        ((data.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1) ||
-        (data.instructor?.toLowerCase().indexOf(filter.toLowerCase()) !== -1))
+        (data.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1) ||
+        (data.supervisor?.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
   }
 
   isAnyFilterActivated(): boolean {

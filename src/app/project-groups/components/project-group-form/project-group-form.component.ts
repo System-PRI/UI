@@ -6,9 +6,9 @@ import { Observable, map, startWith, take, tap } from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatAutocompleteActivatedEvent, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { Instructor } from '../../models/instructor';
 import { ProjectGroupsListService } from '../project-groups-list/project-groups-list.service';
 import { ProjectGroup } from '../../models/project-group';
+import { Supervisor } from '../../models/supervisor';
 
 @Component({
   selector: 'project-group-form',
@@ -41,7 +41,7 @@ export class ProjectGroupFormComponent implements OnInit {
     }
   ]
 
-  instructors: Instructor[] = [
+  supervisors: Supervisor[] = [
     {
       name: 'Jan Kowalski',
       email: 'jankow6@st.amu.edu.pl',
@@ -89,7 +89,7 @@ export class ProjectGroupFormComponent implements OnInit {
     description: ['', Validators.required],
     members: this.fb.array([]),
     technologies: [[], Validators.required],
-    instructor: ['', Validators.required]
+    supervisor: ['', Validators.required]
   });
 
   constructor(
@@ -226,7 +226,7 @@ export class ProjectGroupFormComponent implements OnInit {
           projectGroups = pg.slice();
           projectGroups.push({
               name: this.projectGroup.controls.name.value, 
-              instructor: 'Jan Kowalski', 
+              supervisor: 'Jan Kowalski', 
               acceptanceStatus: false
           });
           this.projectGroupsListService.projectGroupsSubject$.next(projectGroups)

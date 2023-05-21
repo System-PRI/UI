@@ -1,5 +1,5 @@
 export interface ProjectGroup {
     name: string | null;
-    instructor: string | null,
+    supervisor: string | null,
     acceptanceStatus: boolean;
 }
