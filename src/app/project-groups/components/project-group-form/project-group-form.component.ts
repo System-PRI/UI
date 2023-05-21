@@ -18,33 +18,14 @@ import { Supervisor } from '../../models/supervisor';
 export class ProjectGroupFormComponent implements OnInit {
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  students: Student[] = [
-    {
-      name: 'Adrian Kuraszkiewicz',
-      email: 'adrkur6@st.amu.edu.pl',
-      indexNumber: 's145654'
-    },
-    {
-      name: 'Dawid Gorkiewicz',
-      email: 'dawgru6@st.amu.edu.pl',
-      indexNumber: 's2323'
-    },
-    {
-      name: 'Katarzyna Jaroszewska',
-      email: 'katjar2@st.amu.edu.pl',
-      indexNumber: 's34554'
-    },
-    {
-      name: 'Aleksandra Kacprzak',
-      email: 'alekac2@st.amu.edu.pl',
-      indexNumber: 's112333'
-    }
-  ]
+ 
   user: Student =  {
     name: 'Adrian Kuraszkiewicz',
     email: 'adrkur6@st.amu.edu.pl',
     indexNumber: 's145654'
   }
+  students: Student[] = []
+  filteredStudents!: Observable<Student[]>;
 
   supervisors$!: Observable<Supervisor[]>
 
@@ -55,7 +36,6 @@ export class ProjectGroupFormComponent implements OnInit {
   activatedTechnologyOption: string | null = null;
 
   selectedMembers: Student[] = []
-  filteredStudents!: Observable<Student[]>;
   memberInput = new FormControl('');
 
   formIsValid: boolean = false;
@@ -76,9 +56,9 @@ export class ProjectGroupFormComponent implements OnInit {
     ){}
 
   ngOnInit(): void {
-    /*this.projectGroupFormService.students$.subscribe(
+    this.projectGroupFormService.students$.subscribe(
       students => this.students = students
-    )*/
+    )
 
     this.supervisors$ = this.projectGroupsListService.supervisors$;
 
@@ -177,7 +157,7 @@ export class ProjectGroupFormComponent implements OnInit {
     this.activatedTechnologyOption = event.option?.value; 
   }
 
-  private filterTechnologies(value: string): string[] {
+  filterTechnologies(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.commonTechnologies.filter(technology => 
@@ -194,7 +174,7 @@ export class ProjectGroupFormComponent implements OnInit {
 
   onSubmit(): void {
     if(this.projectGroup.valid){
-      let projectGroup = {
+      let projectGroup: ProjectGroup = {
         name: this.projectGroup.controls.name.value ?? '', 
         supervisor: 'Jan Kowalski', 
         acceptanceStatus: false
