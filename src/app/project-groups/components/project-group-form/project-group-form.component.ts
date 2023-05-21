@@ -40,36 +40,13 @@ export class ProjectGroupFormComponent implements OnInit {
       indexNumber: 's112333'
     }
   ]
-
-  supervisors: Supervisor[] = [
-    {
-      name: 'Jan Kowalski',
-      email: 'jankow6@st.amu.edu.pl',
-      indexNumber: 's45678'
-    },
-    {
-      name: 'Anna Nowak',
-      email: 'annnow6@st.amu.edu.pl',
-      indexNumber: 's12345'
-    },
-    {
-      name: 'Marcin Łopatka',
-      email: 'marlop6@st.amu.edu.pl',
-      indexNumber: 's32442'
-    },
-    {
-      name: 'Andrzej Chmura',
-      email: 'andchm6@st.amu.edu.pl',
-      indexNumber: 's43434'
-    }
-  ]
-
   user: Student =  {
     name: 'Adrian Kuraszkiewicz',
     email: 'adrkur6@st.amu.edu.pl',
     indexNumber: 's145654'
   }
 
+  supervisors$!: Observable<Supervisor[]>
 
   technologies: string[] = [];
   technologyCtrl = new FormControl('');
@@ -102,6 +79,8 @@ export class ProjectGroupFormComponent implements OnInit {
     /*this.projectGroupFormService.students$.subscribe(
       students => this.students = students
     )*/
+
+    this.supervisors$ = this.projectGroupsListService.supervisors$;
 
     this.filteredStudents = this.memberInput.valueChanges.pipe(
       startWith(null),
@@ -214,32 +193,17 @@ export class ProjectGroupFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.projectGroup.value)
-
     if(this.projectGroup.valid){
-
-      let projectGroups: ProjectGroup[] = [];
-
-      this.projectGroupsListService.projectGroupsSubject$.pipe(
-        take(1),
-        tap(pg => {
-          projectGroups = pg.slice();
-          projectGroups.push({
-              name: this.projectGroup.controls.name.value, 
-              supervisor: 'Jan Kowalski', 
-              acceptanceStatus: false
-          });
-          this.projectGroupsListService.projectGroupsSubject$.next(projectGroups)
-
-
-        })
-      ).subscribe()
-
+      let projectGroup = {
+        name: this.projectGroup.controls.name.value ?? '', 
+        supervisor: 'Jan Kowalski', 
+        acceptanceStatus: false
+      }
+      this.projectGroupsListService.addProjectGroup(projectGroup)
 
       this.formIsValid = true;
     }
 
     this.memberInput.reset()
-
   }
 }
