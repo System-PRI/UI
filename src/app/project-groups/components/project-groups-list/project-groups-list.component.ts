@@ -1,4 +1,4 @@
-import {  Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ProjectGroup } from '../../models/project-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,6 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProjectGroupDetailsComponent } from '../project-group-details/project-group-details.component';
 import { Supervisor } from '../../models/supervisor';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State } from '../../state/project-groups.state';
+import { getProjectGroups } from '../../state/project-groups.selectors';
+import * as ProjectGroupsActions from '../../state/project-groups.actions';
 
 @Component({
   selector: 'project-groups-list',
@@ -29,18 +33,22 @@ export class ProjectGroupsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private projectGroupsListService: ProjectGroupsListService,
-    public dialog: MatDialog
-    ){}
+    public dialog: MatDialog,
+    private store: Store<State>
+  ) { }
 
   ngOnInit(): void {
-    this.projectGroupsListService.projectGroupsSubject$.pipe(takeUntil(this.unsubscribe$)).subscribe(
+    this.store.select(getProjectGroups).pipe(takeUntil(this.unsubscribe$)).subscribe(
       (projectGroups) => {
-      this.projectGroups = projectGroups;
-      this.dataSource.data = projectGroups;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.dataSource.filterPredicate = this.createSearchFilter();
-    })
+        this.projectGroups = projectGroups;
+        this.dataSource.data = projectGroups;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.dataSource.filterPredicate = this.createSearchFilter();
+      }
+    )
+
+    this.store.dispatch(ProjectGroupsActions.loadProjectGroups());
 
     this.supervisors$ = this.projectGroupsListService.supervisors$;
   }
@@ -55,31 +63,31 @@ export class ProjectGroupsListComponent implements OnInit, OnDestroy {
 
   applySearchFilter() {
     this.dataSource.filter = this.searchValue.trim().toLowerCase();
-   
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
 
-  onFiltersChange(){
+  onFiltersChange() {
     this.dataSource.data = this.projectGroups.slice().filter(
-      projectGroup => 
-        (this.selectedSupervisor === undefined || projectGroup.supervisor === this.selectedSupervisor) && 
+      projectGroup =>
+        (this.selectedSupervisor === undefined || projectGroup.supervisor === this.selectedSupervisor) &&
         (this.selectedStatus === undefined || projectGroup.acceptanceStatus === this.selectedStatus)
     )
   }
 
   createSearchFilter(): (data: ProjectGroup, filter: string) => boolean {
-    return (data, filter): boolean => 
-        (data.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1) ||
-        (data.supervisor?.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+    return (data, filter): boolean =>
+      (data.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1) ||
+      (data.supervisor?.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
   }
 
   isAnyFilterActivated(): boolean {
     return this.searchValue !== '' || this.selectedStatus !== undefined || this.selectedSupervisor !== undefined
   }
 
-  resetFilters(){
+  resetFilters() {
     this.searchValue = '';
     this.selectedSupervisor = undefined;
     this.selectedStatus = undefined;

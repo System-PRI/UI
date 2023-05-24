@@ -14,9 +14,16 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ProjectGroupDetailsComponent } from './components/project-group-details/project-group-details.component';
 import { MatSortModule } from '@angular/material/sort';
+
+import { StoreModule } from '@ngrx/store';
+import { projectGroupsReducer } from './state/project-groups.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ProjectGroupsEffects } from './state/project-groups.effects';
+
+
 
 @NgModule({
   declarations: [
@@ -35,12 +42,14 @@ import { MatSortModule } from '@angular/material/sort';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule, 
+    MatIconModule,
     MatAutocompleteModule,
     MatSelectModule,
     MatChipsModule,
     MatDialogModule,
-    MatSortModule
+    MatSortModule,
+    StoreModule.forFeature('project-groups', projectGroupsReducer),
+    EffectsModule.forFeature([ProjectGroupsEffects])
   ]
 })
 export class ProjectGroupsModule { }
