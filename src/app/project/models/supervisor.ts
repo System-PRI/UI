@@ -3,3 +3,9 @@ export interface Supervisor {
     name: string,
     indexNumber: string;
 }
+
+export interface SupervisorAvailability {
+    name: string,
+    taken: number,
+    availability: number,
+}
