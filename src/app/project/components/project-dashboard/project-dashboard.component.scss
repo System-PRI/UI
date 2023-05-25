@@ -8,7 +8,11 @@
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+
+    h1 {
+        margin: 0;
+    }
 }
 
 .tables {
@@ -22,14 +26,14 @@
 
     .supervisors-list {
         flex: 0 0 15em;
-        width: 300px;
+        width: 260px;
         height: 300px;
         background: #d0d0d0;
     }
 }
 
 
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
     .tables {
         flex-wrap: wrap;
 

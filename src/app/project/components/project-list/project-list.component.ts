@@ -19,7 +19,8 @@ import { loadProjects } from '../../state/project.actions';
   styleUrls: ['./project-list.component.scss']
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['name', 'supervisor', 'acceptanceStatus'];
+  displayedColumns: string[] = ['name', 'supervisor', 'acceptance status'];
+  allColumns: string[] = ['name', 'supervisor', 'acceptance status']
   dataSource = new MatTableDataSource<Project>([]);
   searchValue: string = '';
   selectedSupervisor?: string;
@@ -82,17 +83,18 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       (data.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1) ||
       (data.supervisor?.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
   }
-
   isAnyFilterActivated(): boolean {
     return this.searchValue !== '' || this.selectedStatus !== undefined || this.selectedSupervisor !== undefined
   }
 
   resetFilters() {
-    this.searchValue = '';
-    this.selectedSupervisor = undefined;
-    this.selectedStatus = undefined;
-    this.onFiltersChange()
-    this.applySearchFilter()
+    if (this.isAnyFilterActivated()) {
+      this.searchValue = '';
+      this.selectedSupervisor = undefined;
+      this.selectedStatus = undefined;
+      this.onFiltersChange()
+      this.applySearchFilter()
+    }
   }
 
   ngOnDestroy(): void {
