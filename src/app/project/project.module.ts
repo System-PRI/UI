@@ -21,13 +21,15 @@ import { StoreModule } from '@ngrx/store';
 import { projectReducer } from './state/project.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ProjectEffects } from './state/project.effects';
+import { ProjectSupervisorsComponent } from './components/project-supervisors/project-supervisors.component';
 
 @NgModule({
   declarations: [
     ProjectDashboardComponent,
     ProjectListComponent,
     ProjectFormComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
+    ProjectSupervisorsComponent
   ],
   imports: [
     CommonModule,
