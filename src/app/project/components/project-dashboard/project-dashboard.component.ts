@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectFormComponent } from '../project-form/project-form.component';
 
 @Component({
   selector: 'project-dashboard',
   templateUrl: './project-dashboard.component.html',
-  styleUrls: ['./project-dashboard.component.scss']
+  styleUrls: ['./project-dashboard.component.scss'],
 })
 export class ProjectDashboardComponent {
 

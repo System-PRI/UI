@@ -83,19 +83,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       (data.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1) ||
       (data.supervisor?.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
   }
-  isAnyFilterActivated(): boolean {
-    return this.searchValue !== '' || this.selectedStatus !== undefined || this.selectedSupervisor !== undefined
-  }
-
-  resetFilters() {
-    if (this.isAnyFilterActivated()) {
-      this.searchValue = '';
-      this.selectedSupervisor = undefined;
-      this.selectedStatus = undefined;
-      this.onFiltersChange()
-      this.applySearchFilter()
-    }
-  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
