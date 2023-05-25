@@ -1,30 +1,30 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ProjectGroup } from '../../models/project-group';
+import { Project } from '../../models/project';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ProjectGroupsListService } from './project-groups-list.service';
+import { ProjectListService } from './project-list.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ProjectGroupDetailsComponent } from '../project-group-details/project-group-details.component';
+import { ProjectDetailsComponent } from '../project-details/project-details.component';
 import { Supervisor } from '../../models/supervisor';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { State } from '../../state/project-groups.state';
-import { getProjectGroups } from '../../state/project-groups.selectors';
-import * as ProjectGroupsActions from '../../state/project-groups.actions';
+import { State } from '../../state/project.state';
+import { getProjects } from '../../state/project.selectors';
+import { loadProjects } from '../../state/project.actions';
 
 @Component({
-  selector: 'project-groups-list',
-  templateUrl: './project-groups-list.component.html',
-  styleUrls: ['./project-groups-list.component.scss']
+  selector: 'project-list',
+  templateUrl: './project-list.component.html',
+  styleUrls: ['./project-list.component.scss']
 })
-export class ProjectGroupsListComponent implements OnInit, OnDestroy {
+export class ProjectListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'supervisor', 'acceptanceStatus'];
-  dataSource = new MatTableDataSource<ProjectGroup>([]);
+  dataSource = new MatTableDataSource<Project>([]);
   searchValue: string = '';
   selectedSupervisor?: string;
   selectedStatus?: boolean;
-  projectGroups: ProjectGroup[] = [];
+  projects: Project[] = [];
   supervisors$!: Observable<Supervisor[]>
   unsubscribe$ = new Subject()
 
@@ -32,29 +32,29 @@ export class ProjectGroupsListComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private projectGroupsListService: ProjectGroupsListService,
+    private projectsListService: ProjectListService,
     public dialog: MatDialog,
     private store: Store<State>
   ) { }
 
   ngOnInit(): void {
-    this.store.select(getProjectGroups).pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (projectGroups) => {
-        this.projectGroups = projectGroups;
-        this.dataSource.data = projectGroups;
+    this.store.select(getProjects).pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (projects) => {
+        this.projects = projects;
+        this.dataSource.data = projects;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.dataSource.filterPredicate = this.createSearchFilter();
       }
     )
 
-    this.store.dispatch(ProjectGroupsActions.loadProjectGroups());
+    this.store.dispatch(loadProjects());
 
-    this.supervisors$ = this.projectGroupsListService.supervisors$;
+    this.supervisors$ = this.projectsListService.supervisors$;
   }
 
   openProjectDetailsModal(): void {
-    const dialogRef = this.dialog.open(ProjectGroupDetailsComponent);
+    const dialogRef = this.dialog.open(ProjectDetailsComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -70,14 +70,14 @@ export class ProjectGroupsListComponent implements OnInit, OnDestroy {
   }
 
   onFiltersChange() {
-    this.dataSource.data = this.projectGroups.slice().filter(
-      projectGroup =>
-        (this.selectedSupervisor === undefined || projectGroup.supervisor === this.selectedSupervisor) &&
-        (this.selectedStatus === undefined || projectGroup.acceptanceStatus === this.selectedStatus)
+    this.dataSource.data = this.projects.slice().filter(
+      project =>
+        (this.selectedSupervisor === undefined || project.supervisor === this.selectedSupervisor) &&
+        (this.selectedStatus === undefined || project.acceptanceStatus === this.selectedStatus)
     )
   }
 
-  createSearchFilter(): (data: ProjectGroup, filter: string) => boolean {
+  createSearchFilter(): (data: Project, filter: string) => boolean {
     return (data, filter): boolean =>
       (data.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1) ||
       (data.supervisor?.toLowerCase().indexOf(filter.toLowerCase()) !== -1)

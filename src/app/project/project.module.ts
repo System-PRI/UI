@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ProjectGroupsRoutingModule } from './project-groups-routing.module';
-import { ProjectGroupsListComponent } from './components/project-groups-list/project-groups-list.component';
-import { ProjectGroupFormComponent } from './components/project-group-form/project-group-form.component';
+import { ProjectDashboardComponent } from './components/project-dashboard/project-dashboard.component';
+import { ProjectRoutingModule } from './project-routing.module';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,28 +15,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ProjectGroupDetailsComponent } from './components/project-group-details/project-group-details.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MatSortModule } from '@angular/material/sort';
-
 import { StoreModule } from '@ngrx/store';
-import { projectGroupsReducer } from './state/project-groups.reducer';
+import { projectReducer } from './state/project.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { ProjectGroupsEffects } from './state/project-groups.effects';
-
-
+import { ProjectEffects } from './state/project.effects';
 
 @NgModule({
   declarations: [
-    DashboardComponent,
-    ProjectGroupsListComponent,
-    ProjectGroupFormComponent,
-    ProjectGroupDetailsComponent
+    ProjectDashboardComponent,
+    ProjectListComponent,
+    ProjectFormComponent,
+    ProjectDetailsComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    ProjectGroupsRoutingModule,
+    ProjectRoutingModule,
     MatTableModule,
     MatPaginatorModule,
     MatButtonModule,
@@ -48,8 +45,8 @@ import { ProjectGroupsEffects } from './state/project-groups.effects';
     MatChipsModule,
     MatDialogModule,
     MatSortModule,
-    StoreModule.forFeature('project-groups', projectGroupsReducer),
-    EffectsModule.forFeature([ProjectGroupsEffects])
+    StoreModule.forFeature('project', projectReducer),
+    EffectsModule.forFeature([ProjectEffects])
   ]
 })
-export class ProjectGroupsModule { }
+export class ProjectModule { }

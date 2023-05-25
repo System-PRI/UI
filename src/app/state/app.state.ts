@@ -1,6 +1,6 @@
-import { ProjectGroupsState } from "../project-groups/state/project-groups.state";
+import { ProjectState } from "../project/state/project.state";
 
 export interface State {
     studyingMode: 'daily' | 'extramural',
-    projectGroups: ProjectGroupsState
+    projects: ProjectState
 }

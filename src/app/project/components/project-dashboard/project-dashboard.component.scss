@@ -15,16 +15,18 @@
     gap: 30px;
     display: flex;
  
-    .project-groups-list-container {
+    .project-list-container {
         flex: 1 1 100%;
         min-width: 0;
     }
 
     .supervisors-list {
         flex: 0 0 15em;
+        width: 300px;
+        height: 300px;
+        background: #d0d0d0;
     }
 }
-
 
 
 @media (max-width: 1200px) {
@@ -38,11 +40,6 @@
 }
 
 
-.supervisors-list {
-    width: 300px;
-    height: 300px;
-    background: #d0d0d0;
-}
 
 
 
