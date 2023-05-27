@@ -1,6 +1,7 @@
 <div class="title-and-add-project-button">
     <h1>Project groups</h1>
-    <button (click)="openProjectFormModal()" mat-raised-button color="primary">Add project</button>
+    <button (click)="openProjectFormModal('create')" mat-raised-button color="primary">Add project</button>
+    <button (click)="openProjectFormModal('edit')" mat-raised-button color="primary">Edit project</button>
 </div>
 <div class="tables">
     <div class="project-list-container">
