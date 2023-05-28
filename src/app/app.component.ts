@@ -1,8 +1,8 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component} from '@angular/core'
 import { Store } from '@ngrx/store';
-import { UserState } from './user/user.state';
-import { loadUser } from './user/user.actions';
+import { UserState } from './modules/user/user.state';
+import { loadUser } from './modules/user/user.actions';
 
 @Component({
   selector: 'app-root',

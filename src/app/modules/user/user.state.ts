@@ -1,4 +1,4 @@
-import * as AppState from '../app.state';
+import * as AppState from '../../app.state';
 
 export interface State extends AppState.State {
     user: UserState
