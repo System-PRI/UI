@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, retry, throwError, catchError, BehaviorSubject, take } from "rxjs";
+import { Observable, retry, throwError, catchError } from "rxjs";
 import { Project } from "../../models/project";
-import { Supervisor } from "../../models/supervisor";
+import { Supervisor } from "src/app/modules/user/models/supervisor.model";
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,7 @@ export class ProjectListService {
 
     loadProjects(): Observable<Project[]> {
         return this.http
-            .get<Project[]>('/apigateway/project-groups')
+            .get<Project[]>('/apigateway/project')
             .pipe(
                 retry(3),
                 catchError(
@@ -22,7 +22,7 @@ export class ProjectListService {
 
     addProject(project: Project) {
         this.http
-            .post<Project[]>('/apigateway/project-groups', project)
+            .post<Project[]>('/apigateway/project', project)
             .pipe(
                 retry(3),
                 catchError(
@@ -31,7 +31,7 @@ export class ProjectListService {
     }
 
     supervisors$: Observable<Supervisor[]> = this.http
-        .get<Supervisor[]>('/apigateway/supervisors')
+        .get<Supervisor[]>('/apigateway/supervisor')
         .pipe(
             retry(3),
             catchError(

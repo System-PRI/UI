@@ -6,12 +6,12 @@ import { MatSort } from '@angular/material/sort';
 import { ProjectListService } from './project-list.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectDetailsComponent } from '../project-details/project-details.component';
-import { Supervisor } from '../../models/supervisor';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '../../state/project.state';
 import { getProjects } from '../../state/project.selectors';
 import { loadProjects } from '../../state/project.actions';
+import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 
 @Component({
   selector: 'project-list',
@@ -73,15 +73,15 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   onFiltersChange() {
     this.dataSource.data = this.projects.slice().filter(
       project =>
-        (this.selectedSupervisor === undefined || project.supervisor === this.selectedSupervisor) &&
-        (this.selectedStatus === undefined || project.acceptanceStatus === this.selectedStatus)
+        (this.selectedSupervisor === undefined || project.supervisor.indexNumber === this.selectedSupervisor) &&
+        (this.selectedStatus === undefined || project.accepted === this.selectedStatus)
     )
   }
 
   createSearchFilter(): (data: Project, filter: string) => boolean {
     return (data, filter): boolean =>
       (data.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1) ||
-      (data.supervisor?.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+      (data.supervisor.name?.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
   }
 
   ngOnDestroy(): void {

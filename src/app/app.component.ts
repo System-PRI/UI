@@ -1,8 +1,8 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component} from '@angular/core'
 import { Store } from '@ngrx/store';
-import { UserState } from './modules/user/user.state';
-import { loadUser } from './modules/user/user.actions';
+import { loadUser } from './modules/user/state/user.actions';
+import { State } from './app.state';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent {
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private store: Store<UserState>) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private store: Store<State>) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);

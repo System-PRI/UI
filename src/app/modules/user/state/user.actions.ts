@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { UserState } from "./user.state";
+import { User } from "../models/user.model";
 
 export const loadUser = createAction(
     '[User] Load'
@@ -7,7 +7,7 @@ export const loadUser = createAction(
 
 export const loadUserSuccess = createAction(
     '[User API] Load Success',
-    props<{ user: UserState }>()
+    props<{ user: User }>()
 )
 
 export const loadUserFailure = createAction(

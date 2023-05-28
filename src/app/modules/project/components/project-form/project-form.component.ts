@@ -1,15 +1,14 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Student } from '../../models/student';
 import { ProjectFormService } from './project-form.service';
 import { Observable, map, startWith } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatAutocompleteActivatedEvent, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ProjectListService } from '../project-list/project-list.service';
 import { Project, ProjectDetails } from '../../models/project';
-import { Supervisor } from '../../models/supervisor';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Student } from 'src/app/modules/user/models/student.model';
+import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 
 @Component({
   selector: 'project-form',
@@ -24,12 +23,12 @@ export class ProjectFormComponent implements OnInit {
     name: 'Adrian Kuraszkiewicz',
     email: 'adrkur6@st.amu.edu.pl',
     indexNumber: 's145654',
-    
   }
+
   students: Student[] = []
   filteredStudents!: Observable<Student[]>;
 
-  supervisors$!: Observable<Supervisor[]>
+  supervisors: Supervisor[] = []
 
   technologies: string[] = [];
   technologyCtrl = new FormControl('');
@@ -58,14 +57,14 @@ export class ProjectFormComponent implements OnInit {
     if(this.data){
       this.projectForm.controls.name.setValue(this.data.name);
       this.projectForm.controls.description.setValue(this.data.description);
-      this.data.members.forEach(member => {
+      this.data.students.forEach(student => {
         this.members.push(this.fb.group({
-          ...member,
-          role: [member.role, Validators.required]
+          ...student,
+          role: [student.role, Validators.required]
         }));
-        this.selectedMembers.push(member);
+        this.selectedMembers.push(student);
       })
-      this.projectForm.controls.supervisor.setValue(this.data.supervisor.id);
+      this.projectForm.controls.supervisor.setValue(this.data.supervisor.indexNumber);
       this.projectForm.controls.technologies.setValue(this.data.technologies);
       this.technologies = this.data.technologies;
     } else {
@@ -79,7 +78,13 @@ export class ProjectFormComponent implements OnInit {
       students => this.students = students
     )
 
-    this.supervisors$ = this.projectListService.supervisors$;
+    this.projectFormService.students$.subscribe(
+      students => this.students = students
+    )
+
+    this.projectListService.supervisors$.subscribe(
+      supervisors => this.supervisors = supervisors
+    )
 
     this.filteredStudents = this.memberInput.valueChanges.pipe(
       startWith(null),
@@ -163,9 +168,9 @@ export class ProjectFormComponent implements OnInit {
   onSubmit(): void {
     if (this.projectForm.valid) {
       let project: Project = {
-        name: this.projectForm.controls.name.value ?? '',
-        supervisor: 'Jan Kowalski',
-        acceptanceStatus: false
+        name: this.projectForm.controls.name.value!,
+        supervisor: this.supervisors.find(supervisor => supervisor.indexNumber === this.projectForm.controls.supervisor.value)!,
+        accepted: false
       }
       this.projectListService.addProject(project)
 

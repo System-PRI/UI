@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { SupervisorAvailability } from '../../models/supervisor';
+import { Subject, takeUntil } from 'rxjs';
 import { ProjectSupervisorsService } from './project-supervisors.service';
+import { SupervisorAvailability } from '../../models/supervisor-availability.model';
 
 @Component({
   selector: 'project-supervisors',

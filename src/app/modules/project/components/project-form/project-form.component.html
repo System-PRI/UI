@@ -58,7 +58,7 @@
         <mat-form-field appearance="fill">
             <mat-label>Supervisor</mat-label>
             <mat-select formControlName="supervisor">
-                <mat-option *ngFor="let supervisor of (supervisors$ | async)" [value]="supervisor.id">{{ supervisor.name }}</mat-option>
+                <mat-option *ngFor="let supervisor of supervisors" [value]="supervisor.indexNumber">{{ supervisor.name }}</mat-option>
             </mat-select>
         </mat-form-field>
     </mat-dialog-content>

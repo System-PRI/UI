@@ -2,12 +2,12 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.supervisor.name}} </td>
     </ng-container>
   
     <ng-container matColumnDef="availability">
       <th class="availability" mat-header-cell *matHeaderCellDef> Availability </th>
-      <td class="availability" mat-cell *matCellDef="let element"> {{element.taken}} / {{element.availability}} </td>
+      <td class="availability" mat-cell *matCellDef="let element"> {{element.assigned}} / {{element.max}} </td>
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
