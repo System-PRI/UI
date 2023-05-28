@@ -24,11 +24,11 @@ export class ProjectDashboardComponent implements OnInit, OnDestroy {
 
   openProjectFormModal(type: string): void {
     let dialogRef;
-    if(type === 'create'){
+    if(type === 'edit'){
       dialogRef = this.dialog.open(ProjectFormComponent, {
         data: this.projectDetails
       });
-    } else if (type === 'edit') {
+    } else if (type === 'create') {
       dialogRef = this.dialog.open(ProjectFormComponent);
     }
 

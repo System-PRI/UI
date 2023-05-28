@@ -1,5 +1,5 @@
 import { Project } from '../models/project'
-import * as AppState from '../../state/app.state';
+import * as AppState from '../../../app.state';
 
 export interface State extends AppState.State {
     projectModule: ProjectState

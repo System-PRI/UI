@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Student } from '../../models/student';
 import { ProjectFormService } from './project-form.service';
@@ -7,8 +7,9 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteActivatedEvent, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ProjectListService } from '../project-list/project-list.service';
-import { Project } from '../../models/project';
+import { Project, ProjectDetails } from '../../models/project';
 import { Supervisor } from '../../models/supervisor';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'project-form',
@@ -22,7 +23,8 @@ export class ProjectFormComponent implements OnInit {
   user: Student = {
     name: 'Adrian Kuraszkiewicz',
     email: 'adrkur6@st.amu.edu.pl',
-    indexNumber: 's145654'
+    indexNumber: 's145654',
+    
   }
   students: Student[] = []
   filteredStudents!: Observable<Student[]>;
@@ -31,9 +33,6 @@ export class ProjectFormComponent implements OnInit {
 
   technologies: string[] = [];
   technologyCtrl = new FormControl('');
-  commonTechnologies: string[] = ['Java', 'JavaScript', 'Python', 'Angular'];
-  filteredTechnologies!: Observable<string[]>;
-  activatedTechnologyOption: string | null = null;
 
   selectedMembers: Student[] = []
   memberInput = new FormControl('');
@@ -44,17 +43,38 @@ export class ProjectFormComponent implements OnInit {
     name: ['', Validators.required],
     description: ['', Validators.required],
     members: this.fb.array([]),
-    technologies: [[], Validators.required],
+    technologies: new FormControl<string[]>([], [Validators.required]),
     supervisor: ['', Validators.required]
   });
 
   constructor(
     private fb: FormBuilder,
     private projectFormService: ProjectFormService,
-    private projectListService: ProjectListService
+    private projectListService: ProjectListService,
+    @Inject(MAT_DIALOG_DATA) public data?: ProjectDetails
   ) { }
 
   ngOnInit(): void {
+    if(this.data){
+      this.projectForm.controls.name.setValue(this.data.name);
+      this.projectForm.controls.description.setValue(this.data.description);
+      this.data.members.forEach(member => {
+        this.members.push(this.fb.group({
+          ...member,
+          role: [member.role, Validators.required]
+        }));
+        this.selectedMembers.push(member);
+      })
+      this.projectForm.controls.supervisor.setValue(this.data.supervisor.id);
+      this.projectForm.controls.technologies.setValue(this.data.technologies);
+      this.technologies = this.data.technologies;
+    } else {
+      this.members.push(this.fb.group({
+        ...this.user,
+        role: [null, Validators.required]
+      }));
+    }
+
     this.projectFormService.students$.subscribe(
       students => this.students = students
     )
@@ -66,15 +86,6 @@ export class ProjectFormComponent implements OnInit {
       map((value: string | null) => this.filterStudents(value || ''))
     )
 
-    this.filteredTechnologies = this.technologyCtrl.valueChanges.pipe(
-      startWith(null),
-      map((technology: string | null) => this.filterTechnologies(technology || ''))
-    );
-
-    this.members.push(this.fb.group({
-      data: this.user,
-      role: [null, Validators.required]
-    }));
   }
 
   filterStudents(value: string | Student): Student[] {
@@ -83,13 +94,13 @@ export class ProjectFormComponent implements OnInit {
     const filteredValue = value.toLowerCase()
     return this.students.filter(student =>
       (student.name.toLowerCase().includes(filteredValue) || student.email.toLowerCase().includes(filteredValue)) &&
-      this.selectedMembers.indexOf(student) === -1 && student.email !== this.user.email
+      this.selectedMembers.filter(member => member.email !== student.email).length === 0 && student.email !== this.user.email
     )
   }
 
   onMemberSelect(member: Student): void {
     this.members.push(this.fb.group({
-      data: member,
+      ...member,
       role: [null, Validators.required]
     }));
     this.selectedMembers.push(member);
@@ -103,6 +114,10 @@ export class ProjectFormComponent implements OnInit {
     index = this.selectedMembers.findIndex(iteratedMember => iteratedMember.email === this.getMemberData(member).email)
     if (index !== -1) this.selectedMembers.splice(index, 1)
 
+    console.log(this.selectedMembers)
+    console.log(this.students)
+
+
     this.memberInput.reset()
   }
 
@@ -110,10 +125,11 @@ export class ProjectFormComponent implements OnInit {
     return this.projectForm.get('members') as FormArray;
   }
 
-  getMemberData(member: AbstractControl): { name: string, email: string, role: FormControl } {
+  getMemberData(member: AbstractControl): { name: string, email: string, admin: boolean, role: FormControl } {
     return {
-      name: member.get('data')?.value.name,
-      email: member.get('data')?.value.email,
+      name: member.get('name')?.value,
+      email: member.get('email')?.value,
+      admin: member.get('admin')?.value,
       role: member.get('role') as FormControl
     }
   }
@@ -121,16 +137,12 @@ export class ProjectFormComponent implements OnInit {
   addTechnology(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    if (value &&
-      this.technologies.findIndex(t => t.toLowerCase() === value.toLowerCase()) === -1 &&
-      !this.activatedTechnologyOption
-    ) {
+    if (value && this.technologies.findIndex(t => t.toLowerCase() === value.toLowerCase()) === -1) {
       this.technologies.push(value);
     }
 
     event.chipInput!.clear();
     this.technologyCtrl.setValue(null);
-    this.activatedTechnologyOption = null;
   }
 
   removeTechnology(technology: string): void {
@@ -139,29 +151,6 @@ export class ProjectFormComponent implements OnInit {
     if (index >= 0) {
       this.technologies.splice(index, 1);
     }
-  }
-
-  selectedTechnology(event: MatAutocompleteSelectedEvent): void {
-    const value = event.option.viewValue;
-    if (this.technologies.findIndex(t => t.toLowerCase() === value.toLowerCase()) === -1) {
-      this.technologies.push(value);
-    }
-    this.technologyCtrl.setValue(null);
-
-    event.option.deselect();
-
-  }
-
-  activatedTechnology(event: MatAutocompleteActivatedEvent): void {
-    this.activatedTechnologyOption = event.option?.value;
-  }
-
-  filterTechnologies(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.commonTechnologies.filter(technology =>
-      technology.toLowerCase().includes(filterValue) && this.technologies.indexOf(technology) === -1
-    );
   }
 
   getErrorMessage(controlName: string): string {
@@ -181,6 +170,8 @@ export class ProjectFormComponent implements OnInit {
       this.projectListService.addProject(project)
 
       this.formIsValid = true;
+
+      console.log(this.projectForm)
     }
 
     this.memberInput.reset()

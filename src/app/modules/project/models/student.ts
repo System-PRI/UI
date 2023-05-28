@@ -3,4 +3,5 @@ export interface Student {
     name: string,
     indexNumber: string;
     role?: string;
+    admin?: boolean,
 }

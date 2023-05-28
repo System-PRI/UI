@@ -1,4 +1,5 @@
 export interface Supervisor {
+    id: string,
     email: string;
     name: string,
     indexNumber: string;

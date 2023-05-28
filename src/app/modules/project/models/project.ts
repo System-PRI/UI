@@ -2,7 +2,7 @@ import { Student } from "./student";
 import { Supervisor } from "./supervisor";
 
 export interface Project {
-    id: string;
+    id?: string;
     name: string;
     supervisor: string,
     acceptanceStatus: boolean;
@@ -15,5 +15,5 @@ export interface ProjectDetails {
     members: Student[];
     admin: string;
     technologies: string[];
-    instructor: Supervisor;
+    supervisor: Supervisor;
 }
