@@ -1,23 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ProjectFormComponent } from '../project-form/project-form.component';
-import { Project, ProjectDetails } from '../../models/project';
-import { ProjectService } from '../../project.service';
+import { ProjectFormComponent } from './components/project-form/project-form.component';
+import { Project, ProjectDetails } from './models/project';
+import { ProjectService } from './project.service';
 import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
-import { loadProjects } from '../../state/project.actions';
-import { getFilteredProjects } from '../../state/project.selectors';
-import { ProjectDetailsComponent } from '../project-details/project-details.component';
+import { loadProjects } from './state/project.actions';
+import { getFilteredProjects } from './state/project.selectors';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { SupervisorAvailability } from '../../models/supervisor-availability.model';
+import { SupervisorAvailability } from './models/supervisor-availability.model';
 
 @Component({
-  selector: 'project-shell',
-  templateUrl: './project-shell.component.html',
-  styleUrls: ['./project-shell.component.scss'],
+  selector: 'project',
+  templateUrl: './project.component.html',
+  styleUrls: ['./project.component.scss'],
 })
-export class ProjectShellComponent implements OnInit, OnDestroy {
+export class ProjectComponent implements OnInit, OnDestroy {
   displayedProjectListColumns: string[] = ['name', 'supervisor', 'acceptance status'];
   allProjectListColumns: string[] = ['name', 'supervisor', 'acceptance status'];
 

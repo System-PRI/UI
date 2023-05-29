@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectShellComponent } from './components/project-shell/project-shell.component';
-import { ProjectRoutingModule } from './project-routing.module';
-import { ProjectListComponent } from './components/project-list/project-list.component';
-import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,23 +11,27 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MatSortModule } from '@angular/material/sort';
 import { StoreModule } from '@ngrx/store';
 import { projectReducer } from './state/project.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ProjectEffects } from './state/project.effects';
+import { ProjectComponent } from './project.component';
+import { ProjectRoutingModule } from './project-routing.module';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { ProjectSupervisorsComponent } from './components/project-supervisors/project-supervisors.component';
 import { ProjectFiltersComponent } from './components/project-filters/project-filters.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 
 @NgModule({
   declarations: [
-    ProjectShellComponent,
     ProjectListComponent,
     ProjectFormComponent,
     ProjectDetailsComponent,
     ProjectSupervisorsComponent,
-    ProjectFiltersComponent
+    ProjectFiltersComponent,
+    ProjectComponent
   ],
   imports: [
     CommonModule,
