@@ -18,8 +18,8 @@ import { SupervisorAvailability } from './models/supervisor-availability.model';
   styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit, OnDestroy {
-  displayedProjectListColumns: string[] = ['name', 'supervisor', 'acceptance status'];
-  allProjectListColumns: string[] = ['name', 'supervisor', 'acceptance status'];
+  displayedProjectListColumns: string[] = ['name', 'supervisorName', 'accepted'];
+  allProjectListColumns: string[] = ['name', 'supervisorName', 'accepted'];
 
   supervisorListColumns: string[] = ['name', 'availability'];
   supervisorAvailabilities!: MatTableDataSource<SupervisorAvailability>;
@@ -68,7 +68,15 @@ export class ProjectComponent implements OnInit, OnDestroy {
   observeProjectsStateToUpdateView(){
     this.store.select(getFilteredProjects).pipe(
       takeUntil(this.unsubscribe$)
-    ).subscribe(projects => this.projects = new MatTableDataSource<Project>(projects))
+    ).subscribe(projects => {
+      let mappedProjects = projects.map((project) => {
+        return {
+            ...project,
+            supervisorName: project.supervisor.name, 
+        }
+      })
+      this.projects = new MatTableDataSource<Project>(mappedProjects)
+    })
   }
 
   getSupervisorAvailabilities(){
