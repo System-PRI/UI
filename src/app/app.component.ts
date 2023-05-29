@@ -3,6 +3,8 @@ import {ChangeDetectorRef, Component} from '@angular/core'
 import { Store } from '@ngrx/store';
 import { loadUser } from './modules/user/state/user.actions';
 import { State } from './app.state';
+import { map } from 'rxjs';
+import { getUser } from './modules/user/state/user.selectors';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +14,8 @@ import { State } from './app.state';
 export class AppComponent {
   appName: string = 'PRI';
   mobileQuery?: MediaQueryList;
-  fillerNav: string[] = ['Project Groups', 'External Links']
+  fillerNav: string[] = ['Project Groups', 'External Links'];
+  isUserLoggedIn: boolean = false;
 
   private _mobileQueryListener: () => void;
 
@@ -20,7 +23,7 @@ export class AppComponent {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
-    
-    this.store.dispatch(loadUser())
+ 
+    this.store.select(getUser).subscribe(user => this.isUserLoggedIn = user.logged);
   }
 }

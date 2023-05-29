@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectDashboardComponent } from './components/project-dashboard/project-dashboard.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  { path: '', component: ProjectDashboardComponent },
+  { path: '', pathMatch: 'full', component: LoginComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProjectRoutingModule { }
+export class UserRoutingModule { }

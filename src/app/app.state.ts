@@ -1,7 +1,8 @@
 import { ProjectState } from "./modules/project/state/project.state";
-import { User } from "./modules/user/models/user.model";
+import { UserState } from "./modules/user/state/user.state";
 
 export interface State {
     projects: ProjectState,
-    user: User
+    user: UserState
 }
+
