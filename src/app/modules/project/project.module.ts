@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
+import { MatRadioModule } from '@angular/material/radio';
 import { StoreModule } from '@ngrx/store';
 import { projectReducer } from './state/project.reducer';
 import { EffectsModule } from '@ngrx/effects';
@@ -49,6 +50,7 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
     MatChipsModule,
     MatDialogModule,
     MatSortModule,
+    MatRadioModule,
     StoreModule.forFeature('project', projectReducer),
     EffectsModule.forFeature([ProjectEffects])
   ]
