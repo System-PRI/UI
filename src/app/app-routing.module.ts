@@ -13,10 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule)
   },
   {
-    path: 'project-group',
+    path: 'projects',
     loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule),
     canActivate: [authGuard]
-  }
+  },
 ];
 
 @NgModule({

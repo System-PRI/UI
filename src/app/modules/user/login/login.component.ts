@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit{
   ngOnInit(): void {
     this.store.select(getUser).subscribe(user => {
       if(user.logged){
-        this.router.navigateByUrl('/project-group');
+        this.router.navigateByUrl('/projects');
       } else {
         if(localStorage.getItem('user')){
           this.store.dispatch(loadUser())

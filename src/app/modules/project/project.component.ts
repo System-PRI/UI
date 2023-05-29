@@ -11,6 +11,7 @@ import { getFilteredProjects } from './state/project.selectors';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { SupervisorAvailability } from './models/supervisor-availability.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'project',
@@ -25,7 +26,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   supervisorAvailabilities!: MatTableDataSource<SupervisorAvailability>;
 
   projects!: MatTableDataSource<Project>;
-  projectDetails!: ProjectDetails;
+  projectDetailsForEdit?: ProjectDetails;
   projectButtonText: string = '';
   isProjectAdmin!: boolean;
 
@@ -34,7 +35,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
   constructor(
       public dialog: MatDialog, 
       private projectService: ProjectService, 
-      private store: Store<State>
+      private store: Store<State>,
+      private route: ActivatedRoute,
+      private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +64,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
         return EMPTY
       })
     ).subscribe(projectDetails => {
-      this.projectDetails = projectDetails
+      this.projectDetailsForEdit = projectDetails
     })
   }
 
@@ -87,11 +90,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
     )
   }
 
-  openProjectFormModal(): void {
+  openProjectForm(): void {
     let dialogRef;
     if(this.isProjectAdmin){
       dialogRef = this.dialog.open(ProjectFormComponent, {
-        data: this.projectDetails
+        data: this.projectDetailsForEdit
       });
     } else {
       dialogRef = this.dialog.open(ProjectFormComponent);
@@ -102,11 +105,21 @@ export class ProjectComponent implements OnInit, OnDestroy {
     });
   }
 
-  onOpenProjectDetails(): void {
-    const dialogRef = this.dialog.open(ProjectDetailsComponent);
+  getProjectDetailsAndOpenModal(id: string){
+    this.projectService.getProjectDetails(id).pipe(takeUntil(this.unsubscribe$)).subscribe(
+      projectDetails => {
+        this.showProjectDetails(projectDetails)
+      }
+    );
+  }
 
-    dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+  showProjectDetails(projectDetails: ProjectDetails): void {
+    let dialogRef;
+    dialogRef = this.dialog.open(ProjectDetailsComponent, {
+      data: projectDetails
+    });
+    dialogRef?.afterClosed()!.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      // todo
     });
   }
 

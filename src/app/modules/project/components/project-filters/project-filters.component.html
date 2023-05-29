@@ -22,8 +22,7 @@
   </mat-select>
 </mat-form-field>
 
-<mat-form-field>
-  <mat-label>Columns</mat-label>
+<mat-form-field shouldLabelFloat="false">
   <mat-select [(ngModel)]="displayedColumns" multiple>
     <mat-select-trigger>
       Selected columns: {{displayedColumns.length}}

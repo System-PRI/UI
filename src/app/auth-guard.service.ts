@@ -1,18 +1,10 @@
 import { inject } from '@angular/core';
 import {
-  ActivatedRouteSnapshot, Router, createUrlTreeFromSnapshot,
+  ActivatedRouteSnapshot, createUrlTreeFromSnapshot,
 } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
-import { State } from './app.state';
-import { getUser } from './modules/user/state/user.selectors';
+import { UserService } from './modules/user/user.service';
+
 
 export const authGuard = (next: ActivatedRouteSnapshot) => {
-  return inject(Store<State>)
-    .select(getUser)
-    .pipe(
-      map((user) => {
-        return user?.logged ? true : createUrlTreeFromSnapshot(next, ['/', 'login'])
-    })
-    );
+  return inject(UserService).isUserLoggedIn ? true : createUrlTreeFromSnapshot(next, ['/', 'login'])
 };

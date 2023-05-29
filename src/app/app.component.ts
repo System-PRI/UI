@@ -25,7 +25,11 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
  
-    this.store.select('user').subscribe(user => this.user = user);
+    this.store.select('user').subscribe(user =>{
+      console.log(user)
+      this.user = user
+    });
+    this.store.dispatch(loadUser());
   }
 
   get isLogged() {

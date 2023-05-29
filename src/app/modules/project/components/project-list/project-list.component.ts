@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class ProjectListComponent{
   @Input() columns!: string[];
   @Input() projects!: MatTableDataSource<Project>;
-  @Output() openProjectDetailsEvent = new EventEmitter<null>();
+  @Output() openProjectDetailsEvent = new EventEmitter<string>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 

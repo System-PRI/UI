@@ -13,7 +13,7 @@ export class ProjectService {
 
     getProjectDetails(id: string): Observable<ProjectDetails> {
         return this.http
-            .get<ProjectDetails>(`/apigateway/project-details/${id}`)
+            .get<ProjectDetails>(`/apigateway/project/${id}`)
             .pipe(
                 retry(3),
                 catchError(

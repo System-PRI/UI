@@ -1,6 +1,6 @@
 <div class="title-and-add-project-button">
     <h1>Project groups</h1>
-    <button *ngIf="projectButtonText !== ''" (click)="openProjectFormModal()" mat-raised-button color="primary">
+    <button *ngIf="projectButtonText !== ''" (click)="openProjectForm()" mat-raised-button color="primary">
         {{ projectButtonText }}
     </button>
 </div>
@@ -10,7 +10,7 @@
 <div class="tables">   
     <div class="project-list-container">
         <project-list 
-            (openProjectDetailsEvent)="onOpenProjectDetails()" 
+            (openProjectDetailsEvent)="getProjectDetailsAndOpenModal($event)" 
             [columns]="displayedProjectListColumns" 
             [projects]="projects"></project-list>
     </div>
