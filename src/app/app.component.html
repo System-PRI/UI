@@ -1,12 +1,12 @@
 <div class="root" [class.is-mobile]="mobileQuery?.matches">
   <mat-toolbar color="primary">
     <div>
-      <button *ngIf="isUserLoggedIn" mat-icon-button (click)="snav.toggle()">
+      <button *ngIf="isLogged" mat-icon-button (click)="snav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
       <h4 class="app-name">{{ appName }}</h4>
     </div>
-    <button *ngIf="isUserLoggedIn" mat-icon-button>
+    <button *ngIf="isLogged" mat-icon-button>
       <mat-icon>person</mat-icon>
     </button>
   </mat-toolbar>

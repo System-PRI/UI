@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { State } from '../state/user.state';
 import { loadUser } from '../state/user.actions';
 import { getUser } from '../state/user.selectors';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,11 @@ export class LoginComponent implements OnInit{
   ngOnInit(): void {
     this.store.select(getUser).subscribe(user => {
       if(user.logged){
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/project-group');
+      } else {
+        if(localStorage.getItem('user')){
+          this.store.dispatch(loadUser())
+        }
       }
     });
   }

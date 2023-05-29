@@ -8,3 +8,27 @@ export const getUser = createSelector(
     state => state
 );
 
+export const isLogged = createSelector(
+    getUserState,
+    state => state.logged
+)
+
+export const isProjectAdmin = createSelector(
+    getUserState,
+    state => state.role === 'PROJECT_ADMIN'
+)
+
+export const isStudent = createSelector(
+    getUserState,
+    state => state.role === 'STUDENT'
+)
+
+export const isSupervisor = createSelector(
+    getUserState,
+    state => state.role === 'SUPERVISOR'
+)
+
+export const isCoordinator = createSelector(
+    getUserState,
+    state => state.role === 'COORDINATOR'
+)

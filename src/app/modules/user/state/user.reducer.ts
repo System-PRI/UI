@@ -5,6 +5,7 @@ import { loadUserSuccess } from './user.actions';
 export const userReducer = createReducer(
     initialState,
     on(loadUserSuccess, (state, action): UserState => {
+        localStorage.setItem('user', JSON.stringify(action.user))
         return {
             ...state,
             ...action.user,

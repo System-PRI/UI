@@ -4,7 +4,8 @@ import { Store } from '@ngrx/store';
 import { loadUser } from './modules/user/state/user.actions';
 import { State } from './app.state';
 import { map } from 'rxjs';
-import { getUser } from './modules/user/state/user.selectors';
+import { getUser, isLogged } from './modules/user/state/user.selectors';
+import { UserState } from './modules/user/state/user.state';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent {
   appName: string = 'PRI';
   mobileQuery?: MediaQueryList;
   fillerNav: string[] = ['Project Groups', 'External Links'];
-  isUserLoggedIn: boolean = false;
+  user!: UserState;
 
   private _mobileQueryListener: () => void;
 
@@ -24,6 +25,14 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
  
-    this.store.select(getUser).subscribe(user => this.isUserLoggedIn = user.logged);
+    this.store.select('user').subscribe(user => this.user = user);
+  }
+
+  get isLogged() {
+    return this.user?.logged
+  }
+
+  get isCoordinator() {
+    return this.user?.role === 'COORDINATOR'
   }
 }

@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import {
-  ActivatedRouteSnapshot,
+  ActivatedRouteSnapshot, Router, createUrlTreeFromSnapshot,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
@@ -12,7 +12,7 @@ export const authGuard = (next: ActivatedRouteSnapshot) => {
     .select(getUser)
     .pipe(
       map((user) => {
-        console.log(user)
-        return user.logged})
+        return user?.logged ? true : createUrlTreeFromSnapshot(next, ['/', 'login'])
+    })
     );
 };

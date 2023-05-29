@@ -11,12 +11,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { UserRoutingModule } from './user-routing.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     LoginComponent
   ],
   imports: [
+    CommonModule,
     StoreModule.forFeature('user', userReducer),
     EffectsModule.forFeature([UserEffects]),
     UserRoutingModule,
