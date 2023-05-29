@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectFormComponent } from '../project-form/project-form.component';
 import { ProjectDetails } from '../../models/project';
 import { ProjectService } from '../../project.service';
-import { Subject, takeUntil } from 'rxjs';
+import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
+import { State } from 'src/app/app.state';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'project-dashboard',
@@ -13,22 +15,39 @@ import { Subject, takeUntil } from 'rxjs';
 export class ProjectDashboardComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
   projectDetails!: ProjectDetails;
-
-  constructor(public dialog: MatDialog, private projectService: ProjectService) {}
+  isProjectAdmin!: boolean;
+  projectButtonText: string = '';
+  
+  constructor(public dialog: MatDialog, private projectService: ProjectService, private store: Store<State>) {}
 
   ngOnInit(): void {
-    this.projectService.getProjectDetails('1').pipe(
+    this.store.select('user').pipe(
       takeUntil(this.unsubscribe$),
-    ).subscribe(projectDetails => this.projectDetails = projectDetails)
+      switchMap(user => {
+        this.isProjectAdmin = user.role === 'PROJECT_ADMIN';
+        let isStudent = user.role === 'STUDENT';
+
+        if(this.isProjectAdmin){
+          this.projectButtonText = 'Edit project';
+          let projectId = user.acceptedProjects[0];
+          return this.projectService.getProjectDetails(projectId);
+        } else if(isStudent) {
+          this.projectButtonText = 'Add project';
+        }
+        return EMPTY
+      })
+    ).subscribe(projectDetails => {
+      this.projectDetails = projectDetails
+    })
   }
 
-  openProjectFormModal(type: string): void {
+  openProjectFormModal(): void {
     let dialogRef;
-    if(type === 'edit'){
+    if(this.isProjectAdmin){
       dialogRef = this.dialog.open(ProjectFormComponent, {
         data: this.projectDetails
       });
-    } else if (type === 'create') {
+    } else {
       dialogRef = this.dialog.open(ProjectFormComponent);
     }
 
