@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectDashboardComponent } from './components/project-dashboard/project-dashboard.component';
+import { ProjectShellComponent } from './components/project-shell/project-shell.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
@@ -22,14 +22,16 @@ import { projectReducer } from './state/project.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ProjectEffects } from './state/project.effects';
 import { ProjectSupervisorsComponent } from './components/project-supervisors/project-supervisors.component';
+import { ProjectFiltersComponent } from './components/project-filters/project-filters.component';
 
 @NgModule({
   declarations: [
-    ProjectDashboardComponent,
+    ProjectShellComponent,
     ProjectListComponent,
     ProjectFormComponent,
     ProjectDetailsComponent,
-    ProjectSupervisorsComponent
+    ProjectSupervisorsComponent,
+    ProjectFiltersComponent
   ],
   imports: [
     CommonModule,

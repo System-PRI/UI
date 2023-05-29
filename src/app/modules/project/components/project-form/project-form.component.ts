@@ -4,11 +4,11 @@ import { ProjectFormService } from './project-form.service';
 import { Observable, map, startWith } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { ProjectListService } from '../project-list/project-list.service';
 import { Project, ProjectDetails } from '../../models/project';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Student } from 'src/app/modules/user/models/student.model';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
+import { ProjectService } from '../../project.service';
 
 @Component({
   selector: 'project-form',
@@ -49,7 +49,7 @@ export class ProjectFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private projectFormService: ProjectFormService,
-    private projectListService: ProjectListService,
+    private projectService: ProjectService,
     @Inject(MAT_DIALOG_DATA) public data?: ProjectDetails
   ) { }
 
@@ -82,7 +82,7 @@ export class ProjectFormComponent implements OnInit {
       students => this.students = students
     )
 
-    this.projectListService.supervisors$.subscribe(
+    this.projectService.supervisors$.subscribe(
       supervisors => this.supervisors = supervisors
     )
 
@@ -118,10 +118,6 @@ export class ProjectFormComponent implements OnInit {
 
     index = this.selectedMembers.findIndex(iteratedMember => iteratedMember.email === this.getMemberData(member).email)
     if (index !== -1) this.selectedMembers.splice(index, 1)
-
-    console.log(this.selectedMembers)
-    console.log(this.students)
-
 
     this.memberInput.reset()
   }
@@ -172,11 +168,8 @@ export class ProjectFormComponent implements OnInit {
         supervisor: this.supervisors.find(supervisor => supervisor.indexNumber === this.projectForm.controls.supervisor.value)!,
         accepted: false
       }
-      this.projectListService.addProject(project)
-
+      this.projectService.addProject(project)
       this.formIsValid = true;
-
-      console.log(this.projectForm)
     }
 
     this.memberInput.reset()

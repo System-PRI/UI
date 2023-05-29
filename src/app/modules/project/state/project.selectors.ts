@@ -3,8 +3,8 @@ import { ProjectState } from "./project.state";
 
 const getProjectFeatureState = createFeatureSelector<ProjectState>('project');
 
-export const getProjects = createSelector(
+export const getFilteredProjects = createSelector(
     getProjectFeatureState,
-    state => state.projects
+    state => state.filteredProjects
 );
 

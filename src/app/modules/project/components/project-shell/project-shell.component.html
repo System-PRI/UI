@@ -1,0 +1,25 @@
+<div class="title-and-add-project-button">
+    <h1>Project groups</h1>
+    <button *ngIf="projectButtonText !== ''" (click)="openProjectFormModal()" mat-raised-button color="primary">
+        {{ projectButtonText }}
+    </button>
+</div>
+<div class="project-filters-container">
+    <project-filters></project-filters>
+</div>
+<div class="tables">   
+    <div class="project-list-container">
+        <project-list 
+            (openProjectDetailsEvent)="onOpenProjectDetails()" 
+            [columns]="displayedProjectListColumns" 
+            [projects]="projects"></project-list>
+    </div>
+    <div class="supervisors-list-container">
+        <div class="supervisors-list">
+            <project-supervisors
+                [columns]="supervisorListColumns"
+                [supervisorAvailabilities]="supervisorAvailabilities"
+            ></project-supervisors>
+        </div>
+    </div>
+</div>

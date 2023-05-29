@@ -20,3 +20,9 @@ export interface ProjectDetails {
     accepted: boolean;
     externalLinks?: ExternalLink[]
 }
+
+export interface ProjectFilters {
+    searchValue: string;
+    supervisorIndexNumber: string | undefined;
+    acceptanceStatus: boolean | undefined;
+}

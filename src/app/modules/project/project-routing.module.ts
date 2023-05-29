@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectDashboardComponent } from './components/project-dashboard/project-dashboard.component';
+import { ProjectShellComponent } from './components/project-shell/project-shell.component';
 
 const routes: Routes = [
-  { path: '', component: ProjectDashboardComponent },
+  { path: '', component: ProjectShellComponent },
 ];
 
 @NgModule({

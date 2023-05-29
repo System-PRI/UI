@@ -1,7 +1,9 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError } from "rxjs";
-import { ProjectDetails } from "./models/project";
+import { Project, ProjectDetails } from "./models/project";
+import { Supervisor } from "../user/models/supervisor.model";
+import { SupervisorAvailability } from "./models/supervisor-availability.model";
 
 @Injectable({
     providedIn: 'root'
@@ -18,4 +20,43 @@ export class ProjectService {
                     (err: HttpErrorResponse) => throwError(() => err))
             )
     }
+
+    loadProjects(): Observable<Project[]> {
+        return this.http
+            .get<Project[]>('/apigateway/project')
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+    addProject(project: Project) {
+        this.http
+            .post<Project[]>('/apigateway/project', project)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            ).subscribe(() => { })
+    }
+
+    supervisors$: Observable<Supervisor[]> = this.http
+        .get<Supervisor[]>('/apigateway/supervisor')
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
+
+    supervisorsAvailabilities$: Observable<SupervisorAvailability[]> = 
+        this.http
+            .get<SupervisorAvailability[]>('/apigateway/supervisor/availability')
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+
+
 }
