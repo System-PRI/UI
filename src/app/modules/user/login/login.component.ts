@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { State } from '../state/user.state';
-import { loadUser } from '../state/user.actions';
+import { State, UserState } from '../state/user.state';
 import { getUser } from '../state/user.selectors';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { authenticate, loadUser } from '../state/user.actions';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
 
   form = this.fb.group({
     login: ['', Validators.required],
@@ -20,14 +21,15 @@ export class LoginComponent implements OnInit{
 
   hide: boolean = true;
 
-  constructor(private fb: FormBuilder, private store: Store<State>, private router: Router){}
+  constructor(private fb: FormBuilder, private store: Store<State>, private router: Router, private cookieService: CookieService) { }
 
   ngOnInit(): void {
-    this.store.select(getUser).subscribe(user => {
-      if(user.logged){
+    this.store.select(getUser).subscribe((user: UserState) => {
+      if (user?.logged) {
         this.router.navigateByUrl('/projects');
       } else {
-        if(localStorage.getItem('user')){
+        if (this.cookieService.get('token')) {
+          console.log('elo')
           this.store.dispatch(loadUser())
         }
       }
@@ -35,8 +37,8 @@ export class LoginComponent implements OnInit{
   }
 
   onSubmit(): void {
-    if(this.form.valid){
-      this.store.dispatch(loadUser())
+    if (this.form.valid) {
+      this.store.dispatch(authenticate({ login: this.form.controls.login.value!, password: this.form.controls.password.value! }))
     }
   }
 

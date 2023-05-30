@@ -1,8 +1,11 @@
 import * as AppState from '../../../app.state';
 import { User } from '../models/user.model';
 
-export interface UserState extends User{
-    logged: boolean
+export interface UserState extends User {
+    token: string;
+    logged: boolean;
+    selectedStudyYear: string;
+    lang: string;
 }
 
 export interface State extends AppState.State {
@@ -14,7 +17,10 @@ export const initialState: UserState = {
     name: '',
     role: 'STUDENT',
     studyYears: [],
+    selectedStudyYear: '',
     projects: [],
     acceptedProjects: [],
-    logged: false
+    token: '',
+    logged: false,
+    lang: 'pl'
 }
