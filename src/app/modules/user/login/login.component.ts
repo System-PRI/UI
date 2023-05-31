@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit {
     password: ['', Validators.required]
   });
 
+  showForm: boolean = false;
+
   hide: boolean = true;
 
   constructor(private fb: FormBuilder, private store: Store<State>, private router: Router, private cookieService: CookieService) { }
@@ -29,8 +31,9 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/projects');
       } else {
         if (this.cookieService.get('token')) {
-          console.log('elo')
           this.store.dispatch(loadUser())
+        } else {
+          this.showForm = true;
         }
       }
     });

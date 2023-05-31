@@ -20,7 +20,7 @@ export class UserService {
     loadUser(): Observable<User> {
         return this.http
             .get<User>(`/apigateway/user`, {
-                headers: { Authorization: `Bearer ${this.cookieService.get('token')}` }
+                headers: { Authorization: this.cookieService.get('token') }
             })
             .pipe(
                 retry(3),

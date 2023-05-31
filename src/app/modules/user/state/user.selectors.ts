@@ -10,7 +10,7 @@ export const getUser = createSelector(
 
 export const isLogged = createSelector(
     getUserState,
-    state => state.logged
+    state => state?.logged
 )
 
 export const isProjectAdmin = createSelector(
