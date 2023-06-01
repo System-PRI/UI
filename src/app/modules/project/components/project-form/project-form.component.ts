@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ProjectFormService } from './project-form.service';
 import { Observable, map, startWith } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -48,7 +47,6 @@ export class ProjectFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private projectFormService: ProjectFormService,
     private projectService: ProjectService,
     @Inject(MAT_DIALOG_DATA) public data?: ProjectDetails
   ) { }
@@ -74,11 +72,11 @@ export class ProjectFormComponent implements OnInit {
       }));
     }
 
-    this.projectFormService.students$.subscribe(
+    this.projectService.students$.subscribe(
       students => this.students = students
     )
 
-    this.projectFormService.students$.subscribe(
+    this.projectService.students$.subscribe(
       students => this.students = students
     )
 

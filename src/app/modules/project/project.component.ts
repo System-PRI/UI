@@ -12,6 +12,7 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
 import { MatTableDataSource } from '@angular/material/table';
 import { SupervisorAvailability } from './models/supervisor-availability.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
 
 @Component({
   selector: 'project',
@@ -23,12 +24,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
   allProjectListColumns: string[] = ['name', 'supervisorName', 'accepted'];
 
   supervisorListColumns: string[] = ['name', 'availability'];
-  supervisorAvailabilities!: MatTableDataSource<SupervisorAvailability>;
+  supervisorAvailabilities!: SupervisorAvailability[];
+  supervisorAvailabilitiesDataSource!: MatTableDataSource<SupervisorAvailability>;
 
   projects!: MatTableDataSource<Project>;
   projectDetailsForEdit?: ProjectDetails;
   projectButtonText: string = '';
-  isProjectAdmin!: boolean;
+  isProjectAdmin?: boolean;
+  isCoordinator?: boolean;
 
   unsubscribe$ = new Subject();
 
@@ -60,6 +63,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
           case 'STUDENT': 
             this.projectButtonText = 'Add project';
             break;
+          case 'COORDINATOR': 
+            this.isCoordinator = true;
+            break;
         }
         return EMPTY
       })
@@ -85,8 +91,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
   getSupervisorAvailabilities(){
     this.projectService.supervisorsAvailabilities$.pipe(
       takeUntil(this.unsubscribe$)
-    ).subscribe((supervisorsAvailabilities) => 
-      this.supervisorAvailabilities = new MatTableDataSource<SupervisorAvailability>(supervisorsAvailabilities)
+    ).subscribe((supervisorsAvailabilities) => {
+      this.supervisorAvailabilities = supervisorsAvailabilities;
+      this.supervisorAvailabilitiesDataSource = new MatTableDataSource<SupervisorAvailability>(supervisorsAvailabilities);
+    }
     )
   }
 
@@ -100,6 +108,17 @@ export class ProjectComponent implements OnInit, OnDestroy {
       dialogRef = this.dialog.open(ProjectFormComponent);
     }
 
+    dialogRef?.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openSupervisorAvailabilitiesForm(): void {
+    let dialogRef;
+    dialogRef = this.dialog.open(SupervisorAvailabilityFormComponent, {
+      data: this.supervisorAvailabilities
+    });
+    
     dialogRef?.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });

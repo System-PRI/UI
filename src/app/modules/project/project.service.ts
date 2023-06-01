@@ -4,6 +4,7 @@ import { Observable, retry, throwError, catchError } from "rxjs";
 import { Project, ProjectDetails } from "./models/project";
 import { Supervisor } from "../user/models/supervisor.model";
 import { SupervisorAvailability } from "./models/supervisor-availability.model";
+import { Student } from "../user/models/student.model";
 
 @Injectable({
     providedIn: 'root'
@@ -43,6 +44,14 @@ export class ProjectService {
 
     supervisors$: Observable<Supervisor[]> = this.http
         .get<Supervisor[]>('/apigateway/supervisor')
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
+
+     students$: Observable<Student[]> = this.http
+        .get<Student[]>('/apigateway/student')
         .pipe(
             retry(3),
             catchError(

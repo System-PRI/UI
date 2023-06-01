@@ -21,18 +21,20 @@ import { ProjectComponent } from './project.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
-import { ProjectSupervisorsComponent } from './components/project-supervisors/project-supervisors.component';
 import { ProjectFiltersComponent } from './components/project-filters/project-filters.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
+import { SupervisorAvailabilityListComponent } from './components/supervisor-availability-list/supervisor-availability-list.component';
 
 @NgModule({
   declarations: [
     ProjectListComponent,
     ProjectFormComponent,
     ProjectDetailsComponent,
-    ProjectSupervisorsComponent,
     ProjectFiltersComponent,
-    ProjectComponent
+    ProjectComponent,
+    SupervisorAvailabilityListComponent,
+    SupervisorAvailabilityFormComponent
   ],
   imports: [
     CommonModule,

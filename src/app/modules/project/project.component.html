@@ -14,12 +14,13 @@
             [columns]="displayedProjectListColumns" 
             [projects]="projects"></project-list>
     </div>
-    <div class="supervisors-list-container">
-        <div class="supervisors-list">
-            <project-supervisors
-                [columns]="supervisorListColumns"
-                [supervisorAvailabilities]="supervisorAvailabilities"
-            ></project-supervisors>
-        </div>
+    <div class="supervisor-availability-list-container">
+        <supervisor-availability-list
+            [columns]="supervisorListColumns"
+            [supervisorAvailabilities]="supervisorAvailabilitiesDataSource"
+        ></supervisor-availability-list>
+        <button *ngIf="isCoordinator || true" (click)="openSupervisorAvailabilitiesForm()" mat-raised-button color="primary">
+            Edit
+        </button>
     </div>
 </div>

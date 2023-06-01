@@ -1,0 +1,16 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2 mat-dialog-title>Edit supervisor availabilities</h2>
+    <mat-dialog-content class="mat-typography">
+        <div class="availability-row" *ngFor="let availability of availabilities.controls">
+            <p>{{getAvailabilityData(availability).supervisor.name}}</p>
+            <mat-form-field appearance="fill">
+                <input matInput [formControl]="getAvailabilityData(availability).max">
+                <mat-error *ngIf="getAvailabilityData(availability).max.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button type="submit" mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Submit</button>
+    </mat-dialog-actions>
+</form>

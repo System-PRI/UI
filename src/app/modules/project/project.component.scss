@@ -25,10 +25,14 @@
         display: inline-block;
     }
 
-    .supervisors-list {
-        flex: 0 0 15em;
-        width: 260px;
+    .supervisor-availability-list-container {
+        flex: 0 0 19em;
         height: auto;
+        display: grid;
+
+        button {
+            justify-self: end;
+        }
     }
 }
 
