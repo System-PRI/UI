@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { State, UserState } from '../state/user.state';
 import { getUser, isLogged } from '../state/user.selectors';
 import { Router } from '@angular/router';
-import { accessTokenRefresh, accessTokenRefreshFailure, accessTokenRefreshSuccess, authenticate, loadUser } from '../state/user.actions';
+import { accessTokenRefresh, accessTokenRefreshFailure, accessTokenRefreshSuccess, authenticate, authenticateSuccess, loadUser } from '../state/user.actions';
 import { UserService } from '../user.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { first } from 'rxjs';
@@ -34,6 +34,12 @@ export class LoginComponent implements OnInit {
       } else {
         this.store.dispatch(accessTokenRefresh())
       }
+    });
+
+    this.actions$.pipe(
+      ofType(authenticateSuccess),
+    ).subscribe(() => {
+      this.store.dispatch(loadUser())
     });
 
     this.actions$.pipe(

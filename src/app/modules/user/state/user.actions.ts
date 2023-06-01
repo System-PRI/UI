@@ -8,7 +8,7 @@ export const authenticate = createAction(
 
 export const authenticateSuccess = createAction(
     '[Auth API] Success',
-    props<{ user: User, token: string }>()
+    props<{ token: string }>()
 )
 
 export const authenticateFailure = createAction(

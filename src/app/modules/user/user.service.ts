@@ -24,9 +24,9 @@ export class UserService {
             )
     }
 
-    authenticate(login: string, password: string): Observable<AuthResponse> {
+    authenticate(login: string, password: string): Observable<{token: string}> {
         return this.http
-            .post<AuthResponse>(`/apigateway/login`, { login, password })
+            .post<{token: string}>(`/apigateway/login`, { login, password })
             .pipe(
                 retry(3),
                 catchError(
@@ -43,8 +43,4 @@ export class UserService {
                     (err: HttpErrorResponse) => throwError(() => err))
             )
     }
-
-
-
-
 }
