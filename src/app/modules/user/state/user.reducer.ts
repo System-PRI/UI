@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { UserState, initialState } from './user.state';
-import { authenticateSuccess, loadUserSuccess } from './user.actions';
+import { authenticateSuccess, loadUserSuccess, accessTokenRefreshSuccess } from './user.actions';
 
 export const userReducer = createReducer(
     initialState,
@@ -19,5 +19,12 @@ export const userReducer = createReducer(
             selectedStudyYear: action.user.studyYears[0],
             token: action.token
         }
+    }),
+    on(accessTokenRefreshSuccess, (state, action): UserState => {
+        return {
+            ...state,
+            token: action.token
+        }
     })
+
 );

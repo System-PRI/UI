@@ -2,9 +2,6 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError, tap } from "rxjs";
 import { User } from "./models/user.model";
-import { State } from "src/app/app.state";
-import { Store } from "@ngrx/store";
-import { CookieService } from "ngx-cookie-service";
 
 interface AuthResponse {
     token: string;
@@ -15,13 +12,11 @@ interface AuthResponse {
     providedIn: 'root'
 })
 export class UserService {
-    constructor(private http: HttpClient, private cookieService: CookieService) { }
+    constructor(private http: HttpClient) { }
 
     loadUser(): Observable<User> {
         return this.http
-            .get<User>(`/apigateway/user`, {
-                headers: { Authorization: this.cookieService.get('token') }
-            })
+            .get<User>(`/apigateway/user`)
             .pipe(
                 retry(3),
                 catchError(
@@ -31,7 +26,17 @@ export class UserService {
 
     authenticate(login: string, password: string): Observable<AuthResponse> {
         return this.http
-            .post<AuthResponse>(`/apigateway/authenticate`, { login, password })
+            .post<AuthResponse>(`/apigateway/login`, { login, password })
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+    refreshToken(): Observable<AuthResponse> {
+        return this.http
+            .get<AuthResponse>(`/apigateway/refresh`, { withCredentials: true })
             .pipe(
                 retry(3),
                 catchError(

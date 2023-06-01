@@ -10,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { CookieService } from 'ngx-cookie-service';
 import { UserInterceptor } from './modules/user/user.interceptor';
 
 @NgModule({
@@ -30,7 +29,6 @@ import { UserInterceptor } from './modules/user/user.interceptor';
     EffectsModule.forRoot([]),
   ],
   providers: [
-    CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

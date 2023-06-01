@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { State, UserState } from '../state/user.state';
-import { getUser } from '../state/user.selectors';
+import { getUser, isLogged } from '../state/user.selectors';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
-import { authenticate, loadUser } from '../state/user.actions';
+import { accessTokenRefresh, accessTokenRefreshFailure, accessTokenRefreshSuccess, authenticate, loadUser } from '../state/user.actions';
+import { UserService } from '../user.service';
+import { Actions, ofType } from '@ngrx/effects';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -23,19 +25,27 @@ export class LoginComponent implements OnInit {
 
   hide: boolean = true;
 
-  constructor(private fb: FormBuilder, private store: Store<State>, private router: Router, private cookieService: CookieService) { }
+  constructor(private fb: FormBuilder, private store: Store<State>, private router: Router, private userService: UserService, private actions$: Actions) { }
 
   ngOnInit(): void {
-    this.store.select(getUser).subscribe((user: UserState) => {
-      if (user?.logged) {
+    this.store.select(isLogged).pipe().subscribe((isLogged: boolean) => {
+      if (isLogged) {
         this.router.navigateByUrl('/projects');
       } else {
-        if (this.cookieService.get('token')) {
-          this.store.dispatch(loadUser())
-        } else {
-          this.showForm = true;
-        }
+        this.store.dispatch(accessTokenRefresh())
       }
+    });
+
+    this.actions$.pipe(
+      ofType(accessTokenRefreshSuccess),
+    ).subscribe(() => {
+      this.store.dispatch(loadUser())
+    });
+
+    this.actions$.pipe(
+      ofType(accessTokenRefreshFailure),
+    ).subscribe(() => {
+      this.showForm = true;
     });
   }
 
