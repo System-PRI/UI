@@ -17,9 +17,9 @@
     <div class="supervisor-availability-list-container">
         <supervisor-availability-list
             [columns]="supervisorListColumns"
-            [supervisorAvailabilities]="supervisorAvailabilitiesDataSource"
+            [supervisorAvailability]="supervisorAvailabilityDataSource"
         ></supervisor-availability-list>
-        <button *ngIf="isCoordinator || true" (click)="openSupervisorAvailabilitiesForm()" mat-raised-button color="primary">
+        <button *ngIf="isCoordinator || true" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary">
             Edit
         </button>
     </div>

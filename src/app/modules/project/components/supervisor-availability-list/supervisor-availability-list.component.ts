@@ -9,5 +9,5 @@ import { SupervisorAvailability } from '../../models/supervisor-availability.mod
 })
 export class SupervisorAvailabilityListComponent {
   @Input() columns!: string[]
-  @Input() supervisorAvailabilities!: MatTableDataSource<SupervisorAvailability>
+  @Input() supervisorAvailability!: MatTableDataSource<SupervisorAvailability>
 }

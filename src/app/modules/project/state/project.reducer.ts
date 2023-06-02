@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { filterProjects, loadProjectsSuccess } from './project.actions'
+import { filterProjects, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
 import { initialState, ProjectState } from './project.state';
 
 export const projectReducer = createReducer(
@@ -28,5 +28,17 @@ export const projectReducer = createReducer(
                         : true) )             
             )
         }
-    })
+    }),
+    on(loadSupervisorAvailabilitySuccess, (state, action): ProjectState => {
+        return {
+            ...state,
+            supervisorsAvailability: action.supervisorAvailability
+        }
+    }),
+    on(updateSupervisorAvailabilitySuccess, (state, action): ProjectState => {
+        return {
+            ...state,
+            supervisorsAvailability: action.supervisorAvailability
+        }
+    }),
 );

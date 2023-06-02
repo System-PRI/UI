@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, filter, map, mergeMap, tap } from 'rxjs/operators';
-import { filterProjects, loadProjects, loadProjectsFailure, loadProjectsSuccess } from './project.actions';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess } from './project.actions';
 import { ProjectService } from '../project.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ProjectEffects {
     loadProjects$ = createEffect(() => this.actions$
         .pipe(
             ofType(loadProjects),
-            mergeMap(() => this.projectService.loadProjects()
+            mergeMap(() => this.projectService.projects$
                 .pipe(
                     map(projects => loadProjectsSuccess({projects})),
                     catchError(error => of(loadProjectsFailure({ error })))
@@ -24,4 +24,29 @@ export class ProjectEffects {
             )
         )
     );
+
+    loadSupervisorAvailability$ = createEffect(() => this.actions$
+        .pipe(
+            ofType(loadSupervisorAvailability),
+            mergeMap(() => this.projectService.supervisorsAvailability$
+                .pipe(
+                    map(supervisorAvailability => loadSupervisorAvailabilitySuccess({supervisorAvailability})),
+                    catchError(error => of(loadSupervisorAvailabilityFailure({ error })))
+                )
+            )
+        )
+    );
+
+    updateSupervisorAvailability$ = createEffect(() => this.actions$
+        .pipe(
+            ofType(updateSupervisorAvailability),
+            mergeMap((action) => this.projectService.updateSupervisorAvailability(action.supervisorAvailability)
+                .pipe(
+                    map(() => updateSupervisorAvailabilitySuccess({supervisorAvailability: action.supervisorAvailability})),
+                    catchError(error => of(updateSupervisorAvailabilityFailure({ error })))
+                )
+            )
+        )
+    )  
+
 }

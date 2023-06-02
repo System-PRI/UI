@@ -6,12 +6,11 @@ import { ProjectService } from './project.service';
 import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
-import { loadProjects } from './state/project.actions';
-import { getFilteredProjects } from './state/project.selectors';
+import { loadProjects, loadSupervisorAvailability } from './state/project.actions';
+import { getFilteredProjects, getSupervisorAvailability } from './state/project.selectors';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { SupervisorAvailability } from './models/supervisor-availability.model';
-import { ActivatedRoute, Router } from '@angular/router';
 import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
 
 @Component({
@@ -24,8 +23,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   allProjectListColumns: string[] = ['name', 'supervisorName', 'accepted'];
 
   supervisorListColumns: string[] = ['name', 'availability'];
-  supervisorAvailabilities!: SupervisorAvailability[];
-  supervisorAvailabilitiesDataSource!: MatTableDataSource<SupervisorAvailability>;
+  supervisorAvailability!: SupervisorAvailability[];
+  supervisorAvailabilityDataSource!: MatTableDataSource<SupervisorAvailability>;
 
   projects!: MatTableDataSource<Project>;
   projectDetailsForEdit?: ProjectDetails;
@@ -39,15 +38,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
       public dialog: MatDialog, 
       private projectService: ProjectService, 
       private store: Store<State>,
-      private route: ActivatedRoute,
-      private router: Router
   ) {}
 
   ngOnInit(): void {
     this.checkUserRoleAndAssociatedProject();
-    this.observeProjectsStateToUpdateView();
-    this.getSupervisorAvailabilities();
+    this.observeProjectsState();
+    this.observeSupervisorAvailabilityState();
     this.store.dispatch(loadProjects());
+    this.store.dispatch(loadSupervisorAvailability());
   }
 
   checkUserRoleAndAssociatedProject(): void{
@@ -74,10 +72,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     })
   }
 
-  observeProjectsStateToUpdateView(){
-    this.store.select(getFilteredProjects).pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe(projects => {
+  observeProjectsState(){
+    this.store.select(getFilteredProjects).pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (projects) => {
       let mappedProjects = projects.map((project) => {
         return {
             ...project,
@@ -88,13 +85,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
     })
   }
 
-  getSupervisorAvailabilities(){
-    this.projectService.supervisorsAvailabilities$.pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe((supervisorsAvailabilities) => {
-      this.supervisorAvailabilities = supervisorsAvailabilities;
-      this.supervisorAvailabilitiesDataSource = new MatTableDataSource<SupervisorAvailability>(supervisorsAvailabilities);
-    }
+  observeSupervisorAvailabilityState(){
+    this.store.select(getSupervisorAvailability).pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (supervisorAvailability) => {
+        this.supervisorAvailability = supervisorAvailability;
+        this.supervisorAvailabilityDataSource = new MatTableDataSource<SupervisorAvailability>(supervisorAvailability);
+      }
     )
   }
 
@@ -113,10 +109,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
     });
   }
 
-  openSupervisorAvailabilitiesForm(): void {
+  openSupervisorAvailabilityForm(): void {
     let dialogRef;
     dialogRef = this.dialog.open(SupervisorAvailabilityFormComponent, {
-      data: this.supervisorAvailabilities
+      data: this.supervisorAvailability
     });
     
     dialogRef?.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {

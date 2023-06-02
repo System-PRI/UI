@@ -22,16 +22,6 @@ export class ProjectService {
             )
     }
 
-    loadProjects(): Observable<Project[]> {
-        return this.http
-            .get<Project[]>('/apigateway/project')
-            .pipe(
-                retry(3),
-                catchError(
-                    (err: HttpErrorResponse) => throwError(() => err))
-            )
-    }
-
     addProject(project: Project) {
         this.http
             .post<Project[]>('/apigateway/project', project)
@@ -39,8 +29,26 @@ export class ProjectService {
                 retry(3),
                 catchError(
                     (err: HttpErrorResponse) => throwError(() => err))
-            ).subscribe(() => { })
+            )
     }
+
+    updateSupervisorAvailability(supervisorAvailability: SupervisorAvailability[]): Observable<SupervisorAvailability[]> {
+        return this.http
+            .put<SupervisorAvailability[]>('/apigateway/supervisor/availability', supervisorAvailability)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+    projects$: Observable<Project[]> = this.http
+        .get<Project[]>('/apigateway/project')
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
 
     supervisors$: Observable<Supervisor[]> = this.http
         .get<Supervisor[]>('/apigateway/supervisor')
@@ -58,7 +66,7 @@ export class ProjectService {
                 (err: HttpErrorResponse) => throwError(() => err))
         )
 
-    supervisorsAvailabilities$: Observable<SupervisorAvailability[]> = 
+    supervisorsAvailability$: Observable<SupervisorAvailability[]> = 
         this.http
             .get<SupervisorAvailability[]>('/apigateway/supervisor/availability')
             .pipe(

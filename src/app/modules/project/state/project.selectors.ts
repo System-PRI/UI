@@ -8,3 +8,8 @@ export const getFilteredProjects = createSelector(
     state => state.filteredProjects
 );
 
+export const getSupervisorAvailability = createSelector(
+    getProjectFeatureState,
+    state => state.supervisorsAvailability
+);
+
