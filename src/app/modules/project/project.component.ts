@@ -12,6 +12,9 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
 import { MatTableDataSource } from '@angular/material/table';
 import { SupervisorAvailability } from './models/supervisor-availability.model';
 import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
+import { Supervisor } from '../user/models/supervisor.model';
+import { Student } from '../user/models/student.model';
+import { User } from '../user/models/user.model';
 
 @Component({
   selector: 'project',
@@ -22,6 +25,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
   displayedProjectListColumns: string[] = ['name', 'supervisorName', 'accepted'];
   allProjectListColumns: string[] = ['name', 'supervisorName', 'accepted'];
 
+  supervisors: Supervisor[] = [];
+  students: Student[] = [];
+  user!: User;
   supervisorListColumns: string[] = ['name', 'availability'];
   supervisorAvailability!: SupervisorAvailability[];
   supervisorAvailabilityDataSource!: MatTableDataSource<SupervisorAvailability>;
@@ -46,12 +52,16 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.observeSupervisorAvailabilityState();
     this.store.dispatch(loadProjects());
     this.store.dispatch(loadSupervisorAvailability());
+    this.projectService.students$.pipe(takeUntil(this.unsubscribe$)).subscribe(students => this.students = students)
+    this.projectService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(supervisors => this.supervisors = supervisors)
   }
 
   checkUserRoleAndAssociatedProject(): void{
     this.store.select('user').pipe(
       takeUntil(this.unsubscribe$),
       switchMap(user => {
+        this.user = user;
+
         switch(user.role){
           case 'PROJECT_ADMIN':
             this.isProjectAdmin = true;
@@ -95,17 +105,19 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   openProjectForm(): void {
-    let dialogRef;
-    if(this.isProjectAdmin){
-      dialogRef = this.dialog.open(ProjectFormComponent, {
-        data: this.projectDetailsForEdit
-      });
-    } else {
-      dialogRef = this.dialog.open(ProjectFormComponent);
+    let data: {supervisors: Supervisor[], students: Student[], projectDetails?: ProjectDetails} = {
+      supervisors: this.supervisors,
+      students: this.students
     }
+    if(this.isProjectAdmin){
+     data.projectDetails = this.projectDetailsForEdit
+    } 
+    const dialogRef = this.dialog.open(ProjectFormComponent, {
+      data
+    });
 
-    dialogRef?.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef?.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(projectDetails => {
+      console.log(projectDetails);
     });
   }
 

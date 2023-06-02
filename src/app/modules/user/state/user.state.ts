@@ -17,6 +17,7 @@ export const initialState: UserState = {
     name: '',
     role: 'STUDENT',
     studyYears: [],
+    email: '',
     selectedStudyYear: '',
     projects: [],
     acceptedProjects: [],

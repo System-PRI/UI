@@ -3,10 +3,9 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from
 import { Observable, map, startWith } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { Project, ProjectDetails } from '../../models/project';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Project, ProjectDetails, ProjectFormData } from '../../models/project';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Student } from 'src/app/modules/user/models/student.model';
-import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { ProjectService } from '../../project.service';
 
 @Component({
@@ -17,44 +16,31 @@ import { ProjectService } from '../../project.service';
 export class ProjectFormComponent implements OnInit {
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
-
-  user: Student = {
-    name: 'Adrian Kuraszkiewicz',
-    email: 'adrkur6@st.amu.edu.pl',
-    indexNumber: 's145654',
-  }
-
-  students: Student[] = []
   filteredStudents!: Observable<Student[]>;
-
-  supervisors: Supervisor[] = []
-
   technologies: string[] = [];
   technologyCtrl = new FormControl('');
-
   selectedMembers: Student[] = []
   memberInput = new FormControl('');
-
-  formIsValid: boolean = false;
 
   projectForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
     members: this.fb.array([]),
     technologies: new FormControl<string[]>([], [Validators.required]),
-    supervisor: ['', Validators.required]
+    supervisorIndexNumber: ['', Validators.required]
   });
 
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
-    @Inject(MAT_DIALOG_DATA) public data?: ProjectDetails
+    private dialogRef: MatDialogRef<ProjectFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ProjectFormData,
   ) { }
 
   ngOnInit(): void {
-    if(this.data){
-      this.projectForm.controls.name.setValue(this.data.name);
-      this.projectForm.controls.description.setValue(this.data.description);
+    if(this.data.projectDetails){
+      this.projectForm.controls.name.setValue(this.data.projectDetails.name);
+      this.projectForm.controls.description.setValue(this.data.projectDetails.description);
       this.data.students.forEach(student => {
         this.members.push(this.fb.group({
           ...student,
@@ -62,27 +48,18 @@ export class ProjectFormComponent implements OnInit {
         }));
         this.selectedMembers.push(student);
       })
-      this.projectForm.controls.supervisor.setValue(this.data.supervisor.indexNumber);
-      this.projectForm.controls.technologies.setValue(this.data.technologies);
-      this.technologies = this.data.technologies;
+      this.projectForm.controls.supervisorIndexNumber.setValue(this.data.projectDetails.supervisor.indexNumber);
+      this.projectForm.controls.technologies.setValue(this.data.projectDetails.technologies);
+      this.technologies = this.data.projectDetails.technologies;
     } else {
       this.members.push(this.fb.group({
-        ...this.user,
+        name: this.data.user.name,
+        indexNumber: this.data.user.indexNumber,
+        email: this.data.user.email,
         role: [null, Validators.required]
       }));
     }
 
-    this.projectService.students$.subscribe(
-      students => this.students = students
-    )
-
-    this.projectService.students$.subscribe(
-      students => this.students = students
-    )
-
-    this.projectService.supervisors$.subscribe(
-      supervisors => this.supervisors = supervisors
-    )
 
     this.filteredStudents = this.memberInput.valueChanges.pipe(
       startWith(null),
@@ -92,12 +69,17 @@ export class ProjectFormComponent implements OnInit {
   }
 
   filterStudents(value: string | Student): Student[] {
-    if (typeof value === "object") return this.students
+    if (typeof value === "object") return this.data.students
 
     const filteredValue = value.toLowerCase()
-    return this.students.filter(student =>
-      (student.name.toLowerCase().includes(filteredValue) || student.email.toLowerCase().includes(filteredValue)) &&
-      this.selectedMembers.filter(member => member.email !== student.email).length === 0 && student.email !== this.user.email
+    return this.data.students.filter(student =>
+      (
+        student.name.toLowerCase().includes(filteredValue) || 
+        student.email.toLowerCase().includes(filteredValue) || 
+        student.indexNumber.toLowerCase().includes(filteredValue)
+      ) 
+      && this.selectedMembers.filter(member => member.indexNumber !== student.indexNumber).length === 0 
+      && student.indexNumber !== this.data.user.indexNumber
     )
   }
 
@@ -135,21 +117,14 @@ export class ProjectFormComponent implements OnInit {
 
   addTechnology(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-
-    if (value && this.technologies.findIndex(t => t.toLowerCase() === value.toLowerCase()) === -1) {
-      this.technologies.push(value);
+    if (value && this.projectForm.controls.technologies.value?.findIndex(t => t.toLowerCase() === value.toLowerCase()) === -1) {
+      this.projectForm.controls.technologies.value?.push(value);
     }
-
     event.chipInput!.clear();
-    this.technologyCtrl.setValue(null);
   }
 
   removeTechnology(technology: string): void {
-    const index = this.technologies.indexOf(technology);
-
-    if (index >= 0) {
-      this.technologies.splice(index, 1);
-    }
+    this.projectForm.controls.technologies.value?.splice(this.technologies.indexOf(technology), 1);
   }
 
   getErrorMessage(controlName: string): string {
@@ -160,16 +135,24 @@ export class ProjectFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.projectForm.valid) {
-      let project: Project = {
+    if (this.projectForm.valid) {    
+      let projectDetails: ProjectDetails = {
         name: this.projectForm.controls.name.value!,
-        supervisor: this.supervisors.find(supervisor => supervisor.indexNumber === this.projectForm.controls.supervisor.value)!,
-        accepted: false
+        description: this.projectForm.controls.description.value!,
+        students: this.members.controls.map((control: any) => { return {
+          name: control.controls.name.value,
+          indexNumber: control.controls.indexNumber.value,
+          email: control.controls.email.value,
+          role: control.controls.role.value
+        }}),
+        technologies: this.projectForm.controls.technologies.value!,
+        admin: this.data.projectDetails ? this.data.projectDetails?.admin! : this.data.user.indexNumber,
+        accepted: this.data.projectDetails ? this.data.projectDetails?.accepted! : false,
+        supervisor: this.data.supervisors.find(
+          supervisor => supervisor.indexNumber === this.projectForm.controls.supervisorIndexNumber.value
+        )!
       }
-      this.projectService.addProject(project)
-      this.formIsValid = true;
+      this.dialogRef.close(projectDetails)
     }
-
-    this.memberInput.reset()
   }
 }

@@ -1,6 +1,7 @@
 import { ExternalLink } from "../../external-link/models/external-link.model";
 import { Student } from "../../user/models/student.model";
 import { Supervisor } from "../../user/models/supervisor.model";
+import { User } from "../../user/models/user.model";
 
 export interface Project {
     id?: string;
@@ -26,4 +27,11 @@ export interface ProjectFilters {
     searchValue: string;
     supervisorIndexNumber: string | undefined;
     acceptanceStatus: boolean | undefined;
+}
+
+export interface ProjectFormData {
+    supervisors: Supervisor[];
+    students: Student[];
+    user: User;
+    projectDetails?: ProjectDetails;
 }

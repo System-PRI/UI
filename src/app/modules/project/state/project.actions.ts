@@ -21,6 +21,34 @@ export const filterProjects = createAction(
     props<{ filters: ProjectFilters }>()
 )
 
+export const addProject = createAction(
+    '[ProjectForm] Add'
+)
+
+export const addProjectSuccess = createAction(
+    '[ProjectForm API] Add Success',
+    props<{ projects: Project[] }>()
+)
+
+export const addProjectsFailure = createAction(
+    '[ProjectForm API] Add Fail',
+    props<{ error: string }>()
+)
+
+export const updateProject = createAction(
+    '[ProjectForm] Update'
+)
+
+export const updateProjectSuccess = createAction(
+    '[ProjectForm API] Add Success',
+    props<{ project: Project }>()
+)
+
+export const updateProjectsFailure = createAction(
+    '[ProjectForm API] Add Fail',
+    props<{ error: string }>()
+)
+
 export const loadSupervisorAvailability = createAction(
     '[SupervisorAvailability] Load'
 )
