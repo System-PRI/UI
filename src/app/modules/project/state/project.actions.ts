@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { Project, ProjectFilters } from "../models/project";
+import { Project, ProjectDetails, ProjectFilters } from "../models/project";
 import { SupervisorAvailability } from "../models/supervisor-availability.model";
 
 export const loadProjects = createAction(
@@ -22,29 +22,31 @@ export const filterProjects = createAction(
 )
 
 export const addProject = createAction(
-    '[ProjectForm] Add'
+    '[ProjectForm] Add',
+    props<{ project: ProjectDetails }>()
 )
 
 export const addProjectSuccess = createAction(
     '[ProjectForm API] Add Success',
-    props<{ projects: Project[] }>()
+    props<{ project: ProjectDetails }>()
 )
 
-export const addProjectsFailure = createAction(
+export const addProjectFailure = createAction(
     '[ProjectForm API] Add Fail',
     props<{ error: string }>()
 )
 
 export const updateProject = createAction(
-    '[ProjectForm] Update'
+    '[ProjectForm] Update',
+    props<{ project: ProjectDetails }>()
 )
 
 export const updateProjectSuccess = createAction(
     '[ProjectForm API] Add Success',
-    props<{ project: Project }>()
+    props<{ project: ProjectDetails }>()
 )
 
-export const updateProjectsFailure = createAction(
+export const updateProjectFailure = createAction(
     '[ProjectForm API] Add Fail',
     props<{ error: string }>()
 )

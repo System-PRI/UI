@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
-import { Project, ProjectDetails } from './models/project';
+import { Project, ProjectDetails, ProjectFormData } from './models/project';
 import { ProjectService } from './project.service';
 import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
-import { loadProjects, loadSupervisorAvailability } from './state/project.actions';
+import { addProject, loadProjects, loadSupervisorAvailability, updateProject } from './state/project.actions';
 import { getFilteredProjects, getSupervisorAvailability } from './state/project.selectors';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,20 +24,17 @@ import { User } from '../user/models/user.model';
 export class ProjectComponent implements OnInit, OnDestroy {
   displayedProjectListColumns: string[] = ['name', 'supervisorName', 'accepted'];
   allProjectListColumns: string[] = ['name', 'supervisorName', 'accepted'];
-
   supervisors: Supervisor[] = [];
   students: Student[] = [];
   user!: User;
   supervisorListColumns: string[] = ['name', 'availability'];
   supervisorAvailability!: SupervisorAvailability[];
   supervisorAvailabilityDataSource!: MatTableDataSource<SupervisorAvailability>;
-
   projects!: MatTableDataSource<Project>;
   projectDetailsForEdit?: ProjectDetails;
   projectButtonText: string = '';
   isProjectAdmin?: boolean;
   isCoordinator?: boolean;
-
   unsubscribe$ = new Subject();
 
   constructor(
@@ -105,9 +102,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   openProjectForm(): void {
-    let data: {supervisors: Supervisor[], students: Student[], projectDetails?: ProjectDetails} = {
+    let data: ProjectFormData = {
       supervisors: this.supervisors,
-      students: this.students
+      students: this.students,
+      user: this.user
     }
     if(this.isProjectAdmin){
      data.projectDetails = this.projectDetailsForEdit
@@ -117,7 +115,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
     });
 
     dialogRef?.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(projectDetails => {
-      console.log(projectDetails);
+      if(projectDetails){
+        if(this.isProjectAdmin){
+          this.store.dispatch(updateProject({project: projectDetails}))
+        } else {
+          this.store.dispatch(addProject({project: projectDetails}))
+        }
+      }
     });
   }
 

@@ -1,6 +1,31 @@
 import { createReducer, on } from '@ngrx/store';
-import { filterProjects, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
+import { addProjectSuccess, filterProjects, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, updateProjectSuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
 import { initialState, ProjectState } from './project.state';
+import { Project, ProjectDetails } from '../models/project';
+
+function updateProject (projects: Project[], project: ProjectDetails): Project[] {
+   return projects.map(p => {
+        if(p.id === project.id){
+            return {
+                id: project.id,
+                name: project.name,
+                supervisor: project.supervisor,
+                accepted: false
+            }
+        } 
+        return p
+    })
+}
+
+function addProject (projects: Project[], project: ProjectDetails): Project[] {
+    return [...projects, {
+        id: project.id,
+        name: project.name,
+        supervisor: project.supervisor,
+        accepted: false
+    }]
+ }
+ 
 
 export const projectReducer = createReducer(
     initialState,
@@ -41,4 +66,18 @@ export const projectReducer = createReducer(
             supervisorsAvailability: action.supervisorAvailability
         }
     }),
+    on(addProjectSuccess, (state, action): ProjectState => {
+        return {
+            ...state,
+            projects: addProject(state.projects, action.project),
+            filteredProjects: addProject(state.projects, action.project)
+        }
+    }),
+    on(updateProjectSuccess, (state, action): ProjectState => {
+        return {
+            ...state,
+            projects: updateProject(state.projects, action.project),
+            filteredProjects: updateProject(state.projects, action.project)
+        }
+    })
 );

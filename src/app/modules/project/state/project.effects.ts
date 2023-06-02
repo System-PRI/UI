@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import { loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess } from './project.actions';
+import { addProject, addProjectSuccess, addProjectFailure, loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateProject, updateProjectSuccess, updateProjectFailure, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess } from './project.actions';
 import { ProjectService } from '../project.service';
 
 @Injectable()
@@ -48,5 +48,29 @@ export class ProjectEffects {
             )
         )
     )  
+
+    addProject$ = createEffect(() => this.actions$
+        .pipe(
+            ofType(addProject),
+            mergeMap((action) => this.projectService.addProject(action.project)
+                .pipe(
+                    map((project) => addProjectSuccess({project})),
+                    catchError(error => of(addProjectFailure({ error })))
+                )
+            )
+        )
+    )
+
+    updateProject$ = createEffect(() => this.actions$
+        .pipe(
+            ofType(updateProject),
+            mergeMap((action) => this.projectService.updateProject(action.project)
+                .pipe(
+                    map(() => updateProjectSuccess({project: action.project})),
+                    catchError(error => of(updateProjectFailure({ error })))
+                )
+            )
+        )
+    )
 
 }

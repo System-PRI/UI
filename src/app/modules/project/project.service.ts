@@ -22,9 +22,20 @@ export class ProjectService {
             )
     }
 
-    addProject(project: Project) {
-        this.http
-            .post<Project[]>('/apigateway/project', project)
+    addProject(project: ProjectDetails): Observable<ProjectDetails> {
+        return this.http
+            .post<ProjectDetails>(`/apigateway/project`, project)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+    updateProject(project: ProjectDetails): Observable<ProjectDetails>  {
+        console.log(project)
+        return this.http
+            .put<ProjectDetails>(`/apigateway/project/${project.id}`, project)
             .pipe(
                 retry(3),
                 catchError(

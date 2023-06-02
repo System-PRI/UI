@@ -3,10 +3,9 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from
 import { Observable, map, startWith } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { Project, ProjectDetails, ProjectFormData } from '../../models/project';
+import { ProjectDetails, ProjectFormData } from '../../models/project';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Student } from 'src/app/modules/user/models/student.model';
-import { ProjectService } from '../../project.service';
 
 @Component({
   selector: 'project-form',
@@ -14,14 +13,12 @@ import { ProjectService } from '../../project.service';
   styleUrls: ['./project-form.component.scss']
 })
 export class ProjectFormComponent implements OnInit {
-
   separatorKeysCodes: number[] = [ENTER, COMMA];
   filteredStudents!: Observable<Student[]>;
   technologies: string[] = [];
   technologyCtrl = new FormControl('');
   selectedMembers: Student[] = []
   memberInput = new FormControl('');
-
   projectForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -32,7 +29,6 @@ export class ProjectFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private projectService: ProjectService,
     private dialogRef: MatDialogRef<ProjectFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProjectFormData,
   ) { }
@@ -60,12 +56,10 @@ export class ProjectFormComponent implements OnInit {
       }));
     }
 
-
     this.filteredStudents = this.memberInput.valueChanges.pipe(
       startWith(null),
       map((value: string | null) => this.filterStudents(value || ''))
     )
-
   }
 
   filterStudents(value: string | Student): Student[] {
@@ -106,11 +100,11 @@ export class ProjectFormComponent implements OnInit {
     return this.projectForm.get('members') as FormArray;
   }
 
-  getMemberData(member: AbstractControl): { name: string, email: string, admin: boolean, role: FormControl } {
+  getMemberData(member: AbstractControl): { name: string, email: string, indexNumber: string, role: FormControl } {
     return {
       name: member.get('name')?.value,
       email: member.get('email')?.value,
-      admin: member.get('admin')?.value,
+      indexNumber: member.get('indexNumber')?.value,
       role: member.get('role') as FormControl
     }
   }
@@ -137,6 +131,7 @@ export class ProjectFormComponent implements OnInit {
   onSubmit(): void {
     if (this.projectForm.valid) {    
       let projectDetails: ProjectDetails = {
+        id: this.data.projectDetails?.id,
         name: this.projectForm.controls.name.value!,
         description: this.projectForm.controls.description.value!,
         students: this.members.controls.map((control: any) => { return {
