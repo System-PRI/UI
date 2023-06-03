@@ -33,7 +33,6 @@ export class ProjectService {
     }
 
     updateProject(project: ProjectDetails): Observable<ProjectDetails>  {
-        console.log(project)
         return this.http
             .put<ProjectDetails>(`/apigateway/project/${project.id}`, project)
             .pipe(

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { DataFeedService } from './data-feed.service';
 
 @Component({
   selector: 'app-data-feed',
@@ -13,7 +14,7 @@ export class DataFeedComponent {
   studentsFileName = '';
   studentsFile!: FormData;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private dataFeedService: DataFeedService) {}
 
   uploadStudents(event: any) {
       const file: File = event.target.files[0];
@@ -21,7 +22,6 @@ export class DataFeedComponent {
           this.studentsFileName= file.name;
           this.studentsFile = new FormData();
           this.studentsFile.append("students", file);
-          this.http.post(`/apigateway/data/import/student`, this.studentsFile)
       }
   }
   
@@ -31,11 +31,15 @@ export class DataFeedComponent {
         this.supervisorsFileName = file.name;
         this.supervisorsFile = new FormData();
         this.supervisorsFile.append("supervisors", file);
-        this.http.post("/apigateway/data/import/student", this.supervisorsFile);
     }
   }
 
   uploadFiles(){
-    
+    if(this.studentsFile){
+      this.dataFeedService.uploadStudents(this.studentsFile).subscribe()
+    }
+    if(this.supervisorsFile){
+      this.dataFeedService.uploadSupervisors(this.supervisorsFile).subscribe()
+    }
   }
 }

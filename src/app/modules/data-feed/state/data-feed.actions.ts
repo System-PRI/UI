@@ -1,12 +1,12 @@
 import { createAction, props } from "@ngrx/store";
 
 export const uploadStudents = createAction(
-    '[DataFeed] Upload Students'
+    '[DataFeed] Upload Students',
+    props<{ studentsFile: FormData }>()
 )
 
 export const uploadStudentsSuccess = createAction(
     '[DataFeed API] Upload Students Success',
-    props<{ studentsFile: FormData }>()
 )
 
 export const uploadStudentsFailure = createAction(

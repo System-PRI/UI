@@ -18,4 +18,14 @@ export class DataFeedService {
                     (err: HttpErrorResponse) => throwError(() => err))
             )
     }
+
+    uploadSupervisors(supervisors: FormData): Observable<null>  {
+        return this.http
+            .post<null>(`/apigateway/data/import/supervisors`, supervisors)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
 }
