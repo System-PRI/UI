@@ -144,6 +144,7 @@ export class ProjectFormComponent implements OnInit {
         technologies: this.projectForm.controls.technologies.value!,
         admin: this.data.projectDetails ? this.data.projectDetails?.admin! : this.data.user.indexNumber,
         accepted: this.data.projectDetails ? this.data.projectDetails?.accepted! : false,
+        confirmed: this.data.projectDetails ? this.data.projectDetails?.confirmed! : false,
         supervisor: this.data.supervisors.find(
           supervisor => supervisor.indexNumber === this.projectForm.controls.supervisorIndexNumber.value
         )!

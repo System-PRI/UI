@@ -51,6 +51,35 @@ export const updateProjectFailure = createAction(
     props<{ error: string }>()
 )
 
+export const acceptProject = createAction(
+    '[ProjectDetails] Accept Project',
+    props<{ projectId: string, role: string }>()
+)
+
+export const acceptProjectSuccess = createAction(
+    '[ProjectDetails API] Accept Project Success',
+    props<{ projectId: string, role: string }>()
+)
+
+export const acceptProjectFailure = createAction(
+    '[ProjectDetails API] Accept Project Fail',
+    props<{ error: string }>()
+)
+
+export const changeAdmin = createAction(
+    '[ProjectDetails] Change Admin',
+    props<{ projectId: string, indexNumber: string }>()
+)
+
+export const changeAdminSuccess = createAction(
+    '[ProjectDetails API] Change Admin Success',
+)
+
+export const changeAdminFailure = createAction(
+    '[ProjectDetails API] Change Admin Fail',
+    props<{ error: string }>()
+)
+
 export const loadSupervisorAvailability = createAction(
     '[SupervisorAvailability] Load'
 )

@@ -23,8 +23,8 @@
               ></mat-radio-button>
           </td>
       </ng-container>
-        <tr mat-header-row *matHeaderRowDef="data.columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: data.columns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
       </table>
 
     <h3>Technologies:</h3>
@@ -45,6 +45,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Close</button>
-    <button type="submit" mat-button [mat-dialog-close]="true"  cdkFocusInitial>Accept project</button>
+    <button *ngIf="showAcceptButton()" (click)="acceptProject()" mat-button [mat-dialog-close]="true" cdkFocusInitial>Accept project</button>
 </mat-dialog-actions>
    

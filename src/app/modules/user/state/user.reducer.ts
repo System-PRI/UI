@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { UserState, initialState } from './user.state';
-import { authenticateSuccess, loadUserSuccess, accessTokenRefreshSuccess, changeStudentRoleToProjectAdmin } from './user.actions';
+import { loadUserSuccess, changeStudentRoleToProjectAdmin } from './user.actions';
+import { acceptProjectSuccess, changeAdminSuccess } from '../../project/state/project.actions';
 
 export const userReducer = createReducer(
     initialState,
@@ -19,5 +20,18 @@ export const userReducer = createReducer(
             role: 'PROJECT_ADMIN',
         }
     }),
+    on(changeAdminSuccess, (state): UserState => {
+        return {
+            ...state,
+            role: state.role === 'PROJECT_ADMIN' ? 'STUDENT' : state.role
+        }
+    }),
+    on(acceptProjectSuccess, (state, action): UserState => {
+        return {
+            ...state,
+            acceptedProjects: [...state.acceptedProjects, action.projectId]
+        }
+    }),
+
     
 );

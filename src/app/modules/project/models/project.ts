@@ -19,6 +19,7 @@ export interface ProjectDetails {
     technologies: string[];
     supervisor: Supervisor;
     accepted: boolean;
+    confirmed: boolean;
     externalLinks?: ExternalLink[]
 }
 
@@ -37,5 +38,6 @@ export interface ProjectFormData {
 
 export interface ProjectDetailsData {
     projectDetails?: ProjectDetails;
+    user: User;
     columns: string[];
 }

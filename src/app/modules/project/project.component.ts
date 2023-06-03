@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { Project, ProjectDetails, ProjectFormData } from './models/project';
 import { ProjectService } from './project.service';
-import { EMPTY, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
-import { addProject, addProjectSuccess, loadProjects, loadSupervisorAvailability, updateProject } from './state/project.actions';
+import { acceptProject, addProject, addProjectSuccess, loadProjects, loadSupervisorAvailability, updateProject } from './state/project.actions';
 import { getFilteredProjects, getSupervisorAvailability } from './state/project.selectors';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -67,9 +67,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       switchMap(user => {
         this.user = user;
-
-        console.log(this.user)
-
         switch(user.role){
           case 'PROJECT_ADMIN':
             this.isProjectAdmin = true;
@@ -159,15 +156,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   showProjectDetails(projectDetails: ProjectDetails): void {
     let dialogRef;
-    let columns = ['name', 'email', 'role']
-    if(this.isCoordinator || this.isProjectAdmin){
-      columns.push('admin')
-    }
     dialogRef = this.dialog.open(ProjectDetailsComponent, {
-      data: { projectDetails, columns}
+      data: { projectDetails, user: this.user}
     });
-    dialogRef?.afterClosed()!.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      // todo
+    dialogRef?.afterClosed()!.pipe(takeUntil(this.unsubscribe$)).subscribe((accept) => {
+      if(accept){
+        this.store.dispatch(acceptProject({projectId: projectDetails.id!, role: this.user.role}))
+      }
     });
   }
 

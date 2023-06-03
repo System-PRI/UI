@@ -62,6 +62,16 @@ export class ProjectService {
             )
     }
 
+    acceptProject(projectId: string): Observable<null> {
+        return this.http
+            .put<null>(`/apigateway/project/accept/${projectId}`, null)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
     projects$: Observable<Project[]> = this.http
         .get<Project[]>('/apigateway/project')
         .pipe(
