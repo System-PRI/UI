@@ -30,5 +30,5 @@ export const isSupervisor = createSelector(
 
 export const isCoordinator = createSelector(
     getUserState,
-    state => state.role === 'COORDINATOR'
+    state => state?.role === 'COORDINATOR'
 )

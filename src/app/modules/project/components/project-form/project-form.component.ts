@@ -138,6 +138,7 @@ export class ProjectFormComponent implements OnInit {
           name: control.controls.name.value,
           indexNumber: control.controls.indexNumber.value,
           email: control.controls.email.value,
+          
           role: control.controls.role.value
         }}),
         technologies: this.projectForm.controls.technologies.value!,

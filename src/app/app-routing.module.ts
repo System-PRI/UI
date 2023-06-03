@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserAuthGuard } from './modules/user/user-auth.guard';
+import { UserGuard } from './modules/user/user.guard';
+import { CoordinatorGuard } from './modules/user/coordinator.guard';
 
 const routes: Routes = [
   {
@@ -15,7 +16,12 @@ const routes: Routes = [
   {
     path: 'projects',
     loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule),
-    canActivate: [UserAuthGuard]
+    canActivate: [UserGuard]
+  },
+  {
+    path: 'data-feed',
+    loadChildren: () => import('./modules/data-feed/data-feed.module').then(m => m.DataFeedModule),
+    canActivate: [CoordinatorGuard]
   },
 ];
 

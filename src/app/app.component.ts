@@ -15,7 +15,6 @@ import { UserState } from './modules/user/state/user.state';
 export class AppComponent {
   appName: string = 'PRI';
   mobileQuery?: MediaQueryList;
-  fillerNav: string[] = ['Project Groups', 'External Links'];
   user!: UserState;
 
   private _mobileQueryListener: () => void;

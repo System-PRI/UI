@@ -30,10 +30,16 @@
         height: auto;
         display: grid;
 
+
         button {
             justify-self: end;
+            cursor: default;
         }
     }
+}
+
+.hidden {
+    opacity: 0;
 }
 
 

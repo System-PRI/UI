@@ -9,7 +9,7 @@ import { isLogged } from './state/user.selectors';
 @Injectable({
     providedIn: 'root'
 })
-export class UserAuthGuard implements CanActivate {
+export class UserGuard implements CanActivate {
     constructor(private store: Store<State>, private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {

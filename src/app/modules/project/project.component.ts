@@ -126,14 +126,16 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   openSupervisorAvailabilityForm(): void {
-    let dialogRef;
-    dialogRef = this.dialog.open(SupervisorAvailabilityFormComponent, {
-      data: this.supervisorAvailability
-    });
-    
-    dialogRef?.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    if(this.isCoordinator){
+      let dialogRef;
+      dialogRef = this.dialog.open(SupervisorAvailabilityFormComponent, {
+        data: this.supervisorAvailability
+      });
+      
+      dialogRef?.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+      });
+    }
   }
 
   getProjectDetailsAndOpenModal(id: string){
