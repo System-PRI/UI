@@ -31,7 +31,7 @@ export class UserEffects {
             mergeMap((action) => this.userService.authenticate(action.login, action.password)
                 .pipe(
                     map(response => {
-                        return authenticateSuccess({ token: response.token })
+                        return authenticateSuccess()
                     }),
                     catchError(error => of(loadUserFailure({ error })))
                 )
@@ -44,9 +44,7 @@ export class UserEffects {
         ofType(accessTokenRefresh),
         mergeMap(() => this.userService.refreshToken()
             .pipe(
-                map(response => {
-                    return accessTokenRefreshSuccess({ token: response.token })
-                }),
+                map(() => accessTokenRefreshSuccess()),
                 catchError(error => of(accessTokenRefreshFailure({ error })))
             )
         )

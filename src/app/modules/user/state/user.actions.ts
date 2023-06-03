@@ -8,7 +8,6 @@ export const authenticate = createAction(
 
 export const authenticateSuccess = createAction(
     '[Auth API] Success',
-    props<{ token: string }>()
 )
 
 export const authenticateFailure = createAction(
@@ -22,7 +21,6 @@ export const accessTokenRefresh = createAction(
 
 export const accessTokenRefreshSuccess = createAction(
     '[Auth Token API] Access Token Refresh Success',
-    props<{ token: string }>()
 )
 
 export const accessTokenRefreshFailure = createAction(

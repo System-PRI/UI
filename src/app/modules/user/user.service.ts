@@ -3,11 +3,6 @@ import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError, tap } from "rxjs";
 import { User } from "./models/user.model";
 
-interface AuthResponse {
-    token: string;
-    user: User;
-}
-
 @Injectable({
     providedIn: 'root'
 })
@@ -24,9 +19,9 @@ export class UserService {
             )
     }
 
-    authenticate(login: string, password: string): Observable<{token: string}> {
+    authenticate(login: string, password: string): Observable<null> {
         return this.http
-            .post<{token: string}>(`/apigateway/login`, { login, password })
+            .post<null>(`/apigateway/login`, { login, password })
             .pipe(
                 retry(3),
                 catchError(
@@ -34,9 +29,9 @@ export class UserService {
             )
     }
 
-    refreshToken(): Observable<AuthResponse> {
+    refreshToken(): Observable<null> {
         return this.http
-            .get<AuthResponse>(`/apigateway/refresh`, { withCredentials: true })
+            .get<null>(`/apigateway/refresh`, { withCredentials: true })
             .pipe(
                 retry(3),
                 catchError(

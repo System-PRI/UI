@@ -11,18 +11,5 @@ export const userReducer = createReducer(
             logged: true,
             selectedStudyYear: action.user.studyYears[0],
         }
-    }),
-    on(authenticateSuccess, (state, action): UserState => {
-        return {
-            ...state,
-            token: action.token
-        }
-    }),
-    on(accessTokenRefreshSuccess, (state, action): UserState => {
-        return {
-            ...state,
-            token: action.token
-        }
     })
-
 );
