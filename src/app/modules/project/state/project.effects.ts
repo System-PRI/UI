@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { addProject, addProjectSuccess, addProjectFailure, loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateProject, updateProjectSuccess, updateProjectFailure, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess } from './project.actions';
 import { ProjectService } from '../project.service';
+import { changeStudentRoleToProjectAdmin } from '../../user/state/user.actions';
 
 @Injectable()
 export class ProjectEffects {

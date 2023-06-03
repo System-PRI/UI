@@ -34,3 +34,8 @@ export interface ProjectFormData {
     user: User;
     projectDetails?: ProjectDetails;
 }
+
+export interface ProjectDetailsData {
+    projectDetails?: ProjectDetails;
+    columns: string[];
+}

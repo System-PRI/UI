@@ -111,14 +111,14 @@ export class ProjectFormComponent implements OnInit {
 
   addTechnology(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-    if (value && this.projectForm.controls.technologies.value?.findIndex(t => t.toLowerCase() === value.toLowerCase()) === -1) {
-      this.projectForm.controls.technologies.value?.push(value);
+    if (value && this.technologies.findIndex(t => t.toLowerCase() === value.toLowerCase()) === -1) {
+      this.technologies.push(value)
     }
     event.chipInput!.clear();
   }
 
   removeTechnology(technology: string): void {
-    this.projectForm.controls.technologies.value?.splice(this.technologies.indexOf(technology), 1);
+    this.technologies.splice(this.technologies.indexOf(technology), 1);
   }
 
   getErrorMessage(controlName: string): string {
@@ -148,6 +148,7 @@ export class ProjectFormComponent implements OnInit {
           supervisor => supervisor.indexNumber === this.projectForm.controls.supervisorIndexNumber.value
         )!
       }
+      console.log(projectDetails)
       this.dialogRef.close(projectDetails)
     }
   }

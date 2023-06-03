@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { Project, ProjectDetails, ProjectFormData } from './models/project';
 import { ProjectService } from './project.service';
-import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
+import { EMPTY, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
-import { addProject, loadProjects, loadSupervisorAvailability, updateProject } from './state/project.actions';
+import { addProject, addProjectSuccess, loadProjects, loadSupervisorAvailability, updateProject } from './state/project.actions';
 import { getFilteredProjects, getSupervisorAvailability } from './state/project.selectors';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,6 +15,8 @@ import { SupervisorAvailabilityFormComponent } from './components/supervisor-ava
 import { Supervisor } from '../user/models/supervisor.model';
 import { Student } from '../user/models/student.model';
 import { User } from '../user/models/user.model';
+import { Actions, ofType } from '@ngrx/effects';
+import { changeStudentRoleToProjectAdmin } from '../user/state/user.actions';
 
 @Component({
   selector: 'project',
@@ -41,6 +43,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       public dialog: MatDialog, 
       private projectService: ProjectService, 
       private store: Store<State>,
+      private actions$: Actions
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +54,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadSupervisorAvailability());
     this.projectService.students$.pipe(takeUntil(this.unsubscribe$)).subscribe(students => this.students = students)
     this.projectService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(supervisors => this.supervisors = supervisors)
+    this.actions$.pipe(
+      ofType(addProjectSuccess),
+      takeUntil(this.unsubscribe$)
+    ).subscribe((project) => {
+      this.store.dispatch(changeStudentRoleToProjectAdmin({projectId: project.project.id!}))
+    });
   }
 
   checkUserRoleAndAssociatedProject(): void{
@@ -58,6 +67,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       switchMap(user => {
         this.user = user;
+
+        console.log(this.user)
 
         switch(user.role){
           case 'PROJECT_ADMIN':
@@ -148,8 +159,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   showProjectDetails(projectDetails: ProjectDetails): void {
     let dialogRef;
+    let columns = ['name', 'email', 'role']
+    if(this.isCoordinator || this.isProjectAdmin){
+      columns.push('admin')
+    }
     dialogRef = this.dialog.open(ProjectDetailsComponent, {
-      data: projectDetails
+      data: { projectDetails, columns}
     });
     dialogRef?.afterClosed()!.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       // todo
