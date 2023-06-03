@@ -19,6 +19,16 @@ export class UserService {
             )
     }
 
+    logout(): Observable<null> {
+        return this.http
+            .get<null>(`/apigateway/logout`)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
     authenticate(login: string, password: string): Observable<null> {
         return this.http
             .post<null>(`/apigateway/login`, { login, password })

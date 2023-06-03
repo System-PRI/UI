@@ -12,7 +12,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class ProjectDetailsComponent {
    students!: MatTableDataSource<Student>;
-   columns: string[] = ['select','name', 'email', 'role'];
+   columns: string[] = ['name', 'email', 'role', 'select'];
    
    selection = new SelectionModel<Student>(false, []);
    selectedItem = <Student>{};
@@ -22,8 +22,10 @@ export class ProjectDetailsComponent {
    }
 
 
-  selectItem(row: Student) {
+  selectAdmin(row: Student) {
     this.selection.toggle(row);
     this.selectedItem = row;
+
+    console.log(this.selectedItem)
   }
 }

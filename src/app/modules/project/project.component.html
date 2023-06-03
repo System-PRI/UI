@@ -19,7 +19,7 @@
             [columns]="supervisorListColumns"
             [supervisorAvailability]="supervisorAvailabilityDataSource"
         ></supervisor-availability-list>
-        <button [class.hidden]="!isCoordinator || true" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary">
+        <button [class.hidden]="!isCoordinator" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary">
             Edit availability
         </button>
     </div>
