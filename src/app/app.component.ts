@@ -33,8 +33,11 @@ export class AppComponent implements OnDestroy{
   }
 
   logout(){
-    this.userService.logout().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      () => window.location.reload()
+    this.userService.logout().pipe(takeUntil(this.unsubscribe$)).subscribe( 
+      () => {
+        window.location.reload()
+      }
+
     );
   }
 

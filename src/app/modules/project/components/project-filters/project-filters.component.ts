@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { ProjectService } from '../../project.service';
@@ -12,9 +12,10 @@ import { filterProjects } from '../../state/project.actions';
   styleUrls: ['./project-filters.component.scss']
 })
 export class ProjectFiltersComponent implements OnInit {
-  allColumns: string[] = ['name', 'supervisor', 'acceptance status'];
-  displayedColumns: string[] = ['name', 'supervisor', 'acceptance status'];
+  allColumns: string[] = ['name', 'supervisorName', 'accepted'];
+  displayedColumns: string[] = ['name', 'supervisorName', 'accepted'];
   supervisors$!: Observable<Supervisor[]>
+  @Output() updateDisplayedColumnsEvent = new EventEmitter<string[]>();
 
   searchValue: string = '';
   supervisorIndexNumber!: string | undefined;

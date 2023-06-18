@@ -1,17 +1,17 @@
 <div class="title-and-add-project-button">
     <h1>Project groups</h1>
-    <button *ngIf="projectButtonText !== ''" (click)="openProjectForm()" mat-raised-button color="primary">
+    <button *ngIf="showProjectButton()" (click)="openProjectForm()" mat-raised-button color="primary">
         {{ projectButtonText }}
     </button>
 </div>
 <div class="project-filters-container">
-    <project-filters></project-filters>
+    <project-filters (updateDisplayedColumnsEvent)="onUpdateDisplayedColumns($event)" ></project-filters>
 </div>
 <div class="tables">   
     <div class="project-list-container">
         <project-list 
             (openProjectDetailsEvent)="getProjectDetailsAndOpenModal($event)" 
-            [columns]="displayedProjectListColumns" 
+            [columns]="projectListColumns" 
             [projects]="projects"></project-list>
     </div>
     <div class="supervisor-availability-list-container">

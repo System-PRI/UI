@@ -11,7 +11,7 @@ export class UserService {
 
     loadUser(): Observable<User> {
         return this.http
-            .get<User>(`/apigateway/user`)
+            .get<User>(`/apigateway/user` , { withCredentials: true })
             .pipe(
                 retry(3),
                 catchError(
@@ -21,7 +21,7 @@ export class UserService {
 
     logout(): Observable<null> {
         return this.http
-            .get<null>(`/apigateway/logout`)
+            .get<null>(`/apigateway/auth/logout`)
             .pipe(
                 retry(3),
                 catchError(
@@ -31,7 +31,7 @@ export class UserService {
 
     authenticate(login: string, password: string): Observable<null> {
         return this.http
-            .post<null>(`/apigateway/login`, { login, password })
+            .post<null>(`/apigateway/auth/login`, { login, password } , { withCredentials: true })
             .pipe(
                 retry(3),
                 catchError(
@@ -41,7 +41,7 @@ export class UserService {
 
     refreshToken(): Observable<null> {
         return this.http
-            .get<null>(`/apigateway/refresh`, { withCredentials: true })
+            .post<null>(`/apigateway/auth/refresh`, null, { withCredentials: true })
             .pipe(
                 retry(3),
                 catchError(

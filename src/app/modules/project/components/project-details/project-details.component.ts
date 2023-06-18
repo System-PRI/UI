@@ -10,6 +10,12 @@ import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 import { changeAdmin } from '../../state/project.actions';
 
+enum ROLE {
+  FRONTEND = 'front-end',
+  BACKEND = 'back-end',
+  FULLSTACK = 'full-stack'
+}
+
 @Component({
     selector: 'project-details',
     templateUrl: './project-details.component.html',
@@ -21,7 +27,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   selectedItem = <Student>{};
   columns = ['name', 'email', 'role']
   unsubscribe$ = new Subject();
- 
+  
   constructor(
     private dialogRef: MatDialogRef<ProjectDetailsComponent>,
     private store: Store<State>,
@@ -35,12 +41,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       this.data.user.role === 'COORDINATOR' || 
       (this.data.user.role === 'PROJECT_ADMIN' && this.data.user.acceptedProjects[0] === this.data.projectDetails?.id) ||
       (this.data.user.role === 'SUPERVISOR' && this.data.user.acceptedProjects.includes(this.data.projectDetails?.id!))
-    )
-    {
+    ){
       this.columns.push('admin')
     }
-
-
   }
 
   selectAdmin(student: Student) {
@@ -56,20 +59,27 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.dialogRef.close(true)
   }
 
+ 
+
   showAcceptButton(){
     if (
       (this.data.user.role === 'STUDENT' && 
       this.data.user.acceptedProjects.length === 0 && 
-      this.data.user.projects.includes(this.data.projectDetails?.id!))
+      this.data.user.projects.includes(String(this.data.projectDetails?.id!)))
       ||
       (this.data.user.role === 'SUPERVISOR' &&
-      !this.data.user.acceptedProjects.includes(this.data.projectDetails?.id!) &&
-      this.data.user.projects.includes(this.data.projectDetails?.id!))
+      !this.data.user.acceptedProjects.includes(String(this.data.projectDetails?.id!)) &&
+      this.data.user.projects.includes(String(this.data.projectDetails?.id!)) &&
+      this.data.projectDetails?.confirmed)
     ){
       return true
     } else {
       return false
     }
+  }
+
+  getRole(role: keyof typeof ROLE): string {
+    return ROLE[role]
   }
   
   ngOnDestroy(): void {

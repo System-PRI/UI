@@ -19,6 +19,6 @@
     <tr style="cursor: pointer" (click)="openProjectDetailsEvent.emit(project.id)" mat-row *matRowDef="let row; columns: columns; let project"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page">
+  <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons aria-label="Select page">
   </mat-paginator>
 </div>

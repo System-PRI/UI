@@ -19,6 +19,11 @@ const routes: Routes = [
     canActivate: [UserGuard]
   },
   {
+    path: 'external-links',
+    loadChildren: () => import('./modules/external-link/external-link.module').then(m => m.ExternalLinkModule),
+    canActivate: [UserGuard]
+  },
+  {
     path: 'data-feed',
     loadChildren: () => import('./modules/data-feed/data-feed.module').then(m => m.DataFeedModule),
     canActivate: [CoordinatorGuard]

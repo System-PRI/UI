@@ -12,7 +12,7 @@
         </ng-container>
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef> Role </th>
-          <td mat-cell *matCellDef="let student"> {{student.role}} </td>
+          <td mat-cell *matCellDef="let student"> {{getRole(student.role)}} </td>
         </ng-container>
         <ng-container matColumnDef="admin">
           <th mat-header-cell *matHeaderCellDef> Admin </th>
@@ -41,7 +41,7 @@
   </mat-chip-set>
 
   <h3>Supervisor:</h3>
-  <p>Jan Kowalski jankow6@st.amu.edu.pl</p>
+  <p>{{data.projectDetails?.supervisor?.name + " " + data.projectDetails?.supervisor?.email}} </p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Close</button>

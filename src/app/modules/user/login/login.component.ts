@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { State, UserState } from '../state/user.state';
-import { getUser, isLogged } from '../state/user.selectors';
-import { Router } from '@angular/router';
+import { State } from '../state/user.state';
+import { isLogged} from '../state/user.selectors';
+import { ActivatedRoute, Router } from '@angular/router';
 import { accessTokenRefresh, accessTokenRefreshFailure, accessTokenRefreshSuccess, authenticate, authenticateSuccess, loadUser } from '../state/user.actions';
 import { UserService } from '../user.service';
 import { Actions, ofType } from '@ngrx/effects';
-import { first } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy{
+  unsubscribe$ = new Subject();
+
 
   form = this.fb.group({
     login: ['', Validators.required],
@@ -25,12 +27,12 @@ export class LoginComponent implements OnInit {
 
   hide: boolean = true;
 
-  constructor(private fb: FormBuilder, private store: Store<State>, private router: Router, private userService: UserService, private actions$: Actions) { }
+  constructor(private fb: FormBuilder, private store: Store<State>, private router: Router, private userService: UserService, private actions$: Actions, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.store.select(isLogged).pipe().subscribe((isLogged: boolean) => {
+    this.store.select(isLogged).pipe(takeUntil(this.unsubscribe$)).subscribe((isLogged: boolean) => {
       if (isLogged) {
-        this.router.navigateByUrl('/projects');
+          this.router.navigateByUrl(this.route.snapshot.queryParamMap.get('redirectTo')! ?? '/projects')
       } else {
         this.store.dispatch(accessTokenRefresh())
       }
@@ -38,18 +40,21 @@ export class LoginComponent implements OnInit {
 
     this.actions$.pipe(
       ofType(authenticateSuccess),
+      takeUntil(this.unsubscribe$),
     ).subscribe(() => {
       this.store.dispatch(loadUser())
     });
 
     this.actions$.pipe(
       ofType(accessTokenRefreshSuccess),
+      takeUntil(this.unsubscribe$),
     ).subscribe(() => {
       this.store.dispatch(loadUser())
     });
 
     this.actions$.pipe(
       ofType(accessTokenRefreshFailure),
+      takeUntil(this.unsubscribe$),
     ).subscribe(() => {
       this.showForm = true;
     });
@@ -63,5 +68,10 @@ export class LoginComponent implements OnInit {
 
   getErrorMessage(): string {
     return 'You must enter a value';
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete()
   }
 }
