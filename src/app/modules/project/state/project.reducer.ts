@@ -17,16 +17,19 @@ function updateProject (projects: Project[], project: ProjectDetails): Project[]
     })
 }
 
-function acceptProject (projects: Project[], projectId: string): Project[] {
-    return projects.map(p => {
-        if(p.id === projectId){
-            return {
-                ...p,
-                accepted: true
-            }
-        } 
-        return p
-    })
+function acceptProject (projects: Project[], projectId: string, role: string): Project[] {
+    if(role == 'SUPERVISOR'){
+        return projects.map(p => {
+            if(p.id === projectId){
+                return {
+                    ...p,
+                    accepted: true
+                }
+            } 
+            return p
+        })
+    }
+    return projects;
 }
 
 function addProject (projects: Project[], project: ProjectDetails): Project[] {
@@ -95,8 +98,8 @@ export const projectReducer = createReducer(
     on(acceptProjectSuccess, (state, action): ProjectState => {
         return {
             ...state,
-            projects: acceptProject(state.projects, action.projectId),
-            filteredProjects: acceptProject(state.projects, action.projectId)
+            projects: acceptProject(state.projects, action.projectId, action.role),
+            filteredProjects: acceptProject(state.projects, action.projectId, action.role)
         }
     })
 );

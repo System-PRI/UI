@@ -25,6 +25,7 @@ import { ProjectFiltersComponent } from './components/project-filters/project-fi
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
 import { SupervisorAvailabilityListComponent } from './components/supervisor-availability-list/supervisor-availability-list.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { SupervisorAvailabilityListComponent } from './components/supervisor-ava
     MatDialogModule,
     MatSortModule,
     MatRadioModule,
+    MatSnackBarModule,
     StoreModule.forFeature('project', projectReducer),
     EffectsModule.forFeature([ProjectEffects])
   ]

@@ -3,7 +3,6 @@ import { Project } from '../../models/project';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'project-list',

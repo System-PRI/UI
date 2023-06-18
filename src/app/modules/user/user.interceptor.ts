@@ -18,6 +18,7 @@ export class UserInterceptor implements HttpInterceptor {
                             "study-year": user.selectedStudyYear,
                             "lang": user.lang,
                         },
+                        withCredentials: true
                 });
                 return next.handle(modifiedReq);
             })

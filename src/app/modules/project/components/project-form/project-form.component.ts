@@ -37,7 +37,7 @@ export class ProjectFormComponent implements OnInit {
     if(this.data.projectDetails){
       this.projectForm.controls.name.setValue(this.data.projectDetails.name);
       this.projectForm.controls.description.setValue(this.data.projectDetails.description);
-      this.data.students.forEach(student => {
+      this.data.projectDetails.students.forEach(student => {
         this.members.push(this.fb.group({
           ...student,
           role: [student.role, Validators.required]
@@ -65,15 +65,20 @@ export class ProjectFormComponent implements OnInit {
   filterStudents(value: string | Student): Student[] {
     if (typeof value === "object") return this.data.students
 
+
+    console.log(this.selectedMembers)
     const filteredValue = value.toLowerCase()
     return this.data.students.filter(student =>
       (
         student.name.toLowerCase().includes(filteredValue) || 
         student.email.toLowerCase().includes(filteredValue) || 
         student.indexNumber.toLowerCase().includes(filteredValue)
-      ) 
-      && this.selectedMembers.filter(member => member.indexNumber !== student.indexNumber).length === 0 
-      && student.indexNumber !== this.data.user.indexNumber
+      ) &&
+      this.selectedMembers.findIndex(member => member.indexNumber === student.indexNumber) === -1
+      &&
+      student.indexNumber !== this.data.user.indexNumber
+
+    
     )
   }
 

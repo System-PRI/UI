@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { State } from 'src/app/app.state';
 import { isLogged } from './state/user.selectors';
 
@@ -15,7 +15,9 @@ export class UserGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         return this.store.pipe(
             select(isLogged),
-            tap(isLogged => !isLogged ? this.router.navigateByUrl('/login') : true)
+            tap(isLogged => {
+                !isLogged ? this.router.navigateByUrl(`/login?redirectTo=${state.url}`) : true
+            })
         )
     }
 }

@@ -1,5 +1,7 @@
 <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-    <h2 mat-dialog-title>New project form</h2>
+    <h2 mat-dialog-title>
+        {{ data.projectDetails ? 'New project form' : 'Edit project form' }}
+    </h2>
     <mat-dialog-content class="mat-typography">
         <mat-form-field appearance="fill">
             <mat-label>Name</mat-label>

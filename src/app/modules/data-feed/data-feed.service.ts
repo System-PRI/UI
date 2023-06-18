@@ -9,9 +9,9 @@ import { Observable, retry, throwError, catchError } from "rxjs";
 export class DataFeedService {
     constructor(private http: HttpClient) { }
 
-    uploadStudents(students: FormData): Observable<null>  {
+    uploadStudents(data: FormData): Observable<null>  {
         return this.http
-            .post<null>(`/apigateway/data/import/student`, students)
+            .post<null>(`/apigateway/data/import/student`, data)
             .pipe(
                 retry(3),
                 catchError(
@@ -19,9 +19,9 @@ export class DataFeedService {
             )
     }
 
-    uploadSupervisors(supervisors: FormData): Observable<null>  {
+    uploadSupervisors(data: FormData): Observable<null>  {
         return this.http
-            .post<null>(`/apigateway/data/import/supervisors`, supervisors)
+            .post<null>(`/apigateway/data/import/supervisor`, data)
             .pipe(
                 retry(3),
                 catchError(

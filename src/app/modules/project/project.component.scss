@@ -28,18 +28,17 @@
     .supervisor-availability-list-container {
         flex: 0 0 19em;
         height: auto;
-        display: grid;
-
 
         button {
             justify-self: end;
-            cursor: default;
+            cursor: pointer;
         }
     }
 }
 
 .hidden {
     opacity: 0;
+    cursor: default;
 }
 
 

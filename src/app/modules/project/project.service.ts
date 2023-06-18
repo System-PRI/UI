@@ -44,7 +44,7 @@ export class ProjectService {
 
     updateSupervisorAvailability(supervisorAvailability: SupervisorAvailability[]): Observable<SupervisorAvailability[]> {
         return this.http
-            .put<SupervisorAvailability[]>('/apigateway/supervisor/availability', supervisorAvailability)
+            .put<SupervisorAvailability[]>('/apigateway/project/supervisor/availability', supervisorAvailability)
             .pipe(
                 retry(3),
                 catchError(
@@ -52,9 +52,9 @@ export class ProjectService {
             )
     }
 
-    changeProjectAdmin(projectId: string, indexNumebr: string): Observable<null> {
+    changeProjectAdmin(projectId: string, indexNumber: string): Observable<null> {
         return this.http
-            .put<null>(`/apigateway/project/${projectId}/admin-change/${indexNumebr}`, null)
+            .patch<null>(`/apigateway/project/${projectId}/admin-change/${indexNumber}`, null)
             .pipe(
                 retry(3),
                 catchError(
@@ -64,7 +64,7 @@ export class ProjectService {
 
     acceptProject(projectId: string): Observable<null> {
         return this.http
-            .put<null>(`/apigateway/project/accept/${projectId}`, null)
+            .patch<null>(`/apigateway/project/${projectId}/accept`, null)
             .pipe(
                 retry(3),
                 catchError(
@@ -81,7 +81,7 @@ export class ProjectService {
         )
 
     supervisors$: Observable<Supervisor[]> = this.http
-        .get<Supervisor[]>('/apigateway/supervisor')
+        .get<Supervisor[]>('/apigateway/user/supervisor', { withCredentials: true })
         .pipe(
             retry(3),
             catchError(
@@ -89,7 +89,7 @@ export class ProjectService {
         )
 
      students$: Observable<Student[]> = this.http
-        .get<Student[]>('/apigateway/student')
+        .get<Student[]>('/apigateway/user/student')
         .pipe(
             retry(3),
             catchError(
@@ -98,7 +98,7 @@ export class ProjectService {
 
     supervisorsAvailability$: Observable<SupervisorAvailability[]> = 
         this.http
-            .get<SupervisorAvailability[]>('/apigateway/supervisor/availability')
+            .get<SupervisorAvailability[]>('/apigateway/project/supervisor/availability')
             .pipe(
                 retry(3),
                 catchError(

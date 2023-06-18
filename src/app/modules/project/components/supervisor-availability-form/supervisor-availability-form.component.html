@@ -4,7 +4,7 @@
         <div class="availability-row" *ngFor="let availability of availability.controls">
             <p>{{getFormControl(availability).supervisor.name}}</p>
             <mat-form-field appearance="fill">
-                <input type="number" matInput [formControl]="getFormControl(availability).max">
+                <input min="0" type="number" matInput [formControl]="getFormControl(availability).max">
                 <mat-error *ngIf="getFormControl(availability).max.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
         </div>
