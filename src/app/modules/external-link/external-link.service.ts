@@ -25,7 +25,7 @@ export class ExternalLinkService {
         )
 
     columnHeaders$: Observable<string[]> = this.http
-        .get<string[]>(`/apigateway/project/external-link/column-headers`)
+        .get<string[]>(`/apigateway/project/external-link/column-header`)
         .pipe(
             retry(3),
             catchError(
