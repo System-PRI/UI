@@ -2,6 +2,8 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError, tap } from "rxjs";
 import { User } from "./models/user.model";
+import { Supervisor } from "./models/supervisor.model";
+import { Student } from "./models/student.model";
 
 @Injectable({
     providedIn: 'root'
@@ -48,4 +50,20 @@ export class UserService {
                     (err: HttpErrorResponse) => throwError(() => err))
             )
     }
+
+    supervisors$: Observable<Supervisor[]> = this.http
+        .get<Supervisor[]>('/apigateway/user/supervisor', { withCredentials: true })
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
+
+    students$: Observable<Student[]> = this.http
+        .get<Student[]>('/apigateway/user/student')
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
 }

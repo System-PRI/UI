@@ -18,6 +18,11 @@ export const projectAcceptedByStudent = createSelector(
     state => state?.acceptedProjects[0]
 )
 
+export const userRole = createSelector(
+    getUserState,
+    state => state.role
+)
+
 export const isProjectAdmin = createSelector(
     getUserState,
     state => state.role === 'PROJECT_ADMIN'

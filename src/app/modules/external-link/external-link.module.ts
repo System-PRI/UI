@@ -18,12 +18,14 @@ import { ExternalLinkListComponent } from './components/external-link-list/exter
 import { ExternalLinkComponent } from './external-link.component';
 import { ExternalLinkRoutingModule } from './external-link-routing.module';
 import { ExternalLinkFormComponent } from './components/external-link-form/external-link-form.component';
+import { ExternalLinkFiltersComponent } from './components/external-link-filters/external-link-filters.component';
 
 @NgModule({
   declarations: [
     ExternalLinkListComponent,
     ExternalLinkComponent,
-    ExternalLinkFormComponent
+    ExternalLinkFormComponent,
+    ExternalLinkFiltersComponent
   ],
   imports: [
     CommonModule,

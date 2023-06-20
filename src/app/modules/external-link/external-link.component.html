@@ -1,1 +1,3 @@
-<external-link-form></external-link-form>
+<external-link-form *ngIf="showForm" [disabled]="isFormDisabled"></external-link-form>
+<external-link-filters *ngIf="showFilters"></external-link-filters>
+<external-link-list *ngIf="showList" [role]="role"></external-link-list>

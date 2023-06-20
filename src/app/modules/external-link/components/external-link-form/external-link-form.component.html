@@ -1,9 +1,9 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <h1>External links form</h1>
     <div *ngFor="let externalLink of externalLinks.controls">
-        <mat-form-field  appearance="fill">
+        <mat-form-field appearance="fill">
             <mat-label>{{getFormControl(externalLink).name}}</mat-label>
-            <textarea matInput [formControl]="getFormControl(externalLink).url"></textarea>
+            <textarea [readonly]="disabled" matInput [formControl]="getFormControl(externalLink).url"></textarea>
         </mat-form-field>
         <div class="link">
             <a target="_blank" 
@@ -15,6 +15,6 @@
         </div>
     </div>
     <div class="submit-button-container">
-        <button color="primary" type="submit" mat-raised-button [mat-dialog-close]="true" [disabled]="!form.valid" cdkFocusInitial>Submit</button>
+        <button *ngIf="!disabled" color="primary" type="submit" mat-raised-button [disabled]="!form.valid" cdkFocusInitial>Submit</button>
     </div>
 </form>

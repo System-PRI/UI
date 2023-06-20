@@ -14,3 +14,8 @@ export interface ExternalLinkData {
     supervisor: Supervisor;
     externalLinks: ExternalLink[]
 }
+
+export interface ExternalLinkFilters {
+    searchValue: string;
+    supervisorIndexNumber?: string;
+}

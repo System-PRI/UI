@@ -1,10 +1,10 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core'
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store';
 import { loadUser } from './modules/user/state/user.actions';
 import { State } from './app.state';
 import { Subject, map, takeUntil } from 'rxjs';
-import { getUser, isLogged } from './modules/user/state/user.selectors';
+import { getUser, isLogged, projectAcceptedByStudent } from './modules/user/state/user.selectors';
 import { UserState } from './modules/user/state/user.state';
 import { UserService } from './modules/user/user.service';
 
@@ -13,11 +13,12 @@ import { UserService } from './modules/user/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy{
+export class AppComponent implements OnDestroy, OnInit{
   appName: string = 'PRI';
   mobileQuery?: MediaQueryList;
   user!: UserState;
   unsubscribe$ = new Subject();  
+  projectId?: string; 
 
   private _mobileQueryListener: () => void;
 
@@ -30,6 +31,12 @@ export class AppComponent implements OnDestroy{
       this.user = user
     });
     this.store.dispatch(loadUser());
+  }
+
+  ngOnInit(): void {
+    this.store.select(projectAcceptedByStudent).pipe(takeUntil(this.unsubscribe$)).subscribe(
+      projectId => this.projectId = projectId
+    )
   }
 
   logout(){
@@ -47,6 +54,10 @@ export class AppComponent implements OnDestroy{
 
   get isCoordinator() {
     return this.user?.role === 'COORDINATOR'
+  }
+
+  get showExternalLinks(): boolean {
+    return this.projectId !== undefined || this.user?.role === 'COORDINATOR'
   }
 
   ngOnDestroy(): void {
