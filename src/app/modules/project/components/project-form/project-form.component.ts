@@ -84,8 +84,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       }
     })
 
-   
-
     this.filteredStudents = this.memberInput.valueChanges.pipe(
       startWith(null),
       map((value: string | null) => this.filterStudents(value || ''))
