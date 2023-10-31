@@ -1,0 +1,61 @@
+<div class="back" (click)="navigateBack()">
+    <mat-icon>arrow_back</mat-icon>
+     Project List
+ </div>
+ <h1>{{data.projectName}}</h1>
+ <form [formGroup]="gradeForm">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th class="centered-header">I</th>
+                <th class="centered-header">II</th>
+                <th class="centered-header">III</th>
+                <th class="centered-header">IV</th>
+                <th class="centered-header">Expand details</th>
+                <th>Selected Criterion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let section of data.sections;">
+                <tr>
+                    <td><h2>{{ section.name }}</h2></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let criteriaGroup of section.criteriaGroups;">
+                    <td class="criteria-group-name"><h3>{{ criteriaGroup.name }}</h3></td>
+                    <td>
+                        <mat-radio-group [formControl]="getGradeData(section.id, criteriaGroup.id)">
+                            <mat-radio-button [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, 0)" [value]="0" />
+                        </mat-radio-group>
+                    </td>
+                    <td>
+                        <mat-radio-group [formControl]="getGradeData(section.id, criteriaGroup.id)">
+                            <mat-radio-button [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, 1)" [value]="1" />
+                        </mat-radio-group>
+                    </td>
+                    <td>
+                        <mat-radio-group [formControl]="getGradeData(section.id, criteriaGroup.id)">
+                            <mat-radio-button [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, 2)" [value]="2" />
+                        </mat-radio-group>
+                    </td>
+                    <td>
+                        <mat-radio-group [formControl]="getGradeData(section.id, criteriaGroup.id)">
+                            <mat-radio-button [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, 3)" [value]="3" />
+                        </mat-radio-group>
+                    </td>
+                    <td class="expand-more-cell">
+                        <div><mat-icon>expand_more</mat-icon></div>
+                    </td>
+                    <td>Dokument poprawny</td>
+                </tr>
+            </ng-container>
+        </tbody>
+     </table>
+ </form>
+ 

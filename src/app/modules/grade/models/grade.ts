@@ -17,6 +17,7 @@ export interface Criterion {
 export interface CriteriaGroup {
     id: string;
     name: string;
+    selectedCriterion: number;
     criteria: Criterion[];
 }
 

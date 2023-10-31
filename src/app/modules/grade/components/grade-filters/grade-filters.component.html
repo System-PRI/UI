@@ -22,9 +22,9 @@
   </mat-select>
 </mat-form-field>
 
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="semester">
-    <mat-radio-button value="FIRST">First semester</mat-radio-button>
-    <mat-radio-button value="SECOND">Second semester</mat-radio-button>
-  </mat-radio-group>
+<mat-radio-group aria-label="Select an option" [(ngModel)]="semester">
+  <mat-radio-button value="FIRST">First semester</mat-radio-button>
+  <mat-radio-button value="SECOND">Second semester</mat-radio-button>
+</mat-radio-group>
 
 <button *ngIf="isAnyFilterActive()" (click)="resetFilters()" mat-button>reset</button>
