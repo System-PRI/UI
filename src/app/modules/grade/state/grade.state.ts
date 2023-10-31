@@ -7,15 +7,15 @@ export interface State extends AppState.State {
 
 export interface GradeState {
     grades: Grade[] | undefined;
-    filters: GradeFilters
+    filters: GradeFilters;
 }
 
 export const initialState: GradeState = {
     grades: undefined,
     filters: {
         searchValue: '',
+        semester: 'FIRST',
         supervisorIndexNumber: undefined,
         criteriaMetStatus: undefined,
-        columns: ['projectName', 'supervisorName', 'grade', 'criteriaMetStatus'],
     },
 }

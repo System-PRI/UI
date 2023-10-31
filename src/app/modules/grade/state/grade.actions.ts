@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { Grade, GradeFilters } from "../models/grade";
 
-export const loadGrades= createAction(
+export const loadGrades = createAction(
     '[GradeList] Load'
 )
 

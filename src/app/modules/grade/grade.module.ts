@@ -21,10 +21,14 @@ import { StoreModule } from '@ngrx/store';
 import { gradeReducer } from './state/grade.reducer';
 import { GradeEffects } from './state/grade.effects';
 import { EffectsModule } from '@ngrx/effects';
+import { GradeListComponent } from './components/grade-list/grade-list.component';
+import { GradeFiltersComponent } from './components/grade-filters/grade-filters.component';
 
 @NgModule({
   declarations: [
-    GradeComponent
+    GradeComponent,
+    GradeListComponent,
+    GradeFiltersComponent
   ],
   imports: [
     CommonModule,
