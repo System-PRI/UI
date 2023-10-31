@@ -118,7 +118,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   editProject(){
-    this.router.navigate ([`projects/form/${this.data.id}`]) 
+    this.router.navigate([{outlets: {modal: `projects/form/${this.data.id}`}}], { queryParams: {comingFromDetailsPage: true} });
   }
 
   openRemoveProjectDialog(){
@@ -195,6 +195,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   getRole(role: keyof typeof ROLE): string {
     return ROLE[role]
+  }
+
+  navigateBack(){
+    this.router.navigate([{outlets: {modal: null}}]);
   }
 
   get showExternalLinks(): boolean{

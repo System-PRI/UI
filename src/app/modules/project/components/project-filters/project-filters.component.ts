@@ -1,12 +1,12 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
-import { ProjectService } from '../../project.service';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 import { changeFilters } from '../../state/project.actions';
 import { ExternalLinkService } from 'src/app/modules/external-link/external-link.service';
 import { getFilters } from '../../state/project.selectors';
+import { UserService } from 'src/app/modules/user/user.service';
 
 @Component({
   selector: 'project-filters',
@@ -25,13 +25,13 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
   acceptanceStatus!: boolean | undefined;
 
   constructor(
-    private projectService: ProjectService, 
+    private userService: UserService, 
     private store: Store<State>,
     private externalLinkService: ExternalLinkService
   ){}
 
   ngOnInit(): void {
-    this.supervisors$ = this.projectService.supervisors$;
+    this.supervisors$ = this.userService.supervisors$;
 
     this.store.select(getFilters).pipe(takeUntil(this.unsubscribe$)).subscribe(
       filters => {
