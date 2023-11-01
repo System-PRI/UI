@@ -3,7 +3,7 @@
      Project List
  </div>
  <h1>{{data.projectName}}</h1>
- <form [formGroup]="gradeForm">
+ <form [formGroup]="gradeForm" (ngSubmit)="onSubmit()">
     <table>
         <thead>
             <tr>
@@ -57,5 +57,8 @@
             </ng-container>
         </tbody>
      </table>
+     <div class="buttons-container">
+        <button color="primary" type="submit" mat-raised-button  cdkFocusInitial>Submit</button>
+    </div>
  </form>
  
