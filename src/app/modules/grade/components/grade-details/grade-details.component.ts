@@ -4,6 +4,7 @@ import { GradeDetails } from '../../models/grade';
 import { Subject } from 'rxjs';
 import { UserState } from 'src/app/modules/user/state/user.state';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'grade-details',
@@ -16,6 +17,10 @@ export class GradeDetailsComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
   user!: UserState;
   gradeForm = this.fb.group<{[key: string]: FormGroup }>({});
+  columns = ['criterion', 'description', 'mandatory'];
+  criteriaDetails = {};
+  criteriaSymbols = ['I','II','III','IV'];
+  criterionGroupExpandedStatus: { [key: string]: boolean } = {};
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private fb: FormBuilder) { }
 
@@ -29,7 +34,11 @@ export class GradeDetailsComponent implements OnInit, OnDestroy {
 
         section.criteriaGroups.forEach(group => {
           this.gradeForm.controls[section.id].addControl(group.id, new FormControl(group.selectedCriterion))
+          this.criterionGroupExpandedStatus[group.id] = false;
+          //this.criteriaDetails[section.id][group.id] = [...group.criteria, ...group.mandatoryCriteria
+
         })
+
       })
     })
   }
@@ -42,7 +51,6 @@ export class GradeDetailsComponent implements OnInit, OnDestroy {
   isRadioButtonChecked(sectionIndex: string, groupIndex: string, value: number): boolean {
     return this.gradeForm.controls[sectionIndex].controls[groupIndex].value === value
   }
-
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);

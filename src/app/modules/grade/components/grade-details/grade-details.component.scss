@@ -7,27 +7,51 @@
     width: fit-content;
 }
 
-table {
-    border-collapse: separate;
-    border-spacing: 30px 0;
+.grade-table {
+    border-collapse: collapse;
+    border-spacing: 20px px;
     margin-top: 50px;
+
+    
+        tr {
+            vertical-align: baseline;
+        }
+
+        td h2 {
+            margin: 0px;
+        }
+
+        th {
+            font-weight: normal;
+            font-size: 1em;
+            text-align: left
+        }
+
+        td, th {
+            padding: 10px;
+        }
+
+        
+        .centered-header {
+            text-align: center;
+        }
 }
 
-th {
-    font-weight: normal;
-    font-size: 1em;
-    text-align: left
-}
 
-.centered-header {
-    text-align: center;
-}
+
 
 .expand-more-cell {
     div {
         cursor: pointer;
+        height: 18px;
+        position: relative;
         display: flex;
         justify-content: center;
+
+        mat-icon {
+            position: absolute;
+            top: 0;
+        }
     }
 }
 
@@ -45,6 +69,23 @@ td h3 {
     margin-top: 30px;
     display: flex;
     justify-content: flex-end;
+}
+
+.criterion-details-cell-container {
+    position: relative;
+    table {
+        top: -30px;
+        margin-top: 0px;
+        border-collapse: collapse;
+        max-width: 500px;
+        //position: absolute;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
 }
 
 
