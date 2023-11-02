@@ -80,6 +80,8 @@ export class GradeListComponent implements OnDestroy, OnInit{
 
   navigateToGradeDetails(gradeId: string){
     this.router.navigate([`grades/details/${gradeId}`]) 
+    //this.router.navigate([{outlets: {modal: `grades/details/${gradeId}`}}]) 
+
   }
 
   ngOnDestroy(): void {

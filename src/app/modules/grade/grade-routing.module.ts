@@ -6,7 +6,6 @@ import { gradeDetailsResolver } from './resolvers/grade-details.resolver';
 import { userResolver } from '../user/resolvers/user.resolver';
 
 const routes: Routes = [
-  { path: '', component: GradeComponent },
   { 
     path: 'details/:id', component: GradeDetailsComponent, 
     resolve: {
@@ -14,6 +13,7 @@ const routes: Routes = [
       user: userResolver
     },
   },
+  { path: '', component: GradeComponent },
 ];
 
 @NgModule({

@@ -1,6 +1,6 @@
 <div class="back" (click)="navigateBack()">
     <mat-icon>arrow_back</mat-icon>
-     Project List
+     Grade List
  </div>
  <h1>{{data.projectName}}</h1>
  <form [formGroup]="gradeForm" (ngSubmit)="onSubmit()">
@@ -52,7 +52,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let criterion of criteriaGroup.criteria; let i = index;">
+                                    <tr [ngClass]="{'selected-row': criteriaGroup.selectedCriterion === i }" *ngFor="let criterion of criteriaGroup.criteria; let i = index;">
                                         <td>{{ criteriaSymbols[i] }}</td>
                                         <td>{{ criterion.description }}</td>
                                         <td>{{ criterion.mandatory ? 'Yes' : 'No' }} </td>

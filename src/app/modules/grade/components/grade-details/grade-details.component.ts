@@ -35,8 +35,6 @@ export class GradeDetailsComponent implements OnInit, OnDestroy {
         section.criteriaGroups.forEach(group => {
           this.gradeForm.controls[section.id].addControl(group.id, new FormControl(group.selectedCriterion))
           this.criterionGroupExpandedStatus[group.id] = false;
-          //this.criteriaDetails[section.id][group.id] = [...group.criteria, ...group.mandatoryCriteria
-
         })
 
       })
