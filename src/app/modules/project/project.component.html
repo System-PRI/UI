@@ -7,19 +7,19 @@
 <div class="project-filters-container">
     <project-filters (updateDisplayedColumnsEvent)="onUpdateDisplayedColumns($event)" ></project-filters>
 </div>
-<div class="tables">   
-    <div class="project-list-container">
-        <project-list 
-            (openProjectDetailsEvent)="getProjectDetailsAndOpenModal($event)" 
-            [columns]="projectListColumns" 
+<div class="tables" test="tables-project-groups">
+    <div class="project-list-container" test="project-list-container-project-groups">
+        <project-list
+            (openProjectDetailsEvent)="getProjectDetailsAndOpenModal($event)"
+            [columns]="projectListColumns"
             [projects]="projects"></project-list>
     </div>
-    <div class="supervisor-availability-list-container">
+    <div class="supervisor-availability-list-container" test="supervisor-availability-list-container-project-groups">
         <supervisor-availability-list
             [columns]="supervisorListColumns"
             [supervisorAvailability]="supervisorAvailabilityDataSource"
         ></supervisor-availability-list>
-        <button [class.hidden]="!isCoordinator" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary">
+        <button [class.hidden]="!isCoordinator" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary" test="edit-availability-button-project-groups">
             Edit availability
         </button>
     </div>
