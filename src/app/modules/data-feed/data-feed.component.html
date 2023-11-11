@@ -2,7 +2,7 @@
 <div class="file-upload">
    {{studentsFileName || "Students"}}
     <button mat-mini-fab color="primary" class="upload-btn"
-      (click)="studentsFileUpload.click()">
+      (click)="studentsFileUpload.click()" test="students-attach-button-data-feed">
         <mat-icon>attach_file</mat-icon>
     </button>
 </div>
@@ -11,10 +11,10 @@
 <div class="file-upload">
    {{supervisorsFileName || "Supervisors"}}
     <button mat-mini-fab color="primary" class="upload-btn"
-      (click)="supervisorsFileUpload.click()">
+      (click)="supervisorsFileUpload.click()" test="supervisors-attach-button-data-feed">
         <mat-icon>attach_file</mat-icon>
     </button>
 </div>
 
-<button (click)=uploadFiles() mat-raised-button color="primary">Submit</button>
-   
+<button (click)=uploadFiles() mat-raised-button color="primary" test="submit-button-data-feed">Submit</button>
+
