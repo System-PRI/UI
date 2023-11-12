@@ -12,7 +12,6 @@ clean:
     - .common-rule
   stage: build
   script:
-    - turn off container, remove it and remove image
     - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
     - sudo docker rmi pri-ui || true
 
