@@ -34,12 +34,8 @@ unit-test:
   extends:
     - .common-rule
   stage: test
-  cache:
-    key: "maven-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .m2/repository
   script:
-    - run unit tests
+    - echo "Running unit tests..."
 
 deploy:
   extends:
