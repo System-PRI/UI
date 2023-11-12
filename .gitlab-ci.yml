@@ -9,7 +9,7 @@ stages:
 
 clean:
   extends:
-    - .after-merge-rule
+    - .common-rule
   stage: build
   script:
     - turn off container, remove it and remove image
@@ -18,7 +18,7 @@ clean:
 
 build:
   extends:
-    - .after-merge-rule
+    - .common-rule
   stage: build
   script:
     - sudo docker build -t pri-ui .
@@ -44,7 +44,7 @@ unit-test:
 
 deploy:
   extends:
-    - .after-merge-rule
+    - .common-rule
   stage: deploy
   before_script:
     - sudo docker version
