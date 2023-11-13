@@ -1,6 +1,6 @@
 {
     "/apigateway/*": {
-        "target": "http://core:8080/pri",
+        "target": "http://192.168.32.1:8080/pri",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true,
