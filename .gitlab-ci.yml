@@ -24,7 +24,7 @@ build:
 
 code-analysis:
   extends:
-    - .common-rule
+    - .after-merge-rule
   stage: test
   script:
     - echo "Running SonarQube..."
@@ -32,7 +32,7 @@ code-analysis:
 
 unit-test:
   extends:
-    - .common-rule
+    - .after-merge-rule
   stage: test
   script:
     - echo "Running unit tests..."
@@ -44,4 +44,4 @@ deploy:
   before_script:
     - sudo docker version
   script:
-    - sudo docker run -d --name pri-ui -p 4200:4200 pri-ui
+    - sudo docker run -d --network="container:core-core-1" --name pri-ui -p 4200:4200 pri-ui
