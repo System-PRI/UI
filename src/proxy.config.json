@@ -1,6 +1,6 @@
 {
     "/apigateway/*": {
-        "target": "http://localhost:8080/pri",
+        "target": "http://0.0.0.0:8080/pri",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true,
