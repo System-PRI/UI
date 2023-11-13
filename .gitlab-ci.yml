@@ -20,7 +20,7 @@ build:
     - .common-rule
   stage: build
   script:
-    - sudo docker build -rm -t pri-ui .
+    - sudo docker build --rm -t pri-ui .
 
 code-analysis:
   extends:
