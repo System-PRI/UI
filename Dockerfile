@@ -1,4 +1,4 @@
-FROM node:19.5.0-alpine AS builder
+FROM node:latest AS builder
 WORKDIR /app
 
 COPY package.json .
@@ -9,9 +9,5 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:1.17.1-alpine
-RUN rm -rf /usr/share/nginx/html/* 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder /app/dist/pri /usr/share/nginx/html
-
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 4200
+CMD ["npm", "start"]
