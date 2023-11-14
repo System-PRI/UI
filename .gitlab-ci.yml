@@ -44,4 +44,4 @@ deploy:
   before_script:
     - sudo docker version
   script:
-    - sudo docker run -d --name pri-ui --network=pri-network -p 4200:4200 pri-ui
+    - sudo docker run -d --dns=127.0.0.53 --name pri-ui --network=pri-network -p 4200:4200 pri-ui
