@@ -1,12 +1,9 @@
 {
-    "/apigateway/*": {
+    "/*": {
         "target": "http://core:8080/pri",
         "secure": false,
         "logLevel": "info",
         "changeOrigin": true,
-        "pathRewrite": {
-            "^/apigateway": ""
-        },
         "headers": {
             "Connection": "keep-alive"
         }
