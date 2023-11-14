@@ -13,7 +13,7 @@ unit-test:
   stage: test
   script:
     - echo "Running unit tests..."
-    - sudo cd /${CI_PROJECT_DIR}
+    - cd /${CI_PROJECT_DIR}
     - sudo npm run test
 
 clean:
