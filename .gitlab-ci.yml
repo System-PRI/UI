@@ -7,9 +7,17 @@ stages:
   - test
   - deploy
 
-clean:
+unit-test:
   extends:
     - .common-rule
+  stage: test
+  script:
+    - echo "Running unit tests..."
+    - npm run test
+
+clean:
+  extends:
+    - .after-merge-rule
   stage: build
   script:
     - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
@@ -17,29 +25,14 @@ clean:
 
 build:
   extends:
-    - .common-rule
+    - .after-merge-rule
   stage: build
   script:
     - sudo docker build --rm -t pri-ui .
 
-code-analysis:
-  extends:
-    - .after-merge-rule
-  stage: test
-  script:
-    - echo "Running SonarQube..."
-    - echo "To be done..."
-
-unit-test:
-  extends:
-    - .after-merge-rule
-  stage: test
-  script:
-    - echo "Running unit tests..."
-
 deploy:
   extends:
-    - .common-rule
+    - .after-merge-rule
   stage: deploy
   before_script:
     - sudo docker version
