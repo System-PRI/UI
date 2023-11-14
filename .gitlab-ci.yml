@@ -13,7 +13,8 @@ unit-test:
   stage: test
   script:
     - echo "Running unit tests..."
-    - npm run test
+    - sudo cd /${CI_PROJECT_DIR}
+    - sudo npm run test
 
 clean:
   extends:
