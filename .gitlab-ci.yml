@@ -14,6 +14,7 @@ unit-test:
   script:
     - echo "Running unit tests..."
     - cd /${CI_PROJECT_DIR}
+    - sudo npm install
     - sudo npm run test
 
 clean:
