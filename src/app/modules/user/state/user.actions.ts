@@ -41,9 +41,3 @@ export const loadUserFailure = createAction(
     '[User API] Load Fail',
     props<{ error: string }>()
 )
-
-export const changeStudentRoleToProjectAdmin = createAction(
-    '[User API] Change User Role To Project Admin',
-    props<{ projectId: string }>()
-)
-

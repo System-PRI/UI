@@ -4,6 +4,7 @@ export interface User {
     email: string;
     role: "STUDENT" | "SUPERVISOR" | "COORDINATOR" | "PROJECT_ADMIN";
     studyYears: string[];
-    projects: string[];
-    acceptedProjects: string[];
+    projects: number[];
+    acceptedProjects: number[];
+    actualYear: string;
 }

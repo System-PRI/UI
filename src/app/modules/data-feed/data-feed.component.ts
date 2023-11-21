@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy } from '@angular/core';
 import { DataFeedService } from './data-feed.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject, takeUntil } from 'rxjs';
+import { saveAs } from 'file-saver';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-data-feed',
@@ -55,6 +56,16 @@ export class DataFeedComponent implements OnDestroy {
         }
       )
     }
+  }
+
+  exportStudents(){
+      this.dataFeedService.exportStudents().pipe(takeUntil(this.unsubscribe$)).subscribe(
+        (file: HttpResponse<Blob>) => {
+          if(file?.body){
+            saveAs(file.body!, 'students.csv')
+          }
+        }
+      )
   }
 
   ngOnDestroy(): void {

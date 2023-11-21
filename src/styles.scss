@@ -1,11 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
+
 
 html, body { height: 100%; }
 body { 
     margin: 0; 
     font-family: Roboto, "Helvetica Neue", sans-serif; 
-    background: #f5f5f5;
+    background: #fafafa;
 }
 
 button[mat-icon-button] {
@@ -15,4 +17,9 @@ button[mat-icon-button] {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 35px;
 }

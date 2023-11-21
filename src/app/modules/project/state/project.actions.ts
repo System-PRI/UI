@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
-import { Project, ProjectDetails, ProjectFilters } from "../models/project";
 import { SupervisorAvailability } from "../models/supervisor-availability.model";
+import { Project, ProjectDetails, ProjectFilters } from "../models/project.model";
 
 export const loadProjects = createAction(
     '[ProjectList] Load'
@@ -16,9 +16,14 @@ export const loadProjectsFailure = createAction(
     props<{ error: string }>()
 )
 
-export const filterProjects = createAction(
-    '[ProjectList] Filter projects',
+export const changeFilters = createAction(
+    '[ProjectList] Change Filters',
     props<{ filters: ProjectFilters }>()
+)
+
+export const updateDisplayedColumns = createAction(
+    '[ProjectList] Update Displayed Columns',
+    props<{ columns: string[] }>()
 )
 
 export const addProject = createAction(
@@ -42,23 +47,23 @@ export const updateProject = createAction(
 )
 
 export const updateProjectSuccess = createAction(
-    '[ProjectForm API] Add Success',
+    '[ProjectForm API] Update Success',
     props<{ project: ProjectDetails }>()
 )
 
 export const updateProjectFailure = createAction(
-    '[ProjectForm API] Add Fail',
+    '[ProjectForm API] Update Fail',
     props<{ error: string }>()
 )
 
 export const acceptProject = createAction(
     '[ProjectDetails] Accept Project',
-    props<{ projectId: string, role: string }>()
+    props<{ projectId: number, role: string }>()
 )
 
 export const acceptProjectSuccess = createAction(
     '[ProjectDetails API] Accept Project Success',
-    props<{ projectId: string, role: string }>()
+    props<{ projectId: number, role: string }>()
 )
 
 export const acceptProjectFailure = createAction(
@@ -66,17 +71,33 @@ export const acceptProjectFailure = createAction(
     props<{ error: string }>()
 )
 
-export const changeAdmin = createAction(
-    '[ProjectDetails] Change Admin',
-    props<{ projectId: string, indexNumber: string }>()
+export const unacceptProject = createAction(
+    '[ProjectDetails] Unaccept Project',
+    props<{ projectId: number, role: string }>()
 )
 
-export const changeAdminSuccess = createAction(
-    '[ProjectDetails API] Change Admin Success',
+export const unacceptProjectSuccess = createAction(
+    '[ProjectDetails API] Unaccept Project Success',
+    props<{ projectId: number, role: string }>()
 )
 
-export const changeAdminFailure = createAction(
-    '[ProjectDetails API] Change Admin Fail',
+export const unacceptProjectFailure = createAction(
+    '[ProjectDetails API] Unaccept Project Fail',
+    props<{ error: string }>()
+)
+
+export const removeProject = createAction(
+    '[ProjectDetails] Remove Project',
+    props<{ projectId: number}>()
+)
+
+export const removeProjectSuccess = createAction(
+    '[ProjectDetails API] Remove Project Success',
+    props<{ projectId: number}>()
+)
+
+export const removeProjectFailure = createAction(
+    '[ProjectDetails API] Remove Project Fail',
     props<{ error: string }>()
 )
 

@@ -13,7 +13,7 @@ export class UserService {
 
     loadUser(): Observable<User> {
         return this.http
-            .get<User>(`/apigateway/user` , { withCredentials: true })
+            .get<User>(`/pri/user`)
             .pipe(
                 retry(3),
                 catchError(
@@ -23,7 +23,7 @@ export class UserService {
 
     logout(): Observable<null> {
         return this.http
-            .get<null>(`/apigateway/auth/logout`)
+            .get<null>(`/pri/auth/logout`)
             .pipe(
                 retry(3),
                 catchError(
@@ -33,7 +33,7 @@ export class UserService {
 
     authenticate(login: string, password: string): Observable<null> {
         return this.http
-            .post<null>(`/apigateway/auth/login`, { login, password } , { withCredentials: true })
+            .post<null>(`/pri/auth/login`, { login, password } , { withCredentials: true })
             .pipe(
                 retry(3),
                 catchError(
@@ -43,7 +43,17 @@ export class UserService {
 
     refreshToken(): Observable<null> {
         return this.http
-            .post<null>(`/apigateway/auth/refresh`, null, { withCredentials: true })
+            .post<null>(`/pri/auth/refresh`, null, { withCredentials: true })
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+    changeStudyYear(studyYear: string): Observable<null> {
+        return this.http
+            .put<null>(`/pri/user/study-year`, { studyYear })
             .pipe(
                 retry(3),
                 catchError(
@@ -52,7 +62,7 @@ export class UserService {
     }
 
     supervisors$: Observable<Supervisor[]> = this.http
-        .get<Supervisor[]>('/apigateway/user/supervisor', { withCredentials: true })
+        .get<Supervisor[]>('/pri/user/supervisor')
         .pipe(
             retry(3),
             catchError(
@@ -60,7 +70,7 @@ export class UserService {
         )
 
     students$: Observable<Student[]> = this.http
-        .get<Student[]>('/apigateway/user/student')
+        .get<Student[]>('/pri/user/student')
         .pipe(
             retry(3),
             catchError(

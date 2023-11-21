@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
-import { addProject, addProjectSuccess, addProjectFailure, loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateProject, updateProjectSuccess, updateProjectFailure, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess, acceptProject, acceptProjectSuccess, changeAdmin, changeAdminSuccess, changeAdminFailure } from './project.actions';
+import { catchError, map, mergeMap } from 'rxjs/operators';
+import { addProject, addProjectSuccess, addProjectFailure, loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateProject, updateProjectSuccess, updateProjectFailure, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess, acceptProject, acceptProjectSuccess, unacceptProject, unacceptProjectSuccess, acceptProjectFailure, unacceptProjectFailure, removeProject, removeProjectSuccess, removeProjectFailure } from './project.actions';
 import { ProjectService } from '../project.service';
-import { changeStudentRoleToProjectAdmin } from '../../user/state/user.actions';
 
 @Injectable()
 export class ProjectEffects {
@@ -62,25 +61,36 @@ export class ProjectEffects {
         )
     )
 
+    removeProject$ = createEffect(() => this.actions$
+        .pipe(
+            ofType(removeProject),
+            mergeMap((action) => this.projectService.removeProject(action.projectId)
+                .pipe(
+                    map(() => removeProjectSuccess({projectId: action.projectId})),
+                    catchError(error => of(removeProjectFailure({ error })))
+                )
+            )
+        )
+    )
     acceptProject$ = createEffect(() => this.actions$
         .pipe(
             ofType(acceptProject),
             mergeMap((action) => this.projectService.acceptProject(action.projectId)
                 .pipe(
                     map(() => acceptProjectSuccess({projectId: action.projectId, role: action.role})),
-                    catchError(error => of(addProjectFailure({ error })))
+                    catchError(error => of(acceptProjectFailure({ error })))
                 )
             )
         )
     )
 
-    changeProjectAdmin$ = createEffect(() => this.actions$
+    unacceptProject$ = createEffect(() => this.actions$
         .pipe(
-            ofType(changeAdmin),
-            mergeMap((action) => this.projectService.changeProjectAdmin(action.projectId, action.indexNumber)
+            ofType(unacceptProject),
+            mergeMap((action) => this.projectService.unacceptProject(action.projectId)
                 .pipe(
-                    map(() => changeAdminSuccess()),
-                    catchError(error => of(changeAdminFailure({ error })))
+                    map(() => unacceptProjectSuccess({projectId: action.projectId, role: action.role})),
+                    catchError(error => of(unacceptProjectFailure({ error })))
                 )
             )
         )

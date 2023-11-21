@@ -1,16 +1,17 @@
+<div class="back" (click)="navigateBack()">
+    <mat-icon>arrow_back</mat-icon>
+     Project list
+ </div>
+ <h2 mat-dialog-title>Edit supervisor availability</h2>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h2 mat-dialog-title>Edit supervisor availability</h2>
-    <mat-dialog-content class="mat-typography">
-        <div class="availability-row" *ngFor="let availability of availability.controls">
-            <p>{{getFormControl(availability).supervisor.name}}</p>
-            <mat-form-field appearance="fill">
-                <input min="0" type="number" matInput [formControl]="getFormControl(availability).max">
-                <mat-error *ngIf="getFormControl(availability).max.invalid">{{getErrorMessage()}}</mat-error>
-            </mat-form-field>
-        </div>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>Cancel</button>
-        <button type="submit" [disabled]="!form.valid" mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Submit</button>
-    </mat-dialog-actions>
+    <div class="availability-row" *ngFor="let availability of availability.controls">
+        <mat-form-field appearance="fill">
+            <mat-label>{{getFormControl(availability).supervisor.name}}</mat-label>
+            <input min="0" type="number" matInput [formControl]="getFormControl(availability).max">
+            <mat-error *ngIf="getFormControl(availability).max.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+    </div>
+    <div class="button-container">
+        <button type="submit" [disabled]="!form.valid" mat-raised-button color="primary" cdkFocusInitial>Submit</button>
+    </div>
 </form>

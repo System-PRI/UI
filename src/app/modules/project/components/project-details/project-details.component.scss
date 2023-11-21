@@ -1,5 +1,26 @@
+
+
+:host {
+    display: grid;
+    column-gap: 50px;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 1300px;
+}
+
+.project-details {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 35px;margin-bottom: 50px;
+}
+
+.grade-title {
+    text-align: center;
+}
+
 p {
-    font-size: 14px;
+    //font-size: 14px;
+    text-align: justify;
 }
 
 ::ng-deep .mat-mdc-standard-chip {
@@ -18,14 +39,76 @@ p {
     color: rgba(0, 0, 0, 0.87);
 }
 
-
-td {
-    font-size: 14px;
+.back {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: fit-content;
 }
 
+.cellWithIcon {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    mat-icon{
+        color: #3f51b5;
+        height: 20px;
+        width: 20px;
+        font-size: 20px;
+    }
+}
+
+td {
+    white-space: nowrap; 
+
+
+}
+
+.table {
+    margin-top: 34px;
+}
+
+.chips {
+    margin: 22px 0px  10px 0px;
+}
 
 mat-dialog-content {
     display: grid;
     max-width: 800px;
     grid-gap: 10px
+}
+
+.ellipse {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ff6a6a;
+    margin: 0 auto;
+}
+
+.ellipse.accepted {
+    background: #92e882;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 15px;
+    margin-top: 20px;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+
+    a {
+        text-decoration: none;
+        color: black;
+    
+        mat-icon {
+            color: #4050b5;
+        }
+    }
 }

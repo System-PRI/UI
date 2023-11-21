@@ -11,6 +11,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { UserInterceptor } from './modules/user/user.interceptor';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,10 @@ import { UserInterceptor } from './modules/user/user.interceptor';
     MatListModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    MatMenuModule,
+    MatButtonToggleModule,
+    FormsModule,
+    MatSelectModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true },

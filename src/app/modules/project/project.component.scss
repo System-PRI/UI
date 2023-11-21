@@ -26,7 +26,7 @@
     }
 
     .supervisor-availability-list-container {
-        flex: 0 0 19em;
+        flex: 0 0 17em;
         height: auto;
 
         button {
@@ -36,9 +36,27 @@
     }
 }
 
+mat-spinner {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 50%;
+    top: 300px;
+    transform: translateX(-50px);
+}
+
+
 .hidden {
     opacity: 0;
     cursor: default;
+}
+
+.tables.full-width {
+    flex-wrap: wrap;
+
+    div {
+        flex: 100%;
+    }
 }
 
 

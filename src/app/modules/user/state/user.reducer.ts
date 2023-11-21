@@ -1,7 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import { UserState, initialState } from './user.state';
-import { loadUserSuccess, changeStudentRoleToProjectAdmin } from './user.actions';
-import { acceptProjectSuccess, changeAdminSuccess } from '../../project/state/project.actions';
+import { loadUserSuccess } from './user.actions';
+import { acceptProjectSuccess, addProjectSuccess, removeProjectSuccess, unacceptProjectSuccess, updateProjectSuccess } from '../../project/state/project.actions';
+
+
 
 export const userReducer = createReducer(
     initialState,
@@ -10,26 +12,41 @@ export const userReducer = createReducer(
             ...state,
             ...action.user,
             logged: true,
-            selectedStudyYear: action.user.studyYears[0],
+            actualYear: action.user.actualYear,
         }
     }),
-    on(changeStudentRoleToProjectAdmin, (state, action): UserState => {
+    on(updateProjectSuccess, (state, action): UserState => {
         return {
             ...state,
-            acceptedProjects: [action.projectId],
-            role: 'PROJECT_ADMIN',
+            role: (state.role === 'PROJECT_ADMIN' && (action.project.admin !== state.indexNumber))
+                ? 'STUDENT' : state.role
         }
     }),
-    on(changeAdminSuccess, (state): UserState => {
+    on(addProjectSuccess, (state, action): UserState => {
         return {
             ...state,
-            role: state.role === 'PROJECT_ADMIN' ? 'STUDENT' : state.role
+            acceptedProjects: [action.project.id!],
+            role: 'PROJECT_ADMIN'
         }
     }),
     on(acceptProjectSuccess, (state, action): UserState => {
         return {
             ...state,
             acceptedProjects: [...state.acceptedProjects, action.projectId]
+        }
+    }),
+    on(removeProjectSuccess, (state, action): UserState => {
+        return {
+            ...state,
+            role: state.role === 'PROJECT_ADMIN' ? 'STUDENT' : state.role,
+            acceptedProjects: [...state.acceptedProjects].filter(id => id !== action.projectId),
+            projects: [...state.projects].filter(id => id !== action.projectId),
+        }
+    }),
+    on(unacceptProjectSuccess, (state, action): UserState => {
+        return {
+            ...state,
+            acceptedProjects: [...state.acceptedProjects].filter(id => id !== action.projectId)
         }
     }),
 

@@ -3,6 +3,7 @@ export interface Student {
     name: string;
     email: string;
     role?: string;
+    accepted?: boolean;
   }
   
 export interface StudentDTO {

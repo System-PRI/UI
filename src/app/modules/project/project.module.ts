@@ -11,6 +11,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
+<<<<<<< HEAD
+=======
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+>>>>>>> a4861ff31859c02f2fe94ac6c34af05d7d3a19d2
 import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
 import { StoreModule } from '@ngrx/store';
@@ -26,6 +30,12 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
 import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
 import { SupervisorAvailabilityListComponent } from './components/supervisor-availability-list/supervisor-availability-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ProjectRemoveDialogComponent } from './components/project-remove-dialog/project-remove-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ProjectGradeComponent } from './components/project-grade/project-grade.component';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 @NgModule({
   declarations: [
@@ -34,8 +44,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ProjectDetailsComponent,
     ProjectFiltersComponent,
     ProjectComponent,
+    ProjectGradeComponent,
     SupervisorAvailabilityListComponent,
-    SupervisorAvailabilityFormComponent
+    SupervisorAvailabilityFormComponent,
+    ProjectRemoveDialogComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -54,9 +67,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDialogModule,
     MatSortModule,
     MatRadioModule,
+    MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatDividerModule,
+    MatTabsModule,
+    MatButtonToggleModule,
     StoreModule.forFeature('project', projectReducer),
-    EffectsModule.forFeature([ProjectEffects])
+    EffectsModule.forFeature([ProjectEffects]),
   ]
 })
 export class ProjectModule { }

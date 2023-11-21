@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import { first, flatMap, mergeMap, Observable } from 'rxjs';
+import { first, mergeMap, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 
@@ -15,7 +15,7 @@ export class UserInterceptor implements HttpInterceptor {
                 const modifiedReq = req.clone({
                         setHeaders: {
                             "index-number": user.indexNumber,
-                            "study-year": user.selectedStudyYear,
+                            "study-year": user.actualYear,
                             "lang": user.lang,
                         },
                         withCredentials: true

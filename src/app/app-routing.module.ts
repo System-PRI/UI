@@ -19,9 +19,10 @@ const routes: Routes = [
     canActivate: [UserGuard]
   },
   {
-    path: 'external-links',
-    loadChildren: () => import('./modules/external-link/external-link.module').then(m => m.ExternalLinkModule),
-    canActivate: [UserGuard]
+    path: 'projects',
+    loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule),
+    canActivate: [UserGuard],
+    outlet: 'modal',
   },
   {
     path: 'data-feed',
