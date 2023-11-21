@@ -11,10 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
-<<<<<<< HEAD
-=======
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
->>>>>>> a4861ff31859c02f2fe94ac6c34af05d7d3a19d2
 import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
 import { StoreModule } from '@ngrx/store';
@@ -35,6 +31,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProjectGradeComponent } from './components/project-grade/project-grade.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 @NgModule({

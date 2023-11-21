@@ -9,6 +9,7 @@ import { UserState } from './modules/user/state/user.state';
 import { UserService } from './modules/user/user.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MatSelectChange } from '@angular/material/select';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 enum ROLE {
   STUDENT = 'student',
@@ -27,7 +28,7 @@ export class AppComponent implements OnDestroy, OnInit{
   mobileQuery?: MediaQueryList;
   user!: UserState;
   unsubscribe$ = new Subject();  
-  projectId?: string; 
+  projectId?: number; 
   learningMode!: string;
   isModalOpen = false;
   studyYear!: string;
