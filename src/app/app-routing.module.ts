@@ -25,6 +25,17 @@ const routes: Routes = [
     outlet: 'modal',
   },
   {
+    path: 'defense-schedule',
+    loadChildren: () => import('./modules/defense-schedule/defense-schedule.module').then(m => m.DefenseScheduleModule),
+    canActivate: [UserGuard]
+  },
+  {
+    path: 'defense-schedule',
+    loadChildren: () => import('./modules/defense-schedule/defense-schedule.module').then(m => m.DefenseScheduleModule),
+    canActivate: [UserGuard],
+    outlet: 'modal',
+  },
+  {
     path: 'grades',
     loadChildren: () => import('./modules/grade/grade.module').then(m => m.GradeModule),
     canActivate: [UserGuard]
@@ -35,6 +46,7 @@ const routes: Routes = [
     canActivate: [UserGuard],
     outlet: 'modal',
   },
+  
   {
     path: 'external-links',
     loadChildren: () => import('./modules/external-link/external-link.module').then(m => m.ExternalLinkModule),
