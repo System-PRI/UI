@@ -100,7 +100,7 @@
     </mat-tab-group>
   </mat-tab>
   <mat-tab 
-    *ngIf="!allPhasesAreNotVisible(evaluationCards['SECOND'])" [label]="'Second semester'"
+    *ngIf="evaluationCards['SECOND'] && !allPhasesAreNotVisible(evaluationCards['SECOND'])" [label]="'Second semester'"
   >
     <mat-tab-group>
       <mat-tab 
