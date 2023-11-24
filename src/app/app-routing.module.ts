@@ -36,27 +36,10 @@ const routes: Routes = [
     outlet: 'modal',
   },
   {
-    path: 'grades',
-    loadChildren: () => import('./modules/grade/grade.module').then(m => m.GradeModule),
-    canActivate: [UserGuard]
-  },
-  {
-    path: 'grades',
-    loadChildren: () => import('./modules/grade/grade.module').then(m => m.GradeModule),
-    canActivate: [UserGuard],
-    outlet: 'modal',
-  },
-  
-  {
-    path: 'external-links',
-    loadChildren: () => import('./modules/external-link/external-link.module').then(m => m.ExternalLinkModule),
-    canActivate: [UserGuard]
-  },
-  {
     path: 'data-feed',
     loadChildren: () => import('./modules/data-feed/data-feed.module').then(m => m.DataFeedModule),
     canActivate: [CoordinatorGuard]
-  },
+  }
 ];
 
 @NgModule({

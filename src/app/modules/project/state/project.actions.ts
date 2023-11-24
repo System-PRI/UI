@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
-import { Project, ProjectDetails, ProjectFilters } from "../models/project";
 import { SupervisorAvailability } from "../models/supervisor-availability.model";
+import { Project, ProjectDetails, ProjectFilters } from "../models/project.model";
 
 export const loadProjects = createAction(
     '[ProjectList] Load'
@@ -101,6 +101,11 @@ export const removeProjectFailure = createAction(
     props<{ error: string }>()
 )
 
+export const updateGrade = createAction(
+    '[Project Details] Update Grade',
+    props<{ semester: string, projectId: number, grade: string, criteriaMet: boolean }>()
+)
+
 export const loadSupervisorAvailability = createAction(
     '[SupervisorAvailability] Load'
 )
@@ -129,4 +134,5 @@ export const updateSupervisorAvailabilityFailure = createAction(
     '[SupervisorAvailability API] Update Fail',
     props<{ error: string }>()
 )
+
 

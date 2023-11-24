@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ProjectDetails } from './models/project';
 import { ProjectService } from './project.service';
 import { EMPTY, Subject, combineLatest, map, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
@@ -10,9 +9,10 @@ import { Student } from '../user/models/student.model';
 import { User } from '../user/models/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../user/user.service';
-import { ExternalLinkService } from '../external-link/external-link.service';
 import { updateDisplayedColumns } from './state/project.actions';
 import { getNumberOfColumns } from './state/project.selectors';
+import { ExternalLinkService } from './services/external-link.service';
+import { ProjectDetails } from './models/project.model';
 
 @Component({
   selector: 'project',
@@ -25,7 +25,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   user!: User;
   projectDetailsForEdit?: ProjectDetails;
   projectButtonText!: string;
-  projectId?: number;
+  projectId?: number
   isProjectAdmin?: boolean;
   isCoordinator?: boolean;
   acceptedProjects: number[] = [];
@@ -86,23 +86,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
             this.page = params.get('page')!;
           }
 
-          this.displayedColumns = ['name'];
-          if(this.isCoordinator){
-            this.displayedColumns.push('supervisorName')
-          }
-
-          switch(this.page){
-            case 'PROJECT_GROUPS':
-              this.displayedColumns.push('accepted')
-            break;
-            case 'GRADES':
-              this.displayedColumns.push('firstSemesterGrade','secondSemesterGrade','criteriaMetStatus'); 
-            break;
-            case 'EXTERNAL_LINKS':
-              this.displayedColumns.push(...externalLinkColumnHeaders)
-            break;
-          }
-
+          this.displayedColumns = ['name','supervisorName','accepted','firstSemesterGrade','secondSemesterGrade','criteriaMetStatus'];
+          this.displayedColumns.push(...externalLinkColumnHeaders)
           this.store.dispatch(updateDisplayedColumns({columns: this.displayedColumns}));
         }
       )
