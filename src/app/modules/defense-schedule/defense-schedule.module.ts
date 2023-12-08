@@ -12,18 +12,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { DefenseScheduleRoutingModule } from './defense-schedule-routing.module';
 import { MatInputModule } from '@angular/material/input';
 import { DefenseTimeSlotsSelectionComponent } from './components/defense-time-slots-selection/defense-time-slots-selection.component';
+import { DefenseCommittySelectionComponent } from './components/defense-committy-selection/defense-committy-selection.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     DefenseScheduleComponent,
     DefenseDateRangeSelectionComponent,
-    DefenseTimeSlotsSelectionComponent
+    DefenseTimeSlotsSelectionComponent,
+    DefenseCommittySelectionComponent
   ],
   imports: [
     CommonModule,
     MatDatepickerModule,
     MatFormFieldModule,
+    MatIconModule,
     MatNativeDateModule,
+    MatSelectModule,
     ReactiveFormsModule,
     FormsModule,
     MatTableModule,

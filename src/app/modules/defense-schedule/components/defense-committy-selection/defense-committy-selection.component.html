@@ -1,0 +1,56 @@
+<mat-form-field class="committy-select">
+    <mat-label>Comittee</mat-label>
+    <mat-select [(ngModel)]="comitteeMultipleSelection" (selectionChange)="multipleCommitteeSelectionChanged($event)">
+        <mat-option *ngFor="let committy of ['A','B','C']" [value]="committy">{{ committy }}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<mat-form-field class="committy-select">
+    <mat-label>Role</mat-label>
+    <mat-select [(ngModel)]="roleMultipleSelection" (selectionChange)="multipleRoleSelectionChanged($event)">
+        <mat-option *ngFor="let role of ['chairperson', 'member']" [value]="role">{{ role }}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<button (click)="unselectSlots()" mat-raised-button color="primary" cdkFocusInitial>Unselect</button>
+
+<table class="mat-elevation-z8">
+    <tr>
+        <th>Time</th>
+        <th *ngFor="let supervisor of supervisors">{{ supervisor }}</th>
+    </tr>
+    <tr *ngFor="let time of times">
+        <td>{{ time }}</td>
+        <td class="committy-selection"
+            [class.chairperson]="selectedSlots[supervisor][time].chairperson" 
+            [class.hovered]="hoveredSlots[supervisor] && hoveredSlots[supervisor][time]" 
+            (mouseenter)="onMouseEnter(supervisor, time)"
+            (mousedown)="onMouseDown(supervisor, time)"
+            (mouseup)="onMouseUp(supervisor, time)"
+            [class.selected]="(selectedSlots[supervisor] && selectedSlots[supervisor][time].committeeIdentifier)"
+            *ngFor="let supervisor of supervisors"
+        >
+        <div class="comittee-role-info">
+            <mat-icon *ngIf="selectedSlots[supervisor][time].chairperson">
+                groups
+            </mat-icon>
+            <div>
+                {{ selectedSlots[supervisor][time].committeeIdentifier }}
+            </div>
+        </div>
+        <span>
+
+        </span>
+        </td>
+    </tr>
+</table>
+
+<!-- 
+    <mat-form-field *ngIf="selectedSlots[supervisor][time].committeeIdentifier && false" class="committy-select">
+                <div (click)="$event.preventDefault(); $event.stopPropagation();">
+                    <mat-select [(value)]="selectedSlots[supervisor][time].committeeIdentifier" (selectionChange)="committyChanged($event)">
+                        <mat-option *ngFor="let committy of ['A','B','C']" [value]="committy">{{ committy }}</mat-option>
+                    </mat-select>
+                </div>
+    </mat-form-field>
+-->

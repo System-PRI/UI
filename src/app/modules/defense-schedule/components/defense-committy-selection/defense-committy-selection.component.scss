@@ -1,0 +1,113 @@
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 10px 15px;
+    text-align: center;
+    border: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
+    margin: 0px;
+    transition: all 0.1s linear;
+    position: relative;
+
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+td:hover {
+    cursor: pointer;
+    box-sizing: border-box;
+
+    span {
+        height: 2px;
+    }
+
+}
+
+
+.committy-selection {
+    padding: 0px;
+}
+
+.chairperson {
+    min-width: 180px;
+}
+
+.comittee-role-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 30px;
+    height: 30px;
+    border-bottom: 1px solid #e7e7e7;
+    position: relative;
+    color: #3f51b5;
+    font-weight: bold;
+
+    .mat-icon {
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        color: #3f51b5;
+        transform: translateY(-50%);
+    }
+}
+
+.slot {
+    display: flex;
+    justify-content: center;
+
+    .committy-select {
+        height: 50px;
+        width: 80px;
+        padding: 15px;
+    }
+
+    .mouse-interact {
+        padding: 15px;
+        width: 100%;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .mat-icon {
+            color: #3f51b5;
+        }
+    }
+  
+}
+
+
+.selected {
+    .mouse-interact {
+        width: 30px;
+    }
+}
+
+td span {
+    position: absolute;
+    transition: all 0.1s linear;
+    bottom: 0px;
+    left: 0px;
+    height: 0px;
+    width: 100%;
+    background: #3f51b5;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+.selected {
+    background: #b4bfff;
+}
+
+.hovered {
+    background: #d0d7ff !important ; 
+    //border-bottom: 1px solid #d0d7ff
+}
+
