@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProjectDetails } from '../../models/project';
 import { SupervisorAvailability} from '../../models/supervisor-availability.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +13,9 @@ import { acceptProject, acceptProjectSuccess, removeProject, removeProjectSucces
 import { Actions, ofType } from '@ngrx/effects';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProjectDetails } from '../../models/project.model';
+import { EvaluationCard, EvaluationCards } from '../../models/grade.model';
+import { KeyValue } from '@angular/common';
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -36,6 +38,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   maxAvailabilityFilled: boolean = false;
   data!: ProjectDetails;
   user!: UserState;
+  evaluationCards!: EvaluationCards;
+  gradesShown = true;
+  grade: string = '0%';
   
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -48,9 +53,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     ){}
    
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user}) => {
+    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
       this.data = projectDetails;
       this.user = user;
+      this.gradesShown = this.evaluationCards !== undefined || this.evaluationCards !== null;
+      this.evaluationCards = evaluationCards;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
           role: 'SUPERVISOR', 
@@ -67,6 +74,13 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
+  keepOrder = (a: any, b: any) => {
+    return a;
+  }
+
+  onGradeChange(grade: string){
+    this.grade = grade;
+  }
 
   acceptProject(): void {
     this.store.dispatch(acceptProject({projectId: this.data.id!, role: this.user.role}))
@@ -186,6 +200,29 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   get showUnacceptButton(){
     return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!)
+  }
+
+
+
+  getEvaluationCardsTranslations(key: string): string{
+    const translations: {[key: string]: string} = {
+      'FIRST': 'First semester',
+      'SECOND': 'Second semester',
+      'SEMESTER_PHASE': 'Semester phase',
+      'DEFENSE_PHASE': 'Defense phase',
+      'RETAKE_PHASE': 'Retake phase',
+    }
+
+    return translations[key];
+  }
+
+  isOnlyOnePhaseVisible(semester: {[key: string]: EvaluationCard}): boolean {
+    return Object.keys(semester).filter(key => semester && semester[key] && semester[key]['visible']).length === 1;
+  }
+
+  allPhasesAreNotVisible(semester: {[key: string]: EvaluationCard}): boolean {
+    
+    return Object.keys(semester).filter(key => semester && semester[key] && semester[key]['visible']).length === 0;
   }
 
   getRole(role: keyof typeof ROLE): string {
