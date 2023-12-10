@@ -27,6 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     MatDatepickerModule,
     MatFormFieldModule,
+    MatInputModule,
     MatIconModule,
     MatNativeDateModule,
     MatSelectModule,

@@ -5,8 +5,8 @@ table {
 td, th {
     padding: 10px 15px;
     text-align: center;
-    border: 1px solid #e7e7e7;
-    border-bottom: 1px solid #e7e7e7;
+    border: 1px solid #aeaeae;
+    border-bottom: 1px solid #aeaeae;
     margin: 0px;
     transition: all 0.1s linear;
     position: relative;
@@ -21,7 +21,7 @@ td:hover {
     cursor: pointer;
     box-sizing: border-box;
 
-    span {
+    .selection-indicator {
         height: 2px;
     }
 
@@ -30,29 +30,51 @@ td:hover {
 
 .committy-selection {
     padding: 0px;
+    min-width: 120px;
 }
 
-.chairperson {
-    min-width: 180px;
+.mat-select-panel {
+    &.ng-animating {
+      visibility: hidden;
+    }
 }
+
+
 
 .comittee-role-info {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 30px;
-    height: 30px;
-    border-bottom: 1px solid #e7e7e7;
+    height: 55px;
     position: relative;
     color: #3f51b5;
     font-weight: bold;
+    font-size: 20px;
+
+    div {
+        display: grid;
+    }
 
     .mat-icon {
-        position: absolute;
-        top: 50%;
-        left: 15px;
+        text-align: center;
         color: #3f51b5;
-        transform: translateY(-50%);
+        margin-top: 10px
+    }
+
+    p {
+        color: #3f51b5;
+        font-size: 10px;
+        height: 25px;
+        line-height: 25px;
+        margin: 0px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+
+.chairperson {
+    .comittee-role-info {
+        justify-content: space-around;
     }
 }
 
@@ -88,7 +110,7 @@ td:hover {
     }
 }
 
-td span {
+td .selection-indicator {
     position: absolute;
     transition: all 0.1s linear;
     bottom: 0px;
@@ -102,12 +124,53 @@ td span {
     display: none;
 }
 
-.selected {
-    background: #b4bfff;
+
+.not-available {
+    background: #e7e7e7 !important;
+    div{
+        color: black;
+    }
 }
 
+.selected {
+    background: #b4bfff !important;
+}
+
+
 .hovered {
-    background: #d0d7ff !important ; 
+    background: #d9dfff !important ; 
     //border-bottom: 1px solid #d0d7ff
 }
 
+.last-selection {
+    background: #cfffaa !important ; 
+
+}
+
+.not-available-border {
+    display: block;
+    background-color: #e7e7e7 !important;
+    height: 5px;
+}
+
+
+.slot-menu {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: white;
+    z-index: 2;
+    display: grid;
+    padding: 20px;
+
+    div {
+        display: flex;
+        justify-content: space-between;
+        column-gap: 10px;
+        margin-bottom: 10px;
+
+        .mat-icon {
+            color: #3f51b5;
+        }
+    }
+}

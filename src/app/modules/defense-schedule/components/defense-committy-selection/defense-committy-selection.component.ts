@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnChanges, HostListener } from '@angular/core';
 import { DefenseScheduleService } from '../../defense-schedule.service';
 import {  SupervisorDefenseAssignment } from '../../models/defense-schedule.model';
 import { Subject, takeUntil} from 'rxjs';
@@ -19,6 +19,7 @@ export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
   supervisors: string[] = [];
   times: string[] = [];
   hoveredSlots: {[key: string]: {[key: string]: boolean}} = {};
+  lastSelectedSlots: {[key: string]: {[key: string]: SupervisorDefenseAssignment}} = {};
   startStatus!: boolean;
   lastSelectionStart: SupervisorTimeReference = { supervisor: '', time: '' }
   lastSelectionEnd: SupervisorTimeReference = { supervisor: '', time: '' }
@@ -28,17 +29,20 @@ export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
   unsubscribe$ = new Subject();
   selectedSlots!: {[key: string]: { [key: string]: SupervisorDefenseAssignment }}
   comitteeMultipleSelection: string | null = null;
-  roleMultipleSelection: string | null = 'member'
+  roleMultipleSelection: string | null = 'member';
+  classMultitpleSelection: string | null = null;
   @Input() assignment!: {[key: string]: { [key: string]: SupervisorDefenseAssignment }};
+  slotsSelected: boolean = false;
 
+  cursorPositionY = '';
+  cursorPositionX = '';
   constructor(private defenseScheduleService: DefenseScheduleService){}
 
   ngOnChanges(): void {
     this.selectedSlots = this.assignment;
-    console.log(this.selectedSlots)
-
     for(let supervisor of Object.keys(this.selectedSlots)){
       this.hoveredSlots[supervisor] = {};
+      this.lastSelectedSlots[supervisor] = {};
       this.supervisors.push(supervisor);
 
       for(let time of Object.keys(this.selectedSlots[supervisor])){
@@ -50,10 +54,19 @@ export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
     }
   }
 
-  
-  committyChanged(event: MatSelectChange){
-   
+  multipleClassSelectionChanged(){
+    const supervisor = this.lastSelectionStart.supervisor;
+    for(let t of Object.keys(this.selectedSlots[supervisor])){
+      const startIndex = this.times.indexOf(this.lastSelectionStart.time);
+      const endIndex = this.times.indexOf(this.lastSelectionEnd.time);
+
+      for(let x=startIndex; x <= endIndex; x++){
+        const time = this.times[x];
+        this.selectedSlots[supervisor][time].classroom = this.classMultitpleSelection;
+      }
+    }
   }
+
 
   multipleCommitteeSelectionChanged(event: MatSelectChange){
     const supervisor = this.lastSelectionStart.supervisor;
@@ -77,6 +90,12 @@ export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
       for(let x=startIndex; x <= endIndex; x++){
         const time = this.times[x];
         this.selectedSlots[supervisor][time].chairperson = event.value === 'chairperson'
+        if(event.value === 'chairperson'){
+          this.selectedSlots[supervisor][time].chairperson = true;
+        } else {
+          this.selectedSlots[supervisor][time].classroom = null;
+          this.classMultitpleSelection = null;
+        }
       }
     }
   }
@@ -91,11 +110,29 @@ export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
         const time = this.times[x];
         this.selectedSlots[supervisor][time].committeeIdentifier = null
         this.selectedSlots[supervisor][time].chairperson = false;
+        this.selectedSlots[supervisor][time].classroom = null;
       }
     }
+
+    for(let supervisor of Object.keys(this.selectedSlots)){
+      this.lastSelectedSlots[supervisor] = {};
+    }
+
+    this.slotsSelected = false;
+  }
+
+  closeSelectionMenu(){
+    for(let supervisor of Object.keys(this.selectedSlots)){
+      this.lastSelectedSlots[supervisor] = {};
+    }
+    this.slotsSelected = false;
   }
 
   onMouseDown(supervisor: string, time: string){
+    for(let supervisor of Object.keys(this.selectedSlots)){
+      this.lastSelectedSlots[supervisor] = {};
+    }
+    this.slotsSelected = false;
     this.hoveredSlots[supervisor][time] = true;
     this.start = {supervisor, time}
     this.startStatus = this.selectedSlots[this.start.supervisor][this.start.time].committeeIdentifier !== null
@@ -135,17 +172,32 @@ export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
     
   }
 
-  onMouseUp(supervisor: string, time: string){
+  onMouseUp(supervisor: string, time: string, event: MouseEvent){
     this.end = {supervisor, time};
     const startIndex = this.times.indexOf(this.start.time);
     const endIndex = this.times.indexOf(this.end.time);
 
+    let target = event.target as HTMLElement;
+    while(target.tagName !== 'TD'){
+      target = target.parentElement!;
+    }
+    let rect = target.getBoundingClientRect();
+    let windowScrollY = document.getElementsByTagName('mat-sidenav-content')[0].scrollTop;
+
+
+    this.cursorPositionX = `${rect.x + rect.width}px`;
+    this.cursorPositionY = `${rect.y + windowScrollY - 27}px`;
+
+
     if(this.end.supervisor === this.start.supervisor){
+
+      this.slotsSelected = true;
       
       if(startIndex === endIndex){
         if(!this.selectedSlots[supervisor][time].committeeIdentifier){
           this.selectedSlots[supervisor][time].committeeIdentifier = 'A' 
         }
+        this.lastSelectedSlots[supervisor][time] = JSON.parse(JSON.stringify(this.selectedSlots[supervisor][time]))
       } else {
         for(let t of Object.keys(this.selectedSlots[supervisor])){
           const timeIndex = this.times.indexOf(t);
@@ -155,19 +207,55 @@ export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
               if(!this.selectedSlots[supervisor][t].committeeIdentifier){
                 this.selectedSlots[supervisor][t].committeeIdentifier = 'A'
               }
+              this.lastSelectedSlots[supervisor][t] = JSON.parse(JSON.stringify(this.selectedSlots[supervisor][t]))
             }
           } else {
             if((timeIndex <= startIndex && timeIndex >= endIndex)){
               if(!this.selectedSlots[supervisor][t].committeeIdentifier){
                 this.selectedSlots[supervisor][t].committeeIdentifier = 'A'
               }
+              this.lastSelectedSlots[supervisor][t] = JSON.parse(JSON.stringify(this.selectedSlots[supervisor][t]))
             }
           }
-
-         
-         
         }
       }
+      
+      let countSameComittee = 0;
+      let countSameRole = 0;
+      let countSameClass = 0;
+      for(let t of Object.keys(this.lastSelectedSlots[supervisor])){
+        if(this.lastSelectedSlots[supervisor][t].committeeIdentifier === this.selectedSlots[supervisor][this.start.time].committeeIdentifier){
+          countSameComittee++;
+        }
+        if(this.lastSelectedSlots[supervisor][t].chairperson === this.selectedSlots[supervisor][this.start.time].chairperson){
+          countSameRole++;
+        }
+        if(this.lastSelectedSlots[supervisor][t].classroom === this.selectedSlots[supervisor][this.start.time].classroom){
+          countSameClass++;
+        }
+      }
+
+      if(countSameComittee === Object.keys(this.lastSelectedSlots[supervisor]).length){
+        this.comitteeMultipleSelection = this.selectedSlots[supervisor][this.start.time].committeeIdentifier;
+      } else {
+        this.comitteeMultipleSelection = null;
+      }
+
+      if(countSameClass === Object.keys(this.lastSelectedSlots[supervisor]).length){
+        this.classMultitpleSelection = this.selectedSlots[supervisor][this.start.time].classroom;
+      } else {
+        this.classMultitpleSelection = null;
+      }
+
+      if(countSameRole === Object.keys(this.lastSelectedSlots[supervisor]).length){
+        this.roleMultipleSelection = this.selectedSlots[supervisor][this.start.time].chairperson ? 'chairperson' : 'member';
+      } else {
+        this.roleMultipleSelection = null;
+      }
+
+      console.log(this.lastSelectedSlots[supervisor])
+
+
     }
 
     this.supervisors.forEach(supervisor => {
@@ -186,12 +274,13 @@ export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
         this.lastSelectionStart = this.end;
     }
 
-    this.comitteeMultipleSelection = null; 
-    this.roleMultipleSelection = null; 
+
     this.start = { supervisor: '', time: '' };
     this.end = { supervisor: '', time: '' };
 
-    console.log(this.selectedSlots)
+    //console.log(this.selectedSlots)
+
+
 
   }
 
