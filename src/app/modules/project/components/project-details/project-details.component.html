@@ -69,9 +69,7 @@
   </div>
 </div>
 <mat-tab-group *ngIf="gradesShown" class="mat-elevation-z8">
-  <mat-tab 
-    *ngIf="evaluationCards['FIRST']" [label]="'First semester'"
-  >
+  <mat-tab *ngIf="evaluationCards['FIRST']" [label]="'First semester'">
     <mat-tab-group>
       <mat-tab 
         *ngIf="evaluationCards['FIRST']['SEMESTER_PHASE']"

@@ -1,0 +1,62 @@
+
+
+
+<div *ngIf="slotsSelected" class="slot-menu mat-elevation-z8" [ngStyle]="{top: cursorPositionY, left: cursorPositionX}">
+    committee: <mat-form-field class="committee-select">
+        <mat-select [(ngModel)]="committeeMultipleSelection" (selectionChange)="multipleCommitteeSelectionChanged($event)">
+            <mat-option *ngFor="let committee of ['A','B','C']" [value]="committee">{{ committee }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    Chairperson:
+    <mat-slide-toggle [(ngModel)]="roleMultipleSelection"  (change)="multipleRoleSelectionChanged()"></mat-slide-toggle>
+    <br>
+    <mat-form-field *ngIf="roleMultipleSelection">
+        <input placeholder="Class" [formControl]="classMultitpleSelection" matInput type="text" />
+    </mat-form-field>
+    <br>
+    <div>
+        <button (click)="closeSelectionMenu()" mat-button color="primary" cdkFocusInitial>Close</button>
+        <button (click)="unselectSlots()" mat-raised-button color="primary" cdkFocusInitial>Unselect</button>
+    </div>
+</div>
+
+<table class="mat-elevation-z8">
+    <tr>
+        <th>Time</th>
+        <th *ngFor="let supervisor of supervisors">{{ supervisor }}</th>
+    </tr>
+    <tr *ngFor="let time of times">
+        <td>{{ time }}</td>
+        <td class="committee-selection"
+            [class.not-available]="!selectedSlots[supervisor][time].available" 
+            [class.chairperson]="selectedSlots[supervisor][time].chairperson" 
+            [class.hovered]="hoveredSlots[supervisor] && hoveredSlots[supervisor][time]" 
+            [class.last-selection]="lastSelectedSlots[supervisor] && lastSelectedSlots[supervisor][time]" 
+            (mouseenter)="onMouseEnter(supervisor, time)"
+            (mousedown)="onMouseDown(supervisor, time)"
+            (mouseup)="onMouseUp(supervisor, time, $event)"
+            [class.selected]="(selectedSlots[supervisor] && selectedSlots[supervisor][time].committeeIdentifier)"
+            *ngFor="let supervisor of supervisors"
+        >
+        <div class="committee-role-info">
+            <div>
+                <b>
+                    <mat-icon *ngIf="selectedSlots[supervisor][time].chairperson">
+                        groups
+                    </mat-icon>
+                </b>
+                <p>
+                    {{ selectedSlots[supervisor][time].classroom }}
+                </p>
+            </div>
+            <div >
+                {{ selectedSlots[supervisor][time].committeeIdentifier }}
+            </div>
+        </div>
+        <span class="selection-indicator" >
+
+        </span>
+        </td>
+    </tr>
+</table>

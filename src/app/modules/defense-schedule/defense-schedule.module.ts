@@ -12,16 +12,26 @@ import { MatButtonModule } from '@angular/material/button';
 import { DefenseScheduleRoutingModule } from './defense-schedule-routing.module';
 import { MatInputModule } from '@angular/material/input';
 import { DefenseTimeSlotsSelectionComponent } from './components/defense-time-slots-selection/defense-time-slots-selection.component';
-import { DefenseCommittySelectionComponent } from './components/defense-committy-selection/defense-committy-selection.component';
+import { DefenseCommitteeSelectionComponent } from './components/defense-committee-selection/defense-committee-selection.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
+import { DefenseCommitteeStatisticsComponent } from './components/defense-committee-statistics/defense-committee-statistics.component';
+import { DefenseScheduleSelectionComponent } from './components/defense-schedule-selection/defense-schedule-selection.component';
+import { MatRadioModule } from '@angular/material/radio';
+
 
 @NgModule({
   declarations: [
     DefenseScheduleComponent,
     DefenseDateRangeSelectionComponent,
     DefenseTimeSlotsSelectionComponent,
-    DefenseCommittySelectionComponent
+    DefenseCommitteeSelectionComponent,
+    DefenseCommitteeStatisticsComponent,
+    DefenseScheduleSelectionComponent,
   ],
   imports: [
     CommonModule,
@@ -31,7 +41,14 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatSlideToggleModule,
+    MatTableModule,
+    MatTabsModule,
+    MatRadioModule,
+    MatCheckboxModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatExpansionModule,
     FormsModule,
     MatTableModule,
     MatPaginatorModule,

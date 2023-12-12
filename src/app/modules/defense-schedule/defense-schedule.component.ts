@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, } from '@angular/core';
 import { DefenseScheduleService } from './defense-schedule.service';
-import { SupervisorDefenseAssignment, SupervisorDefenseAssignmentAggregated } from './models/defense-schedule.model';
+import { SupervisorDefenseAssignment, SupervisorDefenseAssignmentAggregated, SupervisorStatistics } from './models/defense-schedule.model';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -12,13 +12,23 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
 
   assignments: SupervisorDefenseAssignmentAggregated = {};
   unsubscribe$ = new Subject();
+  statistics: SupervisorStatistics[] = [];
 
-  constructor(private defenseScheduleyService: DefenseScheduleService){}
+
+  constructor(private defenseScheduleService: DefenseScheduleService){}
 
   ngOnInit(): void {
-    this.defenseScheduleyService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      assignments => {this.assignments = assignments}
+    this.defenseScheduleService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      assignments => this.assignments = assignments
     )
+
+    this.defenseScheduleService.getSupervisorsStatistics().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      statistics => this.statistics = statistics
+    )
+  }
+
+  onStatisticsUpdated(statistics: SupervisorStatistics[]){
+    this.statistics = statistics;
   }
 
 
