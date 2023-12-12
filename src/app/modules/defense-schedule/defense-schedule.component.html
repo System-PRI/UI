@@ -1,7 +1,32 @@
 <h1>Project defense schedule</h1>
-<!--<br>
-<defense-date-range-selection></defense-date-range-selection>
+<defense-date-range-selection *ngIf="!assignments || true"></defense-date-range-selection>
+<br>
+<br>
+<br>
 <br>
 <defense-time-slots-selection></defense-time-slots-selection>
-<br>-->
-<defense-committy-selection [assignment]="assignments['01/08/2024']"></defense-committy-selection>
+<br>
+<br>
+<br>
+<br>
+<div *ngIf="assignments" class="committee-selection-container">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+        <mat-tab label="01/08/2024">
+            <defense-committee-selection (updateStatistics)="onStatisticsUpdated($event)" [assignment]="assignments['01/08/2024']"></defense-committee-selection>
+        </mat-tab>
+        <mat-tab label="02/08/2024">
+            <defense-committee-selection [assignment]="assignments['01/08/2024']"></defense-committee-selection>
+        </mat-tab>
+    </mat-tab-group>
+    <defense-committee-statistics [statistics]="statistics"></defense-committee-statistics>
+</div>
+
+
+<br>
+<br>
+<br>
+<br>
+<defense-schedule-selection></defense-schedule-selection>
+
+
+  

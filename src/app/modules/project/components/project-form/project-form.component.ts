@@ -85,14 +85,16 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.technologies = this.projectDetails.technologies;
       } else {
         this.projectForm.controls.projectAdmin.setValue(this.user.indexNumber);
-  
-        this.members.push(this.fb.group({
-          name: this.user.name,
-          indexNumber: this.user.indexNumber,
-          email: this.students.find(student => student.indexNumber === user.indexNumber)?.email,
-          accepted: true,
-          role: [null, Validators.required]
-        }));
+
+        if(user.role !== 'COORDINATOR'){
+          this.members.push(this.fb.group({
+            name: this.user.name,
+            indexNumber: this.user.indexNumber,
+            email: this.students.find(student => student.indexNumber === user.indexNumber)?.email,
+            accepted: true,
+            role: [null, Validators.required]
+          }));
+        }
       }
     })
 
@@ -190,10 +192,14 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   get acceptedMembers(): Student[]{
-    if(this.projectDetails){
-      return this.projectDetails.students.slice().filter(student => student.accepted)
+    if(this.user.role === 'COORDINATOR'){
+      return this.students;
     } else {
-      return []
+      if(this.projectDetails){
+        return this.projectDetails.students.slice().filter(student => student.accepted)
+      } else {
+        return []
+      }
     }
   }
 
@@ -205,9 +211,13 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   get showProjectAdminField() {
-    return this.projectDetails?.accepted 
-      ? (this.user.role === 'SUPERVISOR' || this.user.role === 'COORDINATOR')
-      : this.projectDetails
+    return this.user.role === 'COORDINATOR' || 
+      (
+        this.projectDetails && 
+        (this.projectDetails?.accepted 
+          ? (this.user.role === 'SUPERVISOR')
+          : this.projectDetails)
+      )
   }
 
   get showMembersField() {
