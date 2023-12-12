@@ -8,6 +8,8 @@ import { projectAcceptedByStudent } from './modules/user/state/user.selectors';
 import { UserState } from './modules/user/state/user.state';
 import { UserService } from './modules/user/user.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { MatSelectChange } from '@angular/material/select';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 enum ROLE {
   STUDENT = 'student',
@@ -26,9 +28,11 @@ export class AppComponent implements OnDestroy, OnInit{
   mobileQuery?: MediaQueryList;
   user!: UserState;
   unsubscribe$ = new Subject();  
-  projectId?: number 
-  learningMode = "PARTTIME";
+  projectId?: number; 
+  learningMode!: string;
   isModalOpen = false;
+  studyYear!: string;
+  availableStudyYears!: {text: string, value: string}[]
 
   private _mobileQueryListener: () => void;
 
@@ -36,7 +40,6 @@ export class AppComponent implements OnDestroy, OnInit{
     changeDetectorRef: ChangeDetectorRef, 
     media: MediaMatcher, private store: Store<State>, 
     private userService: UserService,
-    private activatedRoute: ActivatedRoute,
     private router: Router
     ) {
       
@@ -45,18 +48,23 @@ export class AppComponent implements OnDestroy, OnInit{
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
 
     this.store.select('user').subscribe(user => {
-      this.user = user
+      this.user = user;
+      this.learningMode = user.actualYear.split('#')[0];
+      this.studyYear = user.actualYear;
+      this.availableStudyYears = user.studyYears.map(year => {
+        return { text: `${year.split('#')[1]} - ${this.translateLearningMode(year.split('#')[0])}`, value: year}
+      })
     });
     this.store.dispatch(loadUser());
-    
   }
 
   ngOnInit(): void {
     this.router.events.subscribe((event: any) => {
         if (event instanceof NavigationEnd) {
-            this.isModalOpen = event.url.includes('modal');
+            this.isModalOpen = event.url.includes('modal') && !event.url.includes('redirectTo');
         }
     });
+    
 
     this.store.select(projectAcceptedByStudent).pipe(takeUntil(this.unsubscribe$)).subscribe(
       projectId => this.projectId = projectId
@@ -71,9 +79,16 @@ export class AppComponent implements OnDestroy, OnInit{
     );
   }
 
-  navigateTo(page: string){
+  navigateTo(page: string, pageQueryParameter?: string){
     this.router.navigate([{outlets: {modal: null}}]).then(
-      () => this.router.navigate([page])
+      () => this.router.navigate([page], { queryParams: { 'page': pageQueryParameter } })
+    )
+  }
+
+  studyYearChanged(event: MatSelectChange){
+    this.userService.changeStudyYear(`${this.studyYear}`)
+    .pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
     )
   }
 
@@ -82,7 +97,7 @@ export class AppComponent implements OnDestroy, OnInit{
   }
 
   get hasBothLearningModes() {
-    return this.user?.studyYears.length === 2;
+    return this.user?.studyYears.filter(year => year.split('#')[1] === this.studyYear).length === 2;
   }
 
   get isLogged() {
@@ -97,11 +112,12 @@ export class AppComponent implements OnDestroy, OnInit{
     return this.projectId !== undefined || this.user?.role === 'COORDINATOR'
   }
 
-  get modalIsOpen(){
-    return this.activatedRoute.params.subscribe(params => {
-      console.log(params["modal"] !== undefined)
-      return params["modal"] !== undefined
-    })
+  translateLearningMode(learningMode: string): string {
+    switch(learningMode){
+      case 'FULL_TIME': return 'Full time'
+      case 'PART_TIME': return 'Part time'
+    }
+    return '';
   }
 
   ngOnDestroy(): void {

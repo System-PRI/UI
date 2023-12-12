@@ -1,0 +1,66 @@
+<div *ngIf="slotsSelected" class="slot-menu mat-elevation-z8" [ngStyle]="{top: cursorPositionY, left: cursorPositionX}">
+    <mat-form-field class="committy-select">
+        <mat-select [(ngModel)]="comitteeMultipleSelection" (selectionChange)="multipleCommitteeSelectionChanged($event)">
+            <mat-option *ngFor="let committy of ['A','B','C']" [value]="committy">{{ committy }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="committy-select">
+        <mat-label>Role</mat-label>
+        <mat-select [(ngModel)]="roleMultipleSelection" (selectionChange)="multipleRoleSelectionChanged($event)">
+            <mat-option *ngFor="let role of ['chairperson', 'member']" [value]="role">{{ role }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field *ngIf="roleMultipleSelection === 'chairperson'">
+        <input (input)="multipleClassSelectionChanged()" placeholder="Class" [(ngModel)]="classMultitpleSelection" matInput type="text" />
+    </mat-form-field>
+    <br>
+    <div>
+        <button (click)="closeSelectionMenu()" mat-button color="primary" cdkFocusInitial>Close</button>
+        <button (click)="unselectSlots()" mat-raised-button color="primary" cdkFocusInitial>Unselect</button>
+    </div>
+</div>
+
+
+
+
+<table class="mat-elevation-z8">
+    <tr>
+        <th>Time</th>
+        <th *ngFor="let supervisor of supervisors">{{ supervisor }}</th>
+    </tr>
+    <tr *ngFor="let time of times">
+        <td>{{ time }}</td>
+        <td class="committy-selection"
+            [class.not-available]="!selectedSlots[supervisor][time].available" 
+            [class.chairperson]="selectedSlots[supervisor][time].chairperson" 
+            [class.hovered]="hoveredSlots[supervisor] && hoveredSlots[supervisor][time]" 
+            [class.last-selection]="lastSelectedSlots[supervisor] && lastSelectedSlots[supervisor][time]" 
+            (mouseenter)="onMouseEnter(supervisor, time)"
+            (mousedown)="onMouseDown(supervisor, time)"
+            (mouseup)="onMouseUp(supervisor, time, $event)"
+            [class.selected]="(selectedSlots[supervisor] && selectedSlots[supervisor][time].committeeIdentifier)"
+            *ngFor="let supervisor of supervisors"
+        >
+        <div class="comittee-role-info">
+            <div>
+                <b>
+                    <mat-icon *ngIf="selectedSlots[supervisor][time].chairperson">
+                        groups
+                    </mat-icon>
+                </b>
+                <p>
+                    {{ selectedSlots[supervisor][time].classroom }}
+                </p>
+            </div>
+            <div >
+                {{ selectedSlots[supervisor][time].committeeIdentifier }}
+            </div>
+        </div>
+        <span class="selection-indicator" >
+
+        </span>
+        </td>
+    </tr>
+</table>

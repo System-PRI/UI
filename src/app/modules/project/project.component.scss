@@ -13,6 +13,11 @@
     h1 {
         margin: 0;
     }
+
+    div {
+        display: flex;
+        column-gap: 30px;
+    }
 }
 
 .tables {
@@ -45,13 +50,26 @@ mat-spinner {
     transform: translateX(-50px);
 }
 
+.supervisor-availability-menu {
+    display: grid;
+    padding: 15px;
+    button {
+        margin: 0px 20px 20px 20px;
+    }
+}
+
 
 .hidden {
     opacity: 0;
     cursor: default;
 }
 
-.tables.whole-width {
+.project-filters-container {
+    display: flex;
+    align-items: center;
+}
+
+.tables.full-width {
     flex-wrap: wrap;
 
     div {

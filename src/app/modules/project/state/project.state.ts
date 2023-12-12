@@ -1,5 +1,5 @@
-import { Project, ProjectFilters } from '../models/project'
 import * as AppState from '../../../app.state';
+import { Project, ProjectFilters } from '../models/project.model';
 import { SupervisorAvailability } from '../models/supervisor-availability.model';
 
 export interface State extends AppState.State {
@@ -18,7 +18,8 @@ export const initialState: ProjectState = {
         searchValue: '',
         supervisorIndexNumber: undefined,
         acceptanceStatus: undefined,
-        columns: ['name', 'supervisorName', 'accepted'],
+        columns: ['name'],
+        criteriaMetStatus: undefined,
     },
     supervisorsAvailability: []
 }

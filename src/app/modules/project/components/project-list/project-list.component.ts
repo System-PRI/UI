@@ -4,12 +4,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, combineLatest, takeUntil, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ExternalLinkService } from 'src/app/modules/external-link/external-link.service';
 import { getFilters, getProjects } from '../../state/project.selectors';
 import { State } from 'src/app/app.state';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { changeFilters, loadProjects } from '../../state/project.actions';
-import { Project } from '../../models/project';
+import { Project } from '../../models/project.model';
 
 @Component({
   selector: 'project-list',
@@ -20,18 +19,19 @@ import { Project } from '../../models/project';
 export class ProjectListComponent implements OnDestroy, OnInit{
   @Input() acceptedProjects!: number[];
   @Input() assignedProjects!: number[];
+  @Input() page!: string;
+  @Input() externalLinkColumnHeaders!: string[];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  columns = ['name', 'supervisorName', 'accepted'];
+  columns = ['name'];
   projects!: MatTableDataSource<Project>;
-  externalLinkColumnHeaders: string[] = [];
   unsubscribe$ = new Subject();
   loading = true;
 
   constructor(
     private store: Store<State>,
-    private externalLinkService: ExternalLinkService ,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -40,17 +40,16 @@ export class ProjectListComponent implements OnDestroy, OnInit{
     combineLatest([
       this.store.select(getProjects),
       this.store.select(getFilters),
-      this.externalLinkService.externalLinkDataList$,
     ]).pipe(
       tap(() => this.loading = true),
       takeUntil(this.unsubscribe$)).subscribe(
-      ([projects, filters, links]) => {
+      ([projects, filters]) => {
         if(projects !== undefined){
           const mappedProjects = projects.map((project) => {
             return {
                 ...project,
                 supervisorName: project.supervisor.name, 
-                externalLinks: links.find(linksData => linksData.projectId === project.id)?.externalLinks!
+                externalLinks: project.externalLinks
             }
           })
 
@@ -61,21 +60,20 @@ export class ProjectListComponent implements OnDestroy, OnInit{
                 this.filterProjectBySearchValue(project, filters.searchValue) && 
                 (
                   this.filterProjectByAcceptanceStatus(project, filters.acceptanceStatus) &&
-                  this.filterProjectBySupervisorIndexNumber(project, filters.supervisorIndexNumber)
+                  this.filterProjectBySupervisorIndexNumber(project, filters.supervisorIndexNumber) &&
+                  this.filterProjectByCriteriaMetStatus(project, filters.criteriaMetStatus)
                 )             
           )
           this.projects = new MatTableDataSource<Project>(filteredProjects);
           this.projects.paginator = this.paginator;
           this.projects.sort = this.sort;
 
+          // Uncomment if we want to reset sorting after changing page
+          //this.sort.sort({ id: '', start: 'desc', disableClear: false });
+
+
           this.loading = false;
         }
-      }
-    )
-
-    this.externalLinkService.columnHeaders$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-      columnHeaders => {
-        this.externalLinkColumnHeaders = columnHeaders;
       }
     )
   }
@@ -93,6 +91,9 @@ export class ProjectListComponent implements OnDestroy, OnInit{
     return supervisorIndexNumber !== undefined ? project.supervisor.indexNumber === supervisorIndexNumber : true
   }
 
+  filterProjectByCriteriaMetStatus(project: Project, criteriaMetStatus?: boolean): boolean {
+    return criteriaMetStatus !== undefined ? project.criteriaMet === criteriaMetStatus : true
+  }
 
   isProjectAccepted(id: number){
     return this.acceptedProjects.findIndex(projectId => projectId === id) !== -1
@@ -103,8 +104,17 @@ export class ProjectListComponent implements OnDestroy, OnInit{
            this.assignedProjects.findIndex(projectId => projectId === id) !== -1 
   }
 
-  navigateToProjectDetails(projectId: string){
-    this.router.navigate([{outlets: {modal: `projects/details/${projectId}`}}]) 
+  navigateToDetails(projectId: string){
+    switch(this.page){
+      case 'PROJECT_GROUPS':
+        this.router.navigate([{outlets: {modal: `projects/details/${projectId}`}}]) 
+      break;
+      case 'GRADES':
+        this.router.navigate([{outlets: {modal: `grades/details/${projectId}`}}]) 
+
+        //this.router.navigate([`grades/details/${projectId}`]) 
+      break;
+    }
   }
 
   ngOnDestroy(): void {
@@ -115,7 +125,8 @@ export class ProjectListComponent implements OnDestroy, OnInit{
       searchValue: '',
       supervisorIndexNumber: undefined,
       acceptanceStatus: undefined,
-      columns: ['name', 'supervisorName', 'accepted']
+      columns: ['name', 'supervisorName', 'accepted'],
+      criteriaMetStatus: undefined,
     }}))
   }
 }

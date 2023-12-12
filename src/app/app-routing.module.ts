@@ -25,20 +25,21 @@ const routes: Routes = [
     outlet: 'modal',
   },
   {
-    path: 'grades',
-    loadChildren: () => import('./modules/grade/grade.module').then(m => m.GradeModule),
+    path: 'defense-schedule',
+    loadChildren: () => import('./modules/defense-schedule/defense-schedule.module').then(m => m.DefenseScheduleModule),
     canActivate: [UserGuard]
   },
   {
-    path: 'external-links',
-    loadChildren: () => import('./modules/external-link/external-link.module').then(m => m.ExternalLinkModule),
-    canActivate: [UserGuard]
+    path: 'defense-schedule',
+    loadChildren: () => import('./modules/defense-schedule/defense-schedule.module').then(m => m.DefenseScheduleModule),
+    canActivate: [UserGuard],
+    outlet: 'modal',
   },
   {
     path: 'data-feed',
     loadChildren: () => import('./modules/data-feed/data-feed.module').then(m => m.DataFeedModule),
     canActivate: [CoordinatorGuard]
-  },
+  }
 ];
 
 @NgModule({

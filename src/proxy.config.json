@@ -1,11 +1,15 @@
+
 {
-    "/apigateway/*": {
+    "/pri/*": {
         "target": "http://localhost:8080/pri",
         "secure": false,
-        "logLevel": "debug",
+        "logLevel": "info",
         "changeOrigin": true,
+        "headers": {
+            "Connection": "keep-alive",
+        },
         "pathRewrite": {
-            "^/apigateway": ""
+            "^/pri": ""
         }
     }
 }

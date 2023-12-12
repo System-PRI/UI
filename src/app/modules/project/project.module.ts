@@ -26,9 +26,17 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
 import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
 import { SupervisorAvailabilityListComponent } from './components/supervisor-availability-list/supervisor-availability-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ExternalLinkModule } from '../external-link/external-link.module';
 import { ProjectRemoveDialogComponent } from './components/project-remove-dialog/project-remove-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ProjectGradeComponent } from './components/project-grade/project-grade.component';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatTabsModule} from '@angular/material/tabs';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatMenuModule} from '@angular/material/menu';
+
+
 
 @NgModule({
   declarations: [
@@ -37,9 +45,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ProjectDetailsComponent,
     ProjectFiltersComponent,
     ProjectComponent,
+    ProjectGradeComponent,
     SupervisorAvailabilityListComponent,
     SupervisorAvailabilityFormComponent,
     ProjectRemoveDialogComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -60,9 +70,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatRadioModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatDividerModule,
+    MatTabsModule,
+    MatButtonToggleModule,
+    MatTooltipModule,
+    MatExpansionModule,
+    MatMenuModule,
     StoreModule.forFeature('project', projectReducer),
     EffectsModule.forFeature([ProjectEffects]),
-    ExternalLinkModule
   ]
 })
 export class ProjectModule { }
