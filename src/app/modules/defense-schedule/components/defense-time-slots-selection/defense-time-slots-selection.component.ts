@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DefenseScheduleService } from '../../defense-schedule.service';
-import { SupervisorAvailabilitySurvey } from '../../models/defense-schedule.model';
+import { SupervisorAvailabilitySurvey, SupervisorDefenseAssignment } from '../../models/defense-schedule.model';
 import { Subject, takeUntil} from 'rxjs';
 
 interface DateTimeReference {
@@ -23,6 +23,7 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
   end: DateTimeReference = { date: '', time: '' }
   over: DateTimeReference = { date: '', time: '' }
   unsubscribe$ = new Subject();
+  lastSelectedSlots: SupervisorAvailabilitySurvey = {};
   selectedSlots!: SupervisorAvailabilitySurvey;
 
   constructor(private defenseScheduleService: DefenseScheduleService){}
@@ -32,9 +33,11 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
     this.defenseScheduleService.getSupervisorAvailabilitySurvey().pipe(takeUntil(this.unsubscribe$)).subscribe(
       survey => {
         this.selectedSlots = survey
+        
 
         for(let date of Object.keys(this.selectedSlots)){
           this.hoveredSlots[date] = {};
+          this.lastSelectedSlots[date] = {};
           this.dates.push(date);
 
           for(let time of Object.keys(this.selectedSlots[date])){
@@ -46,6 +49,10 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
         }
       }
     )
+  }
+
+  updateAssignment(slots: {[key: string]: SupervisorDefenseAssignment}){
+    this.defenseScheduleService.updateSupervisorDefenseAssignment(slots).pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
 
 
@@ -95,9 +102,9 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
     const endIndex = this.times.indexOf(this.end.time);
 
     if(this.end.date === this.start.date){
-      
       if(startIndex === endIndex){
         this.selectedSlots[date][time].available = !this.selectedSlots[date][time].available; 
+        this.lastSelectedSlots[date][time] = JSON.parse(JSON.stringify(this.selectedSlots[date][time]))
       } else {
         for(let t of Object.keys(this.selectedSlots[date])){
           const timeIndex = this.times.indexOf(t);
@@ -105,20 +112,23 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
           if(startIndex < endIndex){
             if((timeIndex >= startIndex && timeIndex <= endIndex)){
               this.selectedSlots[date][t].available = !this.startStatus;
+              this.lastSelectedSlots[date][t] = JSON.parse(JSON.stringify(this.selectedSlots[date][t]))
             }
           } else {
             if((timeIndex <= startIndex && timeIndex >= endIndex)){
               this.selectedSlots[date][t].available = !this.startStatus;
+              this.lastSelectedSlots[date][t] = JSON.parse(JSON.stringify(this.selectedSlots[date][t]))
             }
           }
-    
-         
         }
       }
+      this.updateAssignment(this.lastSelectedSlots[date])
     }
+
 
     this.dates.forEach(date => {
       this.hoveredSlots[date] = {};
+      this.lastSelectedSlots[date] = {};
 
       this.times.forEach(time => {
         this.hoveredSlots[date][time] = false;
@@ -128,6 +138,7 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
     this.start = { date: '', time: '' };
     this.end = { date: '', time: '' };
 
+    
     console.log(this.selectedSlots)
 
   }
