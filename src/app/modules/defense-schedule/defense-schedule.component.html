@@ -10,15 +10,18 @@
 <br>
 <br>
 <div *ngIf="assignments" class="committee-selection-container">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-        <mat-tab label="01/08/2024">
-            <defense-committee-selection (updateStatistics)="onStatisticsUpdated($event)" [assignment]="assignments['01/08/2024']"></defense-committee-selection>
-        </mat-tab>
-        <mat-tab label="02/08/2024">
-            <defense-committee-selection [assignment]="assignments['01/08/2024']"></defense-committee-selection>
-        </mat-tab>
-    </mat-tab-group>
-    <defense-committee-statistics [statistics]="statistics"></defense-committee-statistics>
+    <div class="buttons-container"> 
+        <button *ngIf="true" (click)="getDefenseSummary()" mat-raised-button color="primary">Export summary</button>
+    </div>
+    <div class="tables-container">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+
+            <mat-tab *ngFor="let assignment of assignments | keyvalue" [label]="assignment.key">
+                <defense-committee-selection (updateStatistics)="onStatisticsUpdated($event)" [assignment]="assignments[assignment.key]"></defense-committee-selection>
+            </mat-tab>
+        </mat-tab-group>
+        <defense-committee-statistics [statistics]="statistics"></defense-committee-statistics>
+    </div>
 </div>
 
 

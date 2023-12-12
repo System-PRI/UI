@@ -23,7 +23,6 @@ import { DefenseCommitteeStatisticsComponent } from './components/defense-commit
 import { DefenseScheduleSelectionComponent } from './components/defense-schedule-selection/defense-schedule-selection.component';
 import { MatRadioModule } from '@angular/material/radio';
 
-
 @NgModule({
   declarations: [
     DefenseScheduleComponent,

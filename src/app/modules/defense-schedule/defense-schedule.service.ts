@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError } from "rxjs";
 import { Project, ProjectDefense, ScheduleConfig, SupervisorAvailabilitySurvey, SupervisorDefenseAssignment, SupervisorDefenseAssignmentAggregated, SupervisorStatistics } from "./models/defense-schedule.model";
@@ -8,6 +8,18 @@ import { Project, ProjectDefense, ScheduleConfig, SupervisorAvailabilitySurvey, 
 })
 export class DefenseScheduleService {
     constructor(private http: HttpClient) { }
+
+    public setHttpHeadersForFile(): any {
+        const httpHeaders = new HttpHeaders().set(
+            'Content-Type',
+            'application/json; charset-utf-8'
+        );
+        return {
+            headers: httpHeaders,
+            responseType: 'blob',
+            observe: 'response'
+        }
+    }
 
     getSupervisorAvailabilitySurvey(): Observable<SupervisorAvailabilitySurvey> {
         return this.http
@@ -93,6 +105,16 @@ export class DefenseScheduleService {
     setScheduleConfig(config: ScheduleConfig): Observable<null> {
         return this.http
             .post<null>(`/pri/schedule/config`, config)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
+
+    getDefenseSummary(): Observable<any> {
+        return this.http
+            .get<HttpResponse<Blob>>(`/pri/schedule/defense/summary`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(

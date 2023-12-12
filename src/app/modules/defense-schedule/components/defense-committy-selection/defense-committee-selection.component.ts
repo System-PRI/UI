@@ -10,9 +10,9 @@ interface SupervisorTimeReference {
 }
 
 @Component({
-  selector: 'defense-committy-selection',
-  templateUrl: './defense-committy-selection.component.html',
-  styleUrls: ['./defense-committy-selection.component.scss']
+  selector: 'defense-committee-selection',
+  templateUrl: './defense-committee-selection.component.html',
+  styleUrls: ['./defense-committee-selection.component.scss']
 })
 export class DefenseCommittySelectionComponent implements OnChanges, OnDestroy {
   surnames: string[] = [];

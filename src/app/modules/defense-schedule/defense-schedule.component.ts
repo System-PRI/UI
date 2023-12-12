@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, } from '@angular/core';
 import { DefenseScheduleService } from './defense-schedule.service';
-import { SupervisorDefenseAssignment, SupervisorDefenseAssignmentAggregated, SupervisorStatistics } from './models/defense-schedule.model';
+import { SupervisorDefenseAssignmentAggregated, SupervisorStatistics } from './models/defense-schedule.model';
 import { Subject, takeUntil } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'defense-schedule',
@@ -31,6 +33,15 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     this.statistics = statistics;
   }
 
+  getDefenseSummary(){
+    this.defenseScheduleService.getDefenseSummary().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (file: HttpResponse<Blob>) => {
+        if(file?.body){
+          saveAs(file.body!, 'summary.pdf')
+        }
+      }
+    )
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);

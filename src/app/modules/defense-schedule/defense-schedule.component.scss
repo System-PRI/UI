@@ -14,7 +14,17 @@
 }
 
 .committee-selection-container {
-    display: flex;
-    column-gap: 50px;
+    display: grid;
     width: 100%;
+
+    .tables-container {
+        column-gap: 50px;
+        display: flex;
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
 }
