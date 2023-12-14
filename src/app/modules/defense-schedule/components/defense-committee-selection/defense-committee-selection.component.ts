@@ -36,6 +36,25 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   @Output() updateStatistics: EventEmitter<SupervisorStatistics[]> = new EventEmitter();
   slotsSelected: boolean = false;
 
+  committiesChairpersonAssignments: { [key:string]: any } = {
+    'A': {
+      chairpersonId: null,
+      class: null
+    },
+    'B': {
+      chairpersonId: null,
+      class: null
+    },
+    'C': {
+      chairpersonId: null,
+      class: null
+    },
+    'D': {
+      chairpersonId: null,
+      class: null
+    }
+  }
+
   cursorPositionY = '';
   cursorPositionX = '';
   constructor(private defenseScheduleService: DefenseScheduleService){}

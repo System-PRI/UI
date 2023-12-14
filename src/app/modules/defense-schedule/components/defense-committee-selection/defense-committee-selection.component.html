@@ -8,18 +8,18 @@
         </mat-select>
     </mat-form-field>
     <br>
-    Chairperson:
-    <mat-slide-toggle [(ngModel)]="roleMultipleSelection"  (change)="multipleRoleSelectionChanged()"></mat-slide-toggle>
-    <br>
-    <mat-form-field *ngIf="roleMultipleSelection">
-        <input placeholder="Class" [formControl]="classMultitpleSelection" matInput type="text" />
-    </mat-form-field>
-    <br>
     <div>
         <button (click)="closeSelectionMenu()" mat-button color="primary" cdkFocusInitial>Close</button>
         <button (click)="unselectSlots()" mat-raised-button color="primary" cdkFocusInitial>Unselect</button>
     </div>
 </div>
+
+Chairperson:
+<mat-slide-toggle [(ngModel)]="roleMultipleSelection"  (change)="multipleRoleSelectionChanged()"></mat-slide-toggle>
+<br>
+<mat-form-field *ngIf="roleMultipleSelection">
+    <input placeholder="Class" [formControl]="classMultitpleSelection" matInput type="text" />
+</mat-form-field>
 
 <table class="mat-elevation-z8">
     <tr>
