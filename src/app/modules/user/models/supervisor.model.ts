@@ -3,6 +3,7 @@ export interface Supervisor {
     name: string,
     indexNumber: string;
     accepted?: boolean;
+    initials: string;
 }
 
 export interface SupervisorDTO {

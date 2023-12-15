@@ -31,16 +31,6 @@ export class DefenseScheduleService {
             )
     }
 
-    getSupervisorsDefenseAssignment(): Observable<SupervisorDefenseAssignmentAggregated> {
-        return this.http
-            .get<SupervisorDefenseAssignmentAggregated>(`/pri/schedule/availability/supervisor`)
-            .pipe(
-                retry(3),
-                catchError(
-                    (err: HttpErrorResponse) => throwError(() => err))
-            )
-    }
-
     updateSupervisorDefenseAssignment(slots: {[key: string]: SupervisorDefenseAssignment}): Observable<null> {
         return this.http
             .put<null>(`/pri/schedule/availability/supervisor/1`, slots)
@@ -50,6 +40,7 @@ export class DefenseScheduleService {
                     (err: HttpErrorResponse) => throwError(() => err))
             )
     }
+
 
     getSupervisorsStatistics(): Observable<SupervisorStatistics[]> {
         return this.http
@@ -90,11 +81,20 @@ export class DefenseScheduleService {
                 (err: HttpErrorResponse) => throwError(() => err))
         )
     }
-    
 
+    getSupervisorsDefenseAssignment(): Observable<SupervisorDefenseAssignmentAggregated> {
+        return this.http
+            .get<SupervisorDefenseAssignmentAggregated>(`/pri/schedule/committee/supervisor`)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+    
     updateCommitteeSchedule(slots: {[key: string]: SupervisorDefenseAssignment}): Observable<SupervisorStatistics[]> {
         return this.http
-            .put<SupervisorStatistics[]>(`/pri/schedule/availability/supervisor`, slots)
+            .put<SupervisorStatistics[]>(`/pri/schedule/committee/supervisor`, slots)
             .pipe(
                 retry(3),
                 catchError(

@@ -4,15 +4,8 @@
 <div *ngIf="slotsSelected" class="slot-menu mat-elevation-z8" [ngStyle]="{top: cursorPositionY, left: cursorPositionX}">
     committee: <mat-form-field class="committee-select">
         <mat-select [(ngModel)]="committeeMultipleSelection" (selectionChange)="multipleCommitteeSelectionChanged($event)">
-            <mat-option *ngFor="let committee of ['A','B','C']" [value]="committee">{{ committee }}</mat-option>
+            <mat-option *ngFor="let committee of ['A','B','C','D']" [value]="committee">{{ committee }}</mat-option>
         </mat-select>
-    </mat-form-field>
-    <br>
-    Chairperson:
-    <mat-slide-toggle [(ngModel)]="roleMultipleSelection"  (change)="multipleRoleSelectionChanged()"></mat-slide-toggle>
-    <br>
-    <mat-form-field *ngIf="roleMultipleSelection">
-        <input placeholder="Class" [formControl]="classMultitpleSelection" matInput type="text" />
     </mat-form-field>
     <br>
     <div>
@@ -21,10 +14,10 @@
     </div>
 </div>
 
-<table class="mat-elevation-z8">
+<table class="committee-selection-table"> 
     <tr>
         <th>Time</th>
-        <th *ngFor="let supervisor of supervisors">{{ supervisor }}</th>
+        <th *ngFor="let supervisor of supervisors">{{ supervisor.initials }}</th>
     </tr>
     <tr *ngFor="let time of times">
         <td>{{ time }}</td>
@@ -37,7 +30,7 @@
             (mousedown)="onMouseDown(supervisor, time)"
             (mouseup)="onMouseUp(supervisor, time, $event)"
             [class.selected]="(selectedSlots[supervisor] && selectedSlots[supervisor][time].committeeIdentifier)"
-            *ngFor="let supervisor of supervisors"
+            *ngFor="let supervisor of supervisorsIndexes"
         >
         <div class="committee-role-info">
             <div>
@@ -60,3 +53,20 @@
         </td>
     </tr>
 </table>
+<div class="statistics-and-config-container">
+    <defense-committee-statistics [statistics]="statistics"></defense-committee-statistics>
+    <div class="committee-config-container">
+        <div *ngFor="let committee of committiesChairpersonAssignments | keyvalue">
+            <h3>{{committee.key}}</h3>
+            <mat-form-field>
+                <mat-label>Chairperson</mat-label>
+                <mat-select [(ngModel)]="committiesChairpersonAssignments[committee.key].chairpersonId" (selectionChange)="committeeChairpersonSelected($event)">
+                    <mat-option *ngFor="let supervisor of supervisors" [value]="supervisor.indexNumber">{{ supervisor.initials + ' | ' + supervisor.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <input placeholder="Classroom" [formControl]="committee.value.class" matInput type="text" />
+            </mat-form-field>
+        </div>
+    </div>
+</div>
