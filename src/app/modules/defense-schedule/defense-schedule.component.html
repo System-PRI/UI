@@ -17,10 +17,9 @@
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
 
             <mat-tab *ngFor="let assignment of assignments | keyvalue" [label]="assignment.key">
-                <defense-committee-selection (updateStatistics)="onStatisticsUpdated($event)" [assignment]="assignments[assignment.key]"></defense-committee-selection>
+                <defense-committee-selection [assignment]="assignments[assignment.key]"></defense-committee-selection>
             </mat-tab>
         </mat-tab-group>
-        <defense-committee-statistics [statistics]="statistics"></defense-committee-statistics>
     </div>
 </div>
 
