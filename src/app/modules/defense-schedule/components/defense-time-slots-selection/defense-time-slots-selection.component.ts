@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DefenseScheduleService } from '../../defense-schedule.service';
 import { SupervisorAvailabilitySurvey, SupervisorDefenseAssignment } from '../../models/defense-schedule.model';
 import { Subject, takeUntil} from 'rxjs';
+import { User } from 'src/app/modules/user/models/user.model';
 
 interface DateTimeReference {
   date: string,
@@ -25,12 +26,14 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
   unsubscribe$ = new Subject();
   lastSelectedSlots: SupervisorAvailabilitySurvey = {};
   selectedSlots!: SupervisorAvailabilitySurvey;
+  @Input() user!: User;
+
 
   constructor(private defenseScheduleService: DefenseScheduleService){}
 
   ngOnInit(): void {
 
-    this.defenseScheduleService.getSupervisorAvailabilitySurvey().pipe(takeUntil(this.unsubscribe$)).subscribe(
+    this.defenseScheduleService.getSupervisorAvailabilitySurvey(this.user.indexNumber).pipe(takeUntil(this.unsubscribe$)).subscribe(
       survey => {
         this.selectedSlots = survey
         
@@ -52,7 +55,7 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
   }
 
   updateAssignment(slots: {[key: string]: SupervisorDefenseAssignment}){
-    this.defenseScheduleService.updateSupervisorDefenseAssignment(slots).pipe(takeUntil(this.unsubscribe$)).subscribe()
+    this.defenseScheduleService.updateSupervisorDefenseAssignment(slots, this.user.indexNumber).pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
 
 

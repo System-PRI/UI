@@ -21,9 +21,9 @@ export class DefenseScheduleService {
         }
     }
 
-    getSupervisorAvailabilitySurvey(): Observable<SupervisorAvailabilitySurvey> {
+    getSupervisorAvailabilitySurvey(indexNumber: string): Observable<SupervisorAvailabilitySurvey> {
         return this.http
-            .get<SupervisorAvailabilitySurvey>(`/pri/schedule/availability/supervisor/1`)
+            .get<SupervisorAvailabilitySurvey>(`/pri/schedule/availability/supervisor/${indexNumber}`)
             .pipe(
                 retry(3),
                 catchError(
@@ -31,9 +31,9 @@ export class DefenseScheduleService {
             )
     }
 
-    updateSupervisorDefenseAssignment(slots: {[key: string]: SupervisorDefenseAssignment}): Observable<null> {
+    updateSupervisorDefenseAssignment(slots: {[key: string]: SupervisorDefenseAssignment}, indexNumber: string): Observable<null> {
         return this.http
-            .put<null>(`/pri/schedule/availability/supervisor/1`, slots)
+            .put<null>(`/pri/schedule/availability/supervisor/${indexNumber}`, slots)
             .pipe(
                 retry(3),
                 catchError(

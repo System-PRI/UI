@@ -241,14 +241,12 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
       
       let countSameCommittee = 0;
       for(let t of Object.keys(this.lastSelectedSlots[supervisor])){
-        console.log(this.lastSelectedSlots[supervisor][t].committeeIdentifier, this.selectedSlots[supervisor][this.start.time].committeeIdentifier)
         if(this.lastSelectedSlots[supervisor][t].committeeIdentifier === this.selectedSlots[supervisor][this.start.time].committeeIdentifier){
           countSameCommittee++;
         }
       }
 
       const everySlotHasSameCommittee = countSameCommittee === Object.keys(this.lastSelectedSlots[supervisor]).length;
-      console.log(everySlotHasSameCommittee)
       this.committeeMultipleSelection = everySlotHasSameCommittee ? this.selectedSlots[supervisor][this.start.time].committeeIdentifier : this.committeeMultipleSelection = null;
 
       this.lastSelectedSupervisor = this.start.supervisor;
