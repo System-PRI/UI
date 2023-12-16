@@ -95,6 +95,10 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     }
   }
 
+  isChairperson(defenseAssignment: SupervisorDefenseAssignment): boolean {
+    return defenseAssignment.committeeIdentifier !== null && this.chairpersonAssignment[defenseAssignment.committeeIdentifier].chairpersonId === defenseAssignment.supervisorId;
+  }
+
   updateChairpersonAssignment(chairpersonAssignment: ChairpersonAssignment){
     this.defenseScheduleService.updateChairpersonAssignment(chairpersonAssignment).pipe(takeUntil(this.unsubscribe$))
       .subscribe()

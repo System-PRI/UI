@@ -22,34 +22,32 @@
     <tr *ngFor="let time of times">
         <td>{{ time }}</td>
         <td class="committee-selection"
-            [class.not-available]="!selectedSlots[supervisor][time].available" 
-            [class.chairperson]="selectedSlots[supervisor][time].chairperson" 
-            [class.hovered]="hoveredSlots[supervisor] && hoveredSlots[supervisor][time]" 
-            [class.last-selection]="lastSelectedSlots[supervisor] && lastSelectedSlots[supervisor][time]" 
-            (mouseenter)="onMouseEnter(supervisor, time)"
-            (mousedown)="onMouseDown(supervisor, time)"
-            (mouseup)="onMouseUp(supervisor, time, $event)"
-            [class.selected]="(selectedSlots[supervisor] && selectedSlots[supervisor][time].committeeIdentifier)"
-            *ngFor="let supervisor of supervisorsIndexes"
+            [class.not-available]="!selectedSlots[supervisor.id][time].available" 
+            [class.chairperson]="isChairperson(selectedSlots[supervisor.id][time])" 
+            [class.hovered]="hoveredSlots[supervisor.id] && hoveredSlots[supervisor.id][time]" 
+            [class.last-selection]="lastSelectedSlots[supervisor.id] && lastSelectedSlots[supervisor.id][time]" 
+            (mouseenter)="onMouseEnter(supervisor.id, time)"
+            (mousedown)="onMouseDown(supervisor.id, time)"
+            (mouseup)="onMouseUp(supervisor.id, time, $event)"
+            [class.selected]="(selectedSlots[supervisor.id] && selectedSlots[supervisor.id][time].committeeIdentifier)"
+            *ngFor="let supervisor of supervisors"
         >
         <div class="committee-role-info">
             <div>
                 <b>
-                    <mat-icon *ngIf="selectedSlots[supervisor][time].chairperson">
+                    <mat-icon *ngIf="isChairperson(selectedSlots[supervisor.id][time])">
                         groups
                     </mat-icon>
                 </b>
-                <p>
-                    {{ selectedSlots[supervisor][time].classroom }}
+                <p *ngIf="isChairperson(selectedSlots[supervisor.id][time])">
+                    {{ chairpersonAssignment[selectedSlots[supervisor.id][time].committeeIdentifier!].chairpersonId }}
                 </p>
             </div>
             <div >
-                {{ selectedSlots[supervisor][time].committeeIdentifier }}
+                {{ selectedSlots[supervisor.id][time].committeeIdentifier }}
             </div>
         </div>
-        <span class="selection-indicator" >
-
-        </span>
+        <span class="selection-indicator"></span>
         </td>
     </tr>
 </table>
@@ -61,7 +59,8 @@
             <mat-form-field>
                 <mat-label>Chairperson</mat-label>
                 <mat-select [(ngModel)]="chairpersonAssignment[assignment.key].chairpersonId" (selectionChange)="committeeChairpersonSelected($event, assignment.key)">
-                    <mat-option *ngFor="let supervisor of supervisors" [value]="supervisor.indexNumber">{{ supervisor.initials + ' | ' + supervisor.name }}</mat-option>
+                    <mat-option [value]="null">---</mat-option>
+                    <mat-option *ngFor="let supervisor of supervisors" [value]="supervisor.id">{{ supervisor.initials + ' | ' + supervisor.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
