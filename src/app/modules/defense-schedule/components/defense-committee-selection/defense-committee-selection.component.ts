@@ -23,7 +23,6 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   @Input() defenseAssignment!: {[key: string]: { [key: string]: SupervisorDefenseAssignment }};
   @Input() chairpersonAssignment!: {[key: string]: ChairpersonAssignment };
   supervisors!: Supervisor[];
-  supervisorsIndexes: string[] = [];
   times: string[] = [];
   statistics: SupervisorStatistics[] = [];
 
@@ -75,7 +74,6 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     this.selectedSlots = this.defenseAssignment;
     if(this.selectedSlots){
       for(let supervisor of Object.keys(this.selectedSlots)){
-        this.supervisorsIndexes.push(supervisor);
         this.hoveredSlots[supervisor] = {};
         this.lastSelectedSlots[supervisor] = {};
   
