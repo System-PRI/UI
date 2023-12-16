@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy, } from '@angular/core';
 import { DefenseScheduleService } from './defense-schedule.service';
-import { SupervisorDefenseAssignmentAggregated, SupervisorStatistics } from './models/defense-schedule.model';
+import { SupervisorDefenseAssignmentAggregated, SupervisorStatistics, ChairpersonAssignmentAggregated } from './models/defense-schedule.model';
 import { Subject, takeUntil } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
-import { saveAs } from 'file-saver';
+import { State } from 'src/app/app.state';
+import { Store } from '@ngrx/store';
+import { User } from '../user/models/user.model';
 
 @Component({
   selector: 'defense-schedule',
@@ -12,35 +13,44 @@ import { saveAs } from 'file-saver';
 })
 export class DefenseScheduleComponent implements OnInit, OnDestroy {
 
-  assignments: SupervisorDefenseAssignmentAggregated = {};
+  defenseAssignments!: SupervisorDefenseAssignmentAggregated;
+  chairpersonAssignments!: ChairpersonAssignmentAggregated;
   unsubscribe$ = new Subject();
   statistics: SupervisorStatistics[] = [];
+  user!: User;
 
-
-  constructor(private defenseScheduleService: DefenseScheduleService){}
+  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>){}
 
   ngOnInit(): void {
     this.defenseScheduleService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      assignments => this.assignments = assignments
+      assignments => this.defenseAssignments = assignments
     )
 
     this.defenseScheduleService.getSupervisorsStatistics().pipe(takeUntil(this.unsubscribe$)).subscribe(
       statistics => this.statistics = statistics
     )
+
+    this.defenseScheduleService.getChairpersonAssignmentAggregated().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      assignments => this.chairpersonAssignments = assignments
+    )
+
+    this.store.select('user').subscribe(user => this.user = user);
   }
 
   onStatisticsUpdated(statistics: SupervisorStatistics[]){
     this.statistics = statistics;
   }
 
-  getDefenseSummary(){
-    this.defenseScheduleService.getDefenseSummary().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (file: HttpResponse<Blob>) => {
-        if(file?.body){
-          saveAs(file.body!, 'summary.pdf')
-        }
-      }
-    )
+  get showDefenseScheduleConfig(): boolean {
+    return this.user?.role === 'COORDINATOR' && this.defenseAssignments === null;
+  }
+
+  get showSupervisorAccessibilitySurvey(): boolean {
+    return this.user?.role === 'SUPERVISOR';
+  }
+
+  get showCommitteeSelectionSurvey(): boolean {
+    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
   }
 
   ngOnDestroy(): void {

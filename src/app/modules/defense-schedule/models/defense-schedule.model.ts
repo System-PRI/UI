@@ -60,3 +60,18 @@ export interface SupervisorStatistics {
     load: number; // result of totalNumberOfCommittees / numberOfGroups
     committeesPerDay: { [key: string]: number} // e.g. '01/10/2024': 1,
 }
+
+
+export interface ChairpersonAssignmentAggregated {
+    [key: string]: { // date, e.g. 11.01.2024
+        [key: string]:  // committeeIdentifier, e.g. A
+        ChairpersonAssignment
+    }
+}
+
+export interface ChairpersonAssignment {
+    chairpersonId: string | null
+    classroom: string | null,    
+    date: string,
+    committeeIdentifier: string,
+}
