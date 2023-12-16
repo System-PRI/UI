@@ -4,39 +4,50 @@ include:
 
 stages:
   - build
-  - test
   - deploy
 
-unit-test:
-  extends:
-    - .common-rule
-  stage: test
-  script:
-    - echo "Running unit tests..."
-    # - cd /${CI_PROJECT_DIR}
-    # - sudo npm install
-    # - sudo npm run test
+variables:
+  IMAGE_NAME: "pri-ui"
+  CONTAINER_NAME: "pri-ui"
+  DIST_PATH: dist
+
+#unit-test:
+##  extends:
+##    - .common-rule
+##  stage: test
+##  script:
+##    - echo "Running unit tests..."
+
+before_script:
+  - apt-get install -y nginx
+
+cache:
+  paths:
+    - node_modules/
 
 clean:
   extends:
     - .after-merge-rule
   stage: build
   script:
-    - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
-    - sudo docker rmi pri-ui || true
+    - sudo docker stop $CONTAINER_NAME || true
+    - sudo docker rm $CONTAINER_NAME || true
+    - sudo docker rmi $IMAGE_NAME || true
 
 build:
   extends:
     - .after-merge-rule
   stage: build
   script:
-    - sudo docker build --rm -t pri-ui .
+    - npm install
+    - ng build --prod
+    - sudo docker build --rm -t $IMAGE_NAME .
 
 deploy:
   extends:
     - .after-merge-rule
   stage: deploy
-  before_script:
-    - sudo docker version
+  only:
+    - main
   script:
-    - sudo docker run -v /etc/letsencrypt/ssl:/etc/letsencrypt/ssl -d --name pri-ui --network=pri-network -p 443:443 pri-ui
+    - sudo docker run -v /etc/letsencrypt/ssl:/etc/letsencrypt/ssl -d --name $CONTAINER_NAME --network=pri-network -p 443:443 $IMAGE_NAME
