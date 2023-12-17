@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DefenseScheduleService } from '../../defense-schedule.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,33 +14,34 @@ import { User } from 'src/app/modules/user/models/user.model';
   templateUrl: './defense-schedule-selection.component.html',
   styleUrls: ['./defense-schedule-selection.component.scss']
 })
-export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy {
+export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnChanges {
   columns = ['time', 'project', 'class', 'committee']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  defenses!: MatTableDataSource<ProjectDefense>;
+  dataSource!: MatTableDataSource<ProjectDefense>;
   projects: Project[] = [];
   unsubscribe$ = new Subject();
-  @Input() user!: User;
+  @Input() userRole!: string;
+  @Input() defenses!: ProjectDefense[];
 
   constructor(private defenseScheduleService: DefenseScheduleService){}
 
   ngOnInit(): void {
-    this.defenseScheduleService.getProjectDefenses().subscribe(
-      defenses => {
-        this.defenses = new MatTableDataSource<ProjectDefense>(defenses);
-        this.defenses.paginator = this.paginator;
-        this.defenses.sort = this.sort;
-      }
-    )
-
     this.defenseScheduleService.getProjects().subscribe(
       projects => this.projects = projects
     )
 
-    if(this.user.role === 'STUDENT' || this.user.role === 'PROJECT_ADMIN'){
-      this.columns.push('checkbox');
+    if(this.userRole === 'STUDENT' || this.userRole === 'PROJECT_ADMIN'){
+      this.columns = ['checkbox', ...this.columns]
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(this.defenses){
+        this.dataSource = new MatTableDataSource<ProjectDefense>(this.defenses);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
     }
   }
 
