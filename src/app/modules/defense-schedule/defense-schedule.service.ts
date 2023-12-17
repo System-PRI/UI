@@ -82,6 +82,16 @@ export class DefenseScheduleService {
         )
     }
 
+    updateProjectDefenses(defenses: ProjectDefense[]): Observable<null> {
+        return this.http
+            .patch<null>(`/pri/schedule/defense`, defenses)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+        }
+
     getSupervisorsDefenseAssignment(): Observable<SupervisorDefenseAssignmentAggregated> {
         return this.http
             .get<SupervisorDefenseAssignmentAggregated>(`/pri/schedule/committee/supervisor`)
