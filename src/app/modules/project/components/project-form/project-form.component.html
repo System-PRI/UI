@@ -46,50 +46,50 @@
                     <div test="member-element-project">{{ getMemberData(member).name }}
                         <p>{{getMemberData(member).email}}</p>
                     </div>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" test="select-role-form">
                         <mat-label>Select role</mat-label>
-                        <mat-select [formControl]="getMemberData(member).role">
-                            <mat-option value="FRONTEND">Front-end</mat-option>
-                            <mat-option value="BACKEND">Back-end</mat-option>
-                            <mat-option value="FULLSTACK">Full stack</mat-option>
+                        <mat-select [formControl]="getMemberData(member).role" test="select-role-item">
+                            <mat-option value="FRONTEND" test="select-role-front-end">Front-end</mat-option>
+                            <mat-option value="BACKEND" test="select-role-back-end">Back-end</mat-option>
+                            <mat-option value="FULLSTACK" test="select-role-fullstack">Full stack</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <button
                         [class.hidden]="getMemberData(member).indexNumber === user.indexNumber"
                         [disabled]="getMemberData(member).indexNumber === user.indexNumber"
                         (click)="removeMember(member)" type="button" mat-icon-button>
-                        <mat-icon>close</mat-icon>
+                        <mat-icon test="close-project-button">close</mat-icon>
                     </button>
                 </div>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" test="select-member-form-2">
                     <mat-label>Select member</mat-label>
                     <input matInput [matAutocomplete]="autoStudents" [formControl]="memberInput">
                     <mat-autocomplete #autoStudents="matAutocomplete" autoActiveFirstOption (optionSelected)="onMemberSelect($event.option.value)">
-                        <mat-option *ngFor="let student of (filteredStudents | async)" [value]="student">
+                        <mat-option *ngFor="let student of (filteredStudents | async)" [value]="student" test="select-form-item-2">
                             {{ student.name + ' ' + student.email }}
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="showSupervisorField" appearance="fill">
+                <mat-form-field *ngIf="showSupervisorField" appearance="fill" test="select-supervisor-form">
                     <mat-label>Supervisor</mat-label>
                     <mat-select formControlName="supervisorIndexNumber">
-                        <mat-option *ngFor="let supervisor of supervisors" [value]="supervisor.indexNumber">{{ supervisor.name }}</mat-option>
+                        <mat-option *ngFor="let supervisor of supervisors" [value]="supervisor.indexNumber" test="select-supervisor-item">{{ supervisor.name }}</mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="showProjectAdminField" appearance="fill">
+                <mat-form-field *ngIf="showProjectAdminField" appearance="fill" test="select-project-admin-form">
                     <mat-label>Project Admin</mat-label>
-                    <mat-select formControlName="projectAdmin">
+                    <mat-select formControlName="projectAdmin" test="select-project-admin-item">
                         <ng-container></ng-container>
-                        <mat-option *ngFor="let member of acceptedMembers" [value]="member.indexNumber">
+                        <mat-option *ngFor="let member of acceptedMembers" [value]="member.indexNumber" test="select-project-admin-item-2">
                             {{ member.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div class="buttons-container">
-                <button color="primary"  type="submit" mat-raised-button  [disabled]="!projectForm.valid" cdkFocusInitial>Submit</button>
+                <button color="primary"  type="submit" mat-raised-button  [disabled]="!projectForm.valid" cdkFocusInitial test="project-form-component-submit-button">Submit</button>
             </div>
         </div>
     </div>
