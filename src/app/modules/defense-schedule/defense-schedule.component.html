@@ -1,6 +1,12 @@
-<h1>Project defense schedule</h1>
+<div class="title-and-buttons">
+    <h1>Project defense schedule</h1>
+    <div>
+        <button *ngIf="showArchiveDefenseScheduleButton" (click)="archiveDefenseSchedule()" mat-raised-button color="primary">Archive defense schedule</button>
+        <button *ngIf="showRebuildDefenseScheduleButton" (click)="rebuildDefenseSchedule()" mat-raised-button color="primary">Rebuild defense schedule</button>
+    </div>
+</div>
+
 <defense-date-range-selection *ngIf="showDefenseScheduleConfig"></defense-date-range-selection>
-<defense-time-slots-selection [user]="user" *ngIf="showSupervisorAccessibilitySurvey"></defense-time-slots-selection>
 <div *ngIf="showCommitteeSelectionSurvey" class="committee-selection-container">
     <div class="tables-container">
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
@@ -16,6 +22,7 @@
 </div>
 <br><br>
 <defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>
+<defense-time-slots-selection [user]="user" *ngIf="showSupervisorAccessibilitySurvey"></defense-time-slots-selection>
 
 
   

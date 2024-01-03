@@ -14,8 +14,8 @@ import { Actions, ofType } from '@ngrx/effects';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectDetails } from '../../models/project.model';
-import { EvaluationCard, EvaluationCards } from '../../models/grade.model';
-import { KeyValue } from '@angular/common';
+import { EvaluationCards } from '../../models/grade.model';
+import { GradeService } from '../../services/grade.service';
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -41,6 +41,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   evaluationCards!: EvaluationCards;
   gradesShown = true;
   grade: string = '0%';
+  objectKeys = Object.keys;
   
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -49,8 +50,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private _snackbar: MatSnackBar,
-
-    ){}
+    private gradeService: GradeService
+  ){}
    
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
@@ -202,15 +203,48 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!)
   }
 
-  
   get showFreezeGradingButton(){
-    return this.user.role === 'COORDINATOR'
+    return this.user.role === 'COORDINATOR' && this.data.freezeButtonShown
   }
 
+  get showOpenRetakePhaseButton(){
+    return this.user.role === 'COORDINATOR' && this.data.retakeButtonShown
+  }
+
+  get showPublishButton(){
+    return this.user.role === 'COORDINATOR' && this.data.publishButtonShown
+  }
 
   freezeGrading(){
-    
+    this.gradeService.freezeGrading(this.data.id!).pipe(takeUntil(this.unsubscribe$))
+      .subscribe((evaluationCards: EvaluationCards) => {
+        this.data.freezeButtonShown = false;
+        this.data.publishButtonShown = true;
+        this.evaluationCards = evaluationCards;
+      }
+    );
   }
+
+  openRetakePhase(){
+    this.gradeService.openRetakePhase(this.data.id!).pipe(takeUntil(this.unsubscribe$))
+      .subscribe((evaluationCards: EvaluationCards) => {
+        this.data.retakeButtonShown = false;
+        this.data.publishButtonShown = false;
+        this.evaluationCards = evaluationCards;
+      }
+    );
+  }
+
+  publish(){
+    this.gradeService.openRetakePhase(this.data.id!).pipe(takeUntil(this.unsubscribe$))
+      .subscribe((evaluationCards: EvaluationCards) => {
+        this.data.retakeButtonShown = false;
+        this.data.publishButtonShown = false;
+        this.evaluationCards = evaluationCards;
+      }
+    );
+  }
+
 
   getEvaluationCardsTranslations(key: string): string{
     const translations: {[key: string]: string} = {
@@ -224,21 +258,40 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return translations[key];
   }
 
-  isOnlyOnePhaseVisible(semester: {[key: string]: EvaluationCard}): boolean {
-    return Object.keys(semester).filter(key => semester && semester[key] && semester[key]['visible']).length === 1;
-  }
-
-  allPhasesAreNotVisible(semester: {[key: string]: EvaluationCard}): boolean {
-    
-    return Object.keys(semester).filter(key => semester && semester[key] && semester[key]['visible']).length === 0;
-  }
-
   getRole(role: keyof typeof ROLE): string {
     return ROLE[role]
   }
 
   navigateBack(){
     this.router.navigate([{outlets: {modal: null}}]);
+  }
+
+  get selectedSemester(): number {
+    for(let semester in this.evaluationCards){
+      for(let phase in this.evaluationCards[semester]){
+        if(this.evaluationCards[semester][phase].active){
+          return semester === 'FIRST' ? 0 : 1
+        }
+      }
+    }
+    return 0;
+  }
+
+  get selectedPhase(): number {
+    for(let semester in this.evaluationCards){
+      for(let phase in this.evaluationCards[semester]){
+        if(this.evaluationCards[semester][phase].active){
+          if(phase === 'SEMESTER_PHASE'){
+            return 0;
+          } else if(phase === 'DEFENSE_PHASE'){
+            return 1;
+          } else if(phase === 'RETAKE_PHASE'){  
+            return 2;
+          }
+        }
+      }
+    }
+    return 0;
   }
 
   get showExternalLinks(): boolean{

@@ -29,6 +29,7 @@ export interface EvaluationCard {
     id: string
     grade: string | null;
     sections: GradeSection[];
+    active: boolean;
     editable: boolean,
     visible: boolean,
 }

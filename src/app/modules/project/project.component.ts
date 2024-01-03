@@ -87,7 +87,20 @@ export class ProjectComponent implements OnInit, OnDestroy {
             this.page = params.get('page')!;
           }
 
-          this.displayedColumns = ['name','supervisorName','accepted','firstSemesterGrade','secondSemesterGrade','criteriaMetStatus'];
+          this.displayedColumns = [
+            'name',
+            'supervisorName',
+            'accepted',
+            'firstSemesterGrade',
+            'secondSemesterGrade',
+            'criteriaMetStatus',
+            'defenseDay',
+            'defenseTime',
+            'evaluationPhase',
+            'classroom',
+            'committee',
+            'students',
+          ];
           this.displayedColumns.push(...externalLinkColumnHeaders)
           this.store.dispatch(updateDisplayedColumns({columns: this.displayedColumns}));
         }
@@ -128,10 +141,20 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }
   }
 
+  
+
   openSupervisorAvailabilityForm(): void {
     if(this.isCoordinator){
       this.router.navigate([{outlets: {modal: `projects/availability`}}]) 
     }
+  }
+
+  publishAllProjects(): void{
+    this.projectService.publishAllProjects().pipe(takeUntil(this.unsubscribe$)).subscribe()
+  }
+
+  activateSecondSemester(): void{
+    this.projectService.activateSecondSemester().pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
 
   get showEditOrAddProjectButton(){
@@ -140,6 +163,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   get showExternalLinkColumns(){
     return this.user.role === 'COORDINATOR' || this.user.role === 'SUPERVISOR'
+  }
+
+  get showPublishAllButton(){
+    return this.user.role === 'COORDINATOR'
+  }
+
+  get showActivateSecondSemesterButton(){
+    return this.user.role === 'COORDINATOR'
   }
 
   get pageTitle(): string {
@@ -159,6 +190,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   get isMainTableFullWidth(): boolean {
     return this.displayedColumns.length > 3
   }
+
+  
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);

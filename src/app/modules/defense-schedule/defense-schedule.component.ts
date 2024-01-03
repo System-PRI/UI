@@ -23,30 +23,46 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>){}
 
   ngOnInit(): void {
-    this.defenseScheduleService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      assignments => this.defenseAssignments = assignments
-    )
-
-    this.defenseScheduleService.getSupervisorsStatistics().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      statistics => this.statistics = statistics
-    )
-
-    this.defenseScheduleService.getChairpersonAssignmentAggregated().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      assignments => this.chairpersonAssignments = assignments
-    )
-
-    this.defenseScheduleService.getProjectDefenses().subscribe(
-      defenses =>  this.defenses = defenses
-    )
-
     this.store.select('user').subscribe(user => {
       this.user = user;
+
+      if(this.user.role === 'COORDINATOR'){
+
+        this.defenseScheduleService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
+          assignments => this.defenseAssignments = assignments
+        )
+    
+        this.defenseScheduleService.getSupervisorsStatistics().pipe(takeUntil(this.unsubscribe$)).subscribe(
+          statistics => this.statistics = statistics
+        )
+    
+        this.defenseScheduleService.getChairpersonAssignmentAggregated().pipe(takeUntil(this.unsubscribe$)).subscribe(
+          assignments => this.chairpersonAssignments = assignments
+        )
+      }
+  
+      this.defenseScheduleService.getProjectDefenses().subscribe(
+        defenses =>  this.defenses = defenses
+      )
     });
   }
 
   onStatisticsUpdated(statistics: SupervisorStatistics[]){
     this.statistics = statistics;
   }
+
+  rebuildDefenseSchedule(){
+    this.defenseScheduleService.rebuildDefenseSchedule().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
+  }
+
+  archiveDefenseSchedule(){
+    this.defenseScheduleService.archiveDefenseSchedule().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
+  }
+  
 
   get showDefenseScheduleConfig(): boolean {
     return this.user?.role === 'COORDINATOR' && this.defenseAssignments === null;
@@ -64,6 +80,13 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     return this.user?.role === 'STUDENT' || this.user?.role === 'PROJECT_ADMIN' || this.user?.role === 'SUPERVISOR';
   }
 
+  get showRebuildDefenseScheduleButton(): boolean {
+    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
+  }
+
+  get showArchiveDefenseScheduleButton(): boolean {
+    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);

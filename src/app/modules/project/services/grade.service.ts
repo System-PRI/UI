@@ -28,5 +28,44 @@ export class GradeService {
                 )
         }
     
+    publishAllProjects(): Observable<null> {
+        return this.http
+        .put<null>(`/pri/project/publish-all`, null)
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
+    }
+
+    freezeGrading(projectId: string): Observable<EvaluationCards> {
+        return this.http
+        .put<EvaluationCards>(`/pri/project/${projectId}/evaluation-card/freeze`, null)
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
+    }
+
+    openRetakePhase(projectId: string): Observable<EvaluationCards> {
+        return this.http
+        .put<EvaluationCards>(`/pri/project/${projectId}/evaluation-card/retake`, null)
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
+    }
+
+    publish(projectId: string): Observable<EvaluationCards> {
+        return this.http
+        .put<EvaluationCards>(`/pri/project/${projectId}/evaluation-card/publish`, null)
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
+    }
 
 }

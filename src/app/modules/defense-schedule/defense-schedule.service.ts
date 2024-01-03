@@ -186,5 +186,25 @@ export class DefenseScheduleService {
                     (err: HttpErrorResponse) => throwError(() => err))
             )
     } 
+
+    rebuildDefenseSchedule(): Observable<{phase: string}> {
+        return this.http
+            .patch<{phase: string}>(`/pri/schedule/defense/rebuild`, this.setHttpHeadersForFile())
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
+
+    archiveDefenseSchedule(): Observable<{phase: string}> {
+        return this.http
+            .patch<{phase: string}>(`/pri/schedule/defense/archive`, this.setHttpHeadersForFile())
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
     
 }
