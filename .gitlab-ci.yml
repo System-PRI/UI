@@ -5,7 +5,8 @@ include:
 stages:
   - build
   - test
-  - deploy
+  - deploy_test_env
+  - deploy_prod_env
 
 unit-test:
   tags:
@@ -24,7 +25,7 @@ deploy_test_env:
     - test
   extends:
     - .after-merge-rule
-  stage: deploy
+  stage: deploy_test_env
   before_script:
     - sudo docker version
   script:
@@ -39,7 +40,7 @@ deploy_prod_env:
     - prod
   extends:
     - .after-merge-rule-prod
-  stage: deploy
+  stage: deploy_prod_env
   before_script:
     - sudo docker version
   script:
