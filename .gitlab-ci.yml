@@ -8,6 +8,8 @@ stages:
   - deploy
 
 unit-test:
+  tags:
+    - test
   extends:
     - .common-rule
   stage: test
@@ -18,6 +20,8 @@ unit-test:
     # - sudo npm run test
 
 clean:
+  tags:
+    - test
   extends:
     - .after-merge-rule
   stage: build
@@ -26,17 +30,33 @@ clean:
     - sudo docker rmi pri-ui || true
 
 build:
+  tags:
+    - test
   extends:
     - .after-merge-rule
   stage: build
   script:
     - sudo docker build --rm -t pri-ui .
 
-deploy:
+deploy_test_env:
+  tags:
+    - test
   extends:
     - .after-merge-rule
   stage: deploy
   before_script:
     - sudo docker version
   script:
-    - sudo docker run -v /etc/letsencrypt/ssl:/etc/letsencrypt/ssl -d --name pri-ui --network=pri-network -p 443:443 pri-ui
+    - sudo docker run -d --name pri-ui --network=pri-network -p 80:80 pri-ui
+
+deploy_prod_env:
+  tags:
+    - prod
+  extends:
+    - .after-merge-rule-prod
+  stage: deploy
+  before_script:
+    - sudo docker version
+  script:
+    - echo "Deployment to prod"
+    # - sudo docker run -v /etc/letsencrypt/ssl:/etc/letsencrypt/ssl -d --name pri-ui --network=pri-network -p 443:443 pri-ui
