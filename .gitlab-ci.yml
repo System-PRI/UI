@@ -19,25 +19,6 @@ unit-test:
     # - sudo npm install
     # - sudo npm run test
 
-clean:
-  tags:
-    - test
-  extends:
-    - .after-merge-rule
-  stage: build
-  script:
-    - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
-    - sudo docker rmi pri-ui || true
-
-build:
-  tags:
-    - test
-  extends:
-    - .after-merge-rule
-  stage: build
-  script:
-    - sudo docker build --rm -t pri-ui .
-
 deploy_test_env:
   tags:
     - test
@@ -47,6 +28,10 @@ deploy_test_env:
   before_script:
     - sudo docker version
   script:
+    - echo "Deployment to test env"
+    - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
+    - sudo docker rmi pri-ui || true
+    - sudo docker build --rm -t pri-ui .
     - sudo docker run -d --name pri-ui --network=pri-network -p 80:80 pri-ui
 
 deploy_prod_env:
@@ -58,5 +43,8 @@ deploy_prod_env:
   before_script:
     - sudo docker version
   script:
-    - echo "Deployment to prod"
+    - echo "Deployment to prod env"
+    # - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
+    # - sudo docker rmi pri-ui || true
+    # - sudo docker build --rm -t pri-ui .
     # - sudo docker run -v /etc/letsencrypt/ssl:/etc/letsencrypt/ssl -d --name pri-ui --network=pri-network -p 443:443 pri-ui
