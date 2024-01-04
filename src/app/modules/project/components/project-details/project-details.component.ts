@@ -236,7 +236,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   publish(){
-    this.gradeService.openRetakePhase(this.data.id!).pipe(takeUntil(this.unsubscribe$))
+    this.gradeService.publish(this.data.id!).pipe(takeUntil(this.unsubscribe$))
       .subscribe((evaluationCards: EvaluationCards) => {
         this.data.retakeButtonShown = false;
         this.data.publishButtonShown = false;
