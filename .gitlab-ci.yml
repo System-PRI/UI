@@ -28,7 +28,7 @@ deploy_test_env:
   before_script:
     - sudo docker version
   script:
-    - echo "Deployment to test env"
+    - echo "Deployment to test env..."
     - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
     - sudo docker rmi pri-ui || true
     - sudo docker build --rm -t pri-ui .
@@ -43,7 +43,7 @@ deploy_prod_env:
   before_script:
     - sudo docker version
   script:
-    - echo "Deployment to prod env"
+    - echo "Deployment to prod env..."
     # - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
     # - sudo docker rmi pri-ui || true
     # - sudo docker build --rm -t pri-ui .
