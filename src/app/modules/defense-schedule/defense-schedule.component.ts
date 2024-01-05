@@ -5,6 +5,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
 import { User } from '../user/models/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you-sure-dialog.component';
 
 @Component({
   selector: 'defense-schedule',
@@ -20,7 +22,7 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   user!: User;
   defenses!: ProjectDefense[];
 
-  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>){}
+  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>, private dialog: MatDialog){}
 
   ngOnInit(): void {
     this.store.select('user').subscribe(user => {
@@ -61,6 +63,30 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     this.defenseScheduleService.archiveDefenseSchedule().pipe(takeUntil(this.unsubscribe$)).subscribe(
       () => window.location.reload()
     )
+  }
+
+  
+  openAreYouSureDialog(action: string): void {
+    const actionMap: {[key: string]: { name: string, action: Function}} = {
+      'rebuild': {
+        name: 'rebuild defense schedule (created schedule will be removed)',
+        action: this.rebuildDefenseSchedule.bind(this),
+      },
+      'archive': {
+        name: 'archive defense schedule (created schedule will be archived)',
+        action: this.archiveDefenseSchedule.bind(this),
+      }
+    }
+
+    const dialogRef = this.dialog.open(AreYouSureDialogComponent, {
+      data: { actionName: actionMap[action].name },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        actionMap[action].action()
+      }
+    });
   }
   
 

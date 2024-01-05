@@ -1,8 +1,8 @@
 <div class="title-and-buttons">
     <h1>Project defense schedule</h1>
     <div>
-        <button *ngIf="showArchiveDefenseScheduleButton" (click)="archiveDefenseSchedule()" mat-raised-button color="primary">Archive defense schedule</button>
-        <button *ngIf="showRebuildDefenseScheduleButton" (click)="rebuildDefenseSchedule()" mat-raised-button color="primary">Rebuild defense schedule</button>
+        <button *ngIf="showArchiveDefenseScheduleButton" (click)="openAreYouSureDialog('archive')" mat-raised-button color="primary">Archive defense schedule</button>
+        <button *ngIf="showRebuildDefenseScheduleButton" (click)="openAreYouSureDialog('rebuild')" mat-raised-button color="primary">Rebuild defense schedule</button>
     </div>
 </div>
 

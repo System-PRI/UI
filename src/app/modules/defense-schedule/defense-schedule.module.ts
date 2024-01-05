@@ -24,6 +24,7 @@ import { DefenseScheduleSelectionComponent } from './components/defense-schedule
 import { MatRadioModule } from '@angular/material/radio';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatDialogModule,
     MatNativeDateModule,
     MatSelectModule,
     MatSlideToggleModule,
