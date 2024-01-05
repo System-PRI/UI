@@ -99,10 +99,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
             'defenseTime',
             'evaluationPhase',
             'classroom',
-            'committee',
-            'students',
           ];
-          this.displayedColumns.push(...externalLinkColumnHeaders)
+          //this.displayedColumns.push(...externalLinkColumnHeaders)
           this.store.dispatch(updateDisplayedColumns({columns: this.displayedColumns}));
         }
       )
