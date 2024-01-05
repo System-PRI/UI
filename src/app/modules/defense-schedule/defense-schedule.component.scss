@@ -51,6 +51,8 @@ mat-tab-group {
 .supervisor-survey-container {
     defense-schedule-selection {
         padding: 8px 8px;
+        min-width: 100%;
+        box-sizing: border-box;
     }
 
 
