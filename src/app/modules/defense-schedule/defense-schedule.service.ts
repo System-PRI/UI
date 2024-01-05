@@ -124,6 +124,17 @@ export class DefenseScheduleService {
             )
     } 
 
+    
+    additionalDay(date: string): Observable<null> {
+        return this.http
+            .post<null>(`/pri/schedule/defense/modify`, {date})
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
+
     getDefenseSummary(): Observable<any> {
         return this.http
             .get<HttpResponse<Blob>>(`/pri/schedule/defense/summary`, this.setHttpHeadersForFile())

@@ -25,6 +25,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DefenseAdditonalDayFormComponent } from './components/defense-additional-day-form/defense-additional-day-form.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     DefenseCommitteeSelectionComponent,
     DefenseCommitteeStatisticsComponent,
     DefenseScheduleSelectionComponent,
+    DefenseAdditonalDayFormComponent
   ],
   imports: [
     CommonModule,

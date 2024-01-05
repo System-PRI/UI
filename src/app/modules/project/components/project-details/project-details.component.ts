@@ -241,6 +241,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.data.publishButtonShown = true;
         this.evaluationCards = response.evaluationCards;
         this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
+        this.selectedSemesterIndex = this.selectedSemester;
+        this.selectedPhaseIndex = this.selectedPhase;
       }
     );
   }
@@ -252,6 +254,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.data.publishButtonShown = false;
         this.evaluationCards = response.evaluationCards;
         this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
+        this.selectedSemesterIndex = this.selectedSemester;
+        this.selectedPhaseIndex = this.selectedPhase;
       }
     );
   }
@@ -263,6 +267,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.data.publishButtonShown = false;
         this.evaluationCards = response.evaluationCards;
         this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
+        this.selectedSemesterIndex = this.selectedSemester;
+        this.selectedPhaseIndex = this.selectedPhase;
       }
     );
   }
