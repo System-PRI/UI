@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserState } from 'src/app/modules/user/state/user.state';
-import { acceptProject, acceptProjectSuccess, removeProject, removeProjectSuccess, unacceptProject, unacceptProjectSuccess } from '../../state/project.actions';
+import { acceptProject, acceptProjectSuccess, removeProject, removeProjectSuccess, unacceptProject, unacceptProjectSuccess, updateGradingPhase } from '../../state/project.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -240,6 +240,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.data.freezeButtonShown = false;
         this.data.publishButtonShown = true;
         this.evaluationCards = response.evaluationCards;
+        this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
       }
     );
   }
@@ -250,6 +251,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.data.retakeButtonShown = false;
         this.data.publishButtonShown = false;
         this.evaluationCards = response.evaluationCards;
+        this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
       }
     );
   }
@@ -260,6 +262,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.data.retakeButtonShown = false;
         this.data.publishButtonShown = false;
         this.evaluationCards = response.evaluationCards;
+        this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
       }
     );
   }

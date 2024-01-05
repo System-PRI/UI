@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ChangeGradeResponse, EvaluationCard } from '../../models/grade.model';
