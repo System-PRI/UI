@@ -57,6 +57,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   ){}
    
   ngOnInit(): void {
+    document.getElementsByClassName('mat-drawer-content')[0].scrollTo(0, 0);
+
     this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
       this.data = projectDetails;
       this.user = user;
