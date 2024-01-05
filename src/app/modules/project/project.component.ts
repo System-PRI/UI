@@ -13,6 +13,7 @@ import { updateDisplayedColumns } from './state/project.actions';
 import { getNumberOfColumns } from './state/project.selectors';
 import { ExternalLinkService } from './services/external-link.service';
 import { ProjectDetails } from './models/project.model';
+import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you-sure-dialog.component';
 
 @Component({
   selector: 'project',
@@ -141,7 +142,28 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+  openAreYouSureDialog(action: string): void {
+    const actionMap: {[key: string]: { name: string, action: Function}} = {
+      'publish': {
+        name: 'publish all projects',
+        action: this.publishAllProjects.bind(this),
+      },
+      'activateSecondSemester': {
+        name: 'activate second semester',
+        action: this.activateSecondSemester.bind(this),
+      }
+    }
+
+    const dialogRef = this.dialog.open(AreYouSureDialogComponent, {
+      data: { actionName: actionMap[action].name },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        actionMap[action].action()
+      }
+    });
+  }
 
   openSupervisorAvailabilityForm(): void {
     if(this.isCoordinator){
@@ -150,11 +172,15 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   publishAllProjects(): void{
-    this.projectService.publishAllProjects().pipe(takeUntil(this.unsubscribe$)).subscribe()
+    this.projectService.publishAllProjects().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
   }
 
   activateSecondSemester(): void{
-    this.projectService.activateSecondSemester().pipe(takeUntil(this.unsubscribe$)).subscribe()
+    this.projectService.activateSecondSemester().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
   }
 
   get showEditOrAddProjectButton(){

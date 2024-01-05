@@ -71,9 +71,9 @@
     </div>
   </div>
 </div>
-<mat-tab-group [selectedIndex]="selectedSemester" *ngIf="gradesShown" class="mat-elevation-z8">
-  <mat-tab *ngFor="let semester of ['FIRST', 'SECOND']" [label]="getEvaluationCardsTranslations(semester)">
-    <mat-tab-group [selectedIndex]="selectedPhase">
+<mat-tab-group (selectedTabChange)="onTabChange($event)" [(selectedIndex)]="selectedSemesterIndex" *ngIf="gradesShown" class="mat-elevation-z8">
+  <mat-tab *ngFor="let semester of objectKeys(evaluationCards)" [label]="getEvaluationCardsTranslations(semester)">
+    <mat-tab-group (selectedTabChange)="onTabChange($event)" [(selectedIndex)]="selectedPhaseIndex">
       <mat-tab 
         *ngFor="let phase of objectKeys(evaluationCards[semester])"
         [label]="getEvaluationCardsTranslations(phase)"
@@ -89,7 +89,7 @@
   </mat-tab>
 </mat-tab-group>
 
-<h2  class="grade-info mat-elevation-z8">Grade: {{grade}}</h2>
+<h2 *ngIf="gradesShown"  class="grade-info mat-elevation-z8">Grade: {{grade}}</h2>
 
 
 

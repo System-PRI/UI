@@ -14,8 +14,9 @@ import { Actions, ofType } from '@ngrx/effects';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectDetails } from '../../models/project.model';
-import { EvaluationCards } from '../../models/grade.model';
+import { EvaluationCards, PhaseChangeResponse } from '../../models/grade.model';
 import { GradeService } from '../../services/grade.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -42,6 +43,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   gradesShown = true;
   grade: string = '0%';
   objectKeys = Object.keys;
+  selectedSemesterIndex = 0;
+  selectedPhaseIndex = 0;
   
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -57,8 +60,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
       this.data = projectDetails;
       this.user = user;
-      this.gradesShown = this.evaluationCards !== undefined || this.evaluationCards !== null;
       this.evaluationCards = evaluationCards;
+      this.gradesShown = this.evaluationCards !== undefined && this.evaluationCards !== null;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
           role: 'SUPERVISOR', 
@@ -72,6 +75,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       if(projectSupervisorAvailability){
         this.maxAvailabilityFilled = projectSupervisorAvailability?.assigned === projectSupervisorAvailability?.max
       }
+      
+      this.selectedSemesterIndex = this.selectedSemester;
+      this.selectedPhaseIndex = this.selectedPhase;
     })
   }
 
@@ -147,6 +153,19 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  onTabChange(event: MatTabChangeEvent){
+    const semesterMap: {[key: number]: string} = {
+      0: 'FIRST',
+      1: 'SECOND'
+    }
+    const phaseMap: {[key: number]: string} = {
+      0: 'SEMESTER_PHASE',
+      1: 'DEFENSE_PHASE',
+      2: 'RETAKE_PHASE'
+    }
+    this.grade = this.evaluationCards[semesterMap[this.selectedSemesterIndex]][phaseMap[this.selectedPhaseIndex]].grade!;
+  }
+
   get showRemoveButton(){
     if(
       (this.user.role === 'PROJECT_ADMIN' && 
@@ -217,30 +236,30 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   freezeGrading(){
     this.gradeService.freezeGrading(this.data.id!).pipe(takeUntil(this.unsubscribe$))
-      .subscribe((evaluationCards: EvaluationCards) => {
+      .subscribe((response: PhaseChangeResponse) => {
         this.data.freezeButtonShown = false;
         this.data.publishButtonShown = true;
-        this.evaluationCards = evaluationCards;
+        this.evaluationCards = response.evaluationCards;
       }
     );
   }
 
   openRetakePhase(){
     this.gradeService.openRetakePhase(this.data.id!).pipe(takeUntil(this.unsubscribe$))
-      .subscribe((evaluationCards: EvaluationCards) => {
+      .subscribe((response: PhaseChangeResponse) => {
         this.data.retakeButtonShown = false;
         this.data.publishButtonShown = false;
-        this.evaluationCards = evaluationCards;
+        this.evaluationCards = response.evaluationCards;
       }
     );
   }
 
   publish(){
     this.gradeService.publish(this.data.id!).pipe(takeUntil(this.unsubscribe$))
-      .subscribe((evaluationCards: EvaluationCards) => {
+      .subscribe((response: PhaseChangeResponse) => {
         this.data.retakeButtonShown = false;
         this.data.publishButtonShown = false;
-        this.evaluationCards = evaluationCards;
+        this.evaluationCards = response.evaluationCards;
       }
     );
   }

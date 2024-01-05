@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError } from "rxjs";
-import { EvaluationCards } from "../models/grade.model";
+import { ChangeGradeResponse, EvaluationCards, PhaseChangeResponse } from "../models/grade.model";
 
 @Injectable({
     providedIn: 'root'
@@ -18,9 +18,9 @@ export class GradeService {
                 )
         }
 
-    changeGrade(projectId: string, evaulationCardId: string, grade: {id: string, selectedCriterion: string | null}): Observable<null>  {
+    changeGrade(projectId: string, evaulationCardId: string, grade: {id: string, selectedCriterion: string | null}): Observable<ChangeGradeResponse>  {
             return this.http
-                .put<null>(`/pri/project/${projectId}/evaluation-card/${evaulationCardId}`, grade)
+                .put<ChangeGradeResponse>(`/pri/project/${projectId}/evaluation-card/${evaulationCardId}`, grade)
                 .pipe(
                     retry(3),
                     catchError(
@@ -38,9 +38,9 @@ export class GradeService {
         )
     }
 
-    freezeGrading(projectId: string): Observable<EvaluationCards> {
+    freezeGrading(projectId: string): Observable<PhaseChangeResponse> {
         return this.http
-        .put<EvaluationCards>(`/pri/project/${projectId}/evaluation-card/freeze`, null)
+        .put<PhaseChangeResponse>(`/pri/project/${projectId}/evaluation-card/freeze`, null)
         .pipe(
             retry(3),
             catchError(
@@ -48,9 +48,9 @@ export class GradeService {
         )
     }
 
-    openRetakePhase(projectId: string): Observable<EvaluationCards> {
+    openRetakePhase(projectId: string): Observable<PhaseChangeResponse> {
         return this.http
-        .put<EvaluationCards>(`/pri/project/${projectId}/evaluation-card/retake`, null)
+        .put<PhaseChangeResponse>(`/pri/project/${projectId}/evaluation-card/retake`, null)
         .pipe(
             retry(3),
             catchError(
@@ -58,9 +58,9 @@ export class GradeService {
         )
     }
 
-    publish(projectId: string): Observable<EvaluationCards> {
+    publish(projectId: string): Observable<PhaseChangeResponse> {
         return this.http
-        .put<EvaluationCards>(`/pri/project/${projectId}/evaluation-card/publish`, null)
+        .put<PhaseChangeResponse>(`/pri/project/${projectId}/evaluation-card/publish`, null)
         .pipe(
             retry(3),
             catchError(

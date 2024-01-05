@@ -189,7 +189,7 @@ export class DefenseScheduleService {
 
     rebuildDefenseSchedule(): Observable<{phase: string}> {
         return this.http
-            .patch<{phase: string}>(`/pri/schedule/defense/rebuild`, this.setHttpHeadersForFile())
+            .put<{phase: string}>(`/pri/schedule/defense/rebuild`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(
@@ -199,7 +199,7 @@ export class DefenseScheduleService {
 
     archiveDefenseSchedule(): Observable<{phase: string}> {
         return this.http
-            .patch<{phase: string}>(`/pri/schedule/defense/archive`, this.setHttpHeadersForFile())
+            .put<{phase: string}>(`/pri/schedule/config/archive`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(

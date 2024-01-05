@@ -33,3 +33,13 @@ export interface EvaluationCard {
     editable: boolean,
     visible: boolean,
 }
+
+export interface PhaseChangeResponse {
+    phase: string;
+    evaluationCards:  EvaluationCards;
+}
+
+export interface ChangeGradeResponse { 
+    grade: string;
+    criteriaMet: boolean;
+}
