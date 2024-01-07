@@ -47,6 +47,16 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   selectedSemesterIndex = 0;
   selectedPhaseIndex = 0;
   
+  semesterMap: {[key: number]: string} = {
+    0: 'FIRST',
+    1: 'SECOND'
+  }
+  phaseMap: {[key: number]: string} = {
+    0: 'SEMESTER_PHASE',
+    1: 'DEFENSE_PHASE',
+    2: 'RETAKE_PHASE'
+  }
+  
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store<State>,
@@ -87,19 +97,20 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       this.selectedSemesterIndex = this.selectedSemester;
       this.selectedPhaseIndex = this.selectedPhase;
 
-      const semesterMap: {[key: number]: string} = {
-        0: 'FIRST',
-        1: 'SECOND'
+
+      let countSemester = 0;
+      for(let semester in this.evaluationCards){
+        this.semesterMap[countSemester] = semester;
+        countSemester++;
+
+        let countPhase = 0;
+        for(let phase in this.evaluationCards[semester]){
+          this.phaseMap[countPhase] = phase;
+          countPhase++;
+        }
       }
-      const phaseMap: {[key: number]: string} = {
-        0: 'SEMESTER_PHASE',
-        1: 'DEFENSE_PHASE',
-        2: 'RETAKE_PHASE'
-      }
-      this.grade = this.evaluationCards[semesterMap[this.selectedSemesterIndex]][phaseMap[this.selectedPhaseIndex]].grade!;
-
-
-
+     
+      this.grade = this.evaluationCards[this.semesterMap[this.selectedSemesterIndex]][this.phaseMap[this.selectedPhaseIndex]].grade!;
     })
   }
 
@@ -205,16 +216,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
 
   onTabChange(event: MatTabChangeEvent){
-    const semesterMap: {[key: number]: string} = {
-      0: 'FIRST',
-      1: 'SECOND'
-    }
-    const phaseMap: {[key: number]: string} = {
-      0: 'SEMESTER_PHASE',
-      1: 'DEFENSE_PHASE',
-      2: 'RETAKE_PHASE'
-    }
-    this.grade = this.evaluationCards[semesterMap[this.selectedSemesterIndex]][phaseMap[this.selectedPhaseIndex]].grade!;
+    this.grade = this.evaluationCards[this.semesterMap[this.selectedSemesterIndex]][this.phaseMap[this.selectedPhaseIndex]].grade!;
   }
 
   get showRemoveButton(){
