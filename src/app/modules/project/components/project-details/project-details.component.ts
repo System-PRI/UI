@@ -43,9 +43,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   evaluationCards!: EvaluationCards;
   gradesShown = true;
   grade: string = '0%';
+  criteriaMet = false;
   objectKeys = Object.keys;
   selectedSemesterIndex = 0;
   selectedPhaseIndex = 0;
+  selectedCriteria = '';
   
   semesterMap: {[key: number]: string} = {
     0: 'FIRST',
@@ -96,21 +98,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       
       this.selectedSemesterIndex = this.selectedSemester;
       this.selectedPhaseIndex = this.selectedPhase;
-
-
-      let countSemester = 0;
-      for(let semester in this.evaluationCards){
-        this.semesterMap[countSemester] = semester;
-        countSemester++;
-
-        let countPhase = 0;
-        for(let phase in this.evaluationCards[semester]){
-          this.phaseMap[countPhase] = phase;
-          countPhase++;
-        }
-      }
-     
-      this.grade = this.evaluationCards[this.semesterMap[this.selectedSemesterIndex]][this.phaseMap[this.selectedPhaseIndex]].grade!;
     })
   }
 
@@ -118,8 +105,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return a;
   }
 
-  onGradeChange(grade: string){
+  onGradeChange({grade, criteriaMet, selectedCriteria}: {grade: string, criteriaMet: boolean, selectedCriteria: string}){
     this.grade = grade;
+    this.criteriaMet = criteriaMet;
+    this.selectedCriteria = selectedCriteria;
   }
 
   acceptProject(): void {
@@ -214,8 +203,13 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  onSemesterTabChange(event: MatTabChangeEvent){
+    this.selectedSemesterIndex = event.index;
+    this.grade = this.evaluationCards[this.semesterMap[this.selectedSemesterIndex]][this.phaseMap[this.selectedPhaseIndex]].grade!;
+  }
 
-  onTabChange(event: MatTabChangeEvent){
+  onPhaseTabChange(event: MatTabChangeEvent){
+    this.selectedPhaseIndex = event.index;
     this.grade = this.evaluationCards[this.semesterMap[this.selectedSemesterIndex]][this.phaseMap[this.selectedPhaseIndex]].grade!;
   }
 

@@ -18,6 +18,7 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() evaulationCard!:  EvaluationCard;
   @Input() projectId!: string;
+  @Input() isActive!: boolean;
   data!: EvaluationCard;
   unsubscribe$ = new Subject();
   gradeForm = this.fb.group<{[key: string]: FormGroup }>({});
@@ -33,14 +34,15 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
   @Input() semester!: string;
   expanded = false;
   grade!: string;
-  @Output() gradeChange: EventEmitter<string> = new EventEmitter();
+  criteria!: string;
+  selectedCriteria!: string;
+  @Output() gradeChange: EventEmitter<{grade: string, criteriaMet: boolean, selectedCriteria: string}> = new EventEmitter();
 
 
   constructor(private gradeSerice: GradeService, private router: Router, private fb: FormBuilder, private store: Store<State>,
     ) { }
 
   ngOnInit(): void {
-     
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -48,16 +50,27 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
 
     this.grade = this.data.grade ? this.data.grade : '0%';
 
-    this.gradeChange.emit(this.grade);
 
+    let countCriteria = 0;
+    let countSelectedCriteria = 0;
     this.data.sections.forEach(section => {
       this.gradeForm.addControl(section.id, this.fb.group<{[key: string]: FormControl }>({}))
 
       section.criteriaGroups.forEach(group => {
         this.gradeForm.controls[section.id].addControl(group.id, new FormControl(group.selectedCriterion))
         this.criterionGroupExpandedStatus[`${section.id}_${group.id}`] = false;
+        countCriteria++;
+        if(group.selectedCriterion){
+          countSelectedCriteria++;
+        }
       })
     })
+    this.criteria = `${countCriteria}`;
+    this.selectedCriteria = `${countSelectedCriteria}`;
+
+    if(this.isActive){
+      this.gradeChange.emit({grade: this.grade, criteriaMet: this.data.criteriaMet, selectedCriteria: `${this.selectedCriteria}/${this.criteria}`});
+    }
   }
 
   navigateBack(){
@@ -77,7 +90,20 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
           (value: ChangeGradeResponse) => {
             this.grade = value.grade;
             this.data.grade = value.grade;
-            this.gradeChange.emit(value.grade);
+            this.data.criteriaMet = value.criteriaMet;
+            this.data.sections.find(section => section.id === sectionIndex)!.criteriaGroups.find(group => group.id === groupIndex)!.selectedCriterion = key;
+            console.log(this.data)
+            let countSelectedCriteria = 0;    
+            this.data.sections.forEach(section => {    
+              section.criteriaGroups.forEach(group => {
+                if(group.selectedCriterion){
+                  console.log(group.selectedCriterion)
+                  countSelectedCriteria++;
+                }
+              })
+            })
+            this.selectedCriteria = `${countSelectedCriteria}`;
+            this.gradeChange.emit({grade: value.grade, criteriaMet: value.criteriaMet, selectedCriteria: `${this.selectedCriteria}/${this.criteria}`});
             this.store.dispatch(updateGrade({projectId: this.projectId, grade: value!.grade, criteriaMet: value!.criteriaMet, semester: this.semester}))
           }
         )
@@ -92,7 +118,19 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
         .pipe(takeUntil(this.unsubscribe$)).subscribe(
           (value: ChangeGradeResponse) => {
             this.grade = value.grade;
-            this.gradeChange.emit(value.grade);
+            this.data.criteriaMet = value.criteriaMet;
+            this.data.sections.find(section => section.id === sectionIndex)!.criteriaGroups.find(group => group.id === groupIndex)!.selectedCriterion = null;
+            let countSelectedCriteria = 0;    
+            this.data.sections.forEach(section => {    
+              section.criteriaGroups.forEach(group => {
+                if(group.selectedCriterion){
+                  countSelectedCriteria++;
+                }
+              })
+            })
+            this.selectedCriteria = `${countSelectedCriteria}`;
+
+            this.gradeChange.emit({grade: value.grade, criteriaMet: value.criteriaMet, selectedCriteria: `${this.selectedCriteria}/${this.criteria}`});
             this.store.dispatch(updateGrade({projectId: this.projectId, grade: value!.grade, criteriaMet: value!.criteriaMet, semester: this.semester}))
           }
         )
