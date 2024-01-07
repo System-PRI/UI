@@ -100,11 +100,11 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   }
 
   get showSupervisorAccessibilitySurvey(): boolean {
-    return this.user?.role === 'SUPERVISOR' && this.currentPhase === 'SCHEDULE_PLANNING';
+    return this.user?.role === 'SUPERVISOR' && this.currentPhase === 'DEFENSE SCHEDULE PLANNING';
   }
 
   get showCommitteeSelectionSurvey(): boolean {
-    return (this.user?.role === 'COORDINATOR' || (this.user?.role === 'SUPERVISOR' && this.currentPhase !== 'SCHEDULE_PLANNING')) && this.defenseAssignments !== null;
+    return (this.user?.role === 'COORDINATOR' || (this.user?.role === 'SUPERVISOR' && this.currentPhase !== 'DEFENSE SCHEDULE PLANNING')) && this.defenseAssignments !== null;
   }
 
   get showDefensesList(): boolean {
