@@ -21,7 +21,7 @@ export class GradeService {
 
     changeGrade(projectId: string, evaulationCardId: string, grade: {id: string, selectedCriterion: string | null}): Observable<ChangeGradeResponse>  {
             return this.http
-                .put<ChangeGradeResponse>(`/pri/project/${projectId}/evaluation-card/${evaulationCardId}`, grade)
+                .patch<ChangeGradeResponse>(`/pri/project/${projectId}/evaluation-card/${evaulationCardId}`, grade)
                 .pipe(
                     retry(3),
                     catchError(
