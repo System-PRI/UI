@@ -32,7 +32,7 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
   ]
   criterionGroupExpandedStatus: { [key: string]:  boolean } = {};
   @Input() semester!: string;
-  expanded = false;
+  expanded = true;
   grade!: string;
   criteria!: string;
   selectedCriteria!: string;
@@ -50,6 +50,7 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
 
     this.grade = this.data.grade ? this.data.grade : '0%';
 
+    
 
     let countCriteria = 0;
     let countSelectedCriteria = 0;
@@ -67,6 +68,10 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
     })
     this.criteria = `${countCriteria}`;
     this.selectedCriteria = `${countSelectedCriteria}`;
+
+    for(let key in this.criterionGroupExpandedStatus){
+      this.criterionGroupExpandedStatus[key] = this.expanded;
+    }
 
     if(this.isActive){
       this.gradeChange.emit({grade: this.grade, criteriaMet: this.data.criteriaMet, selectedCriteria: `${this.selectedCriteria}/${this.criteria}`});
