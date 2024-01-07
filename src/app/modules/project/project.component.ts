@@ -146,7 +146,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
         action: this.publishAllProjects.bind(this),
       },
       'activateSecondSemester': {
-        name: 'activate the evaluation card for the second semester will be activated, the entire evaluation process will start from the beginning for the second semester.',
+        name: 'activate the evaluation card for the second semester, the entire evaluation process will start from the beginning for the second semester.',
         action: this.activateSecondSemester.bind(this),
       }
     }

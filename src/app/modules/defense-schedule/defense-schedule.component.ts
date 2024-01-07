@@ -14,7 +14,6 @@ import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you
   styleUrls: ['./defense-schedule.component.scss']
 })
 export class DefenseScheduleComponent implements OnInit, OnDestroy {
-
   defenseAssignments!: SupervisorDefenseAssignmentAggregated;
   chairpersonAssignments!: ChairpersonAssignmentAggregated;
   unsubscribe$ = new Subject();
