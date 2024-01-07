@@ -62,7 +62,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
       this.data = projectDetails;
       this.user = user;
-      this.evaluationCards = evaluationCards;
+      if(evaluationCards.status === 204){
+        this.gradesShown = false;
+        this._snackbar.open('Evaluation cards are locked at the moment', 'close');
+      }
+      this.evaluationCards = evaluationCards.body;
+      console.log(this.evaluationCards)
       this.gradesShown = this.evaluationCards !== undefined && this.evaluationCards !== null;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 

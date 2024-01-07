@@ -96,7 +96,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
             'secondSemesterGrade',
             'criteriaMetStatus',
             'defenseDay',
-            'defenseTime',
             'evaluationPhase',
             'classroom',
           ];
