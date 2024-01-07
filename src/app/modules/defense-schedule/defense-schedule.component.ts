@@ -69,11 +69,11 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   openAreYouSureDialog(action: string): void {
     const actionMap: {[key: string]: { name: string, action: Function}} = {
       'rebuild': {
-        name: 'rebuild defense schedule (created schedule will be removed)',
+        name: 'rebuild defense schedule - schedule will be irreversibly removed, you will need to create a new one',
         action: this.rebuildDefenseSchedule.bind(this),
       },
       'archive': {
-        name: 'archive defense schedule (created schedule will be archived)',
+        name: 'archive defense schedule - schedule will be irreversibly archived, you will need to create a new one',
         action: this.archiveDefenseSchedule.bind(this),
       }
     }
