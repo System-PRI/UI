@@ -102,6 +102,7 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
                 }
               })
             })
+            console.log(this.semester)
             this.selectedCriteria = `${countSelectedCriteria}`;
             this.gradeChange.emit({grade: value.grade, criteriaMet: value.criteriaMet, selectedCriteria: `${this.selectedCriteria}/${this.criteria}`});
             this.store.dispatch(updateGrade({projectId: this.projectId, grade: value!.grade, criteriaMet: value!.criteriaMet, semester: this.semester}))
