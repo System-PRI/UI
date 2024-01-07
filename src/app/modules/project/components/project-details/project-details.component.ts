@@ -17,6 +17,7 @@ import { ProjectDetails } from '../../models/project.model';
 import { EvaluationCards, PhaseChangeResponse } from '../../models/grade.model';
 import { GradeService } from '../../services/grade.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { AreYouSureDialogComponent } from 'src/app/modules/shared/are-you-sure-dialog/are-you-sure-dialog.component';
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -85,6 +86,20 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       
       this.selectedSemesterIndex = this.selectedSemester;
       this.selectedPhaseIndex = this.selectedPhase;
+
+      const semesterMap: {[key: number]: string} = {
+        0: 'FIRST',
+        1: 'SECOND'
+      }
+      const phaseMap: {[key: number]: string} = {
+        0: 'SEMESTER_PHASE',
+        1: 'DEFENSE_PHASE',
+        2: 'RETAKE_PHASE'
+      }
+      this.grade = this.evaluationCards[semesterMap[this.selectedSemesterIndex]][phaseMap[this.selectedPhaseIndex]].grade!;
+
+
+
     })
   }
 
@@ -159,6 +174,35 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  
+  openAreYouSureDialog(action: string): void {
+    const actionMap: {[key: string]: { name: string, action: Function}} = {
+      'publish': {
+        name: 'publish evaluation cards and unlock them for students to view.',
+        action: this.publish.bind(this),
+      },
+      'retake': {
+        name: `activate retake's evaluation card`,
+        action: this.openRetakePhase.bind(this),
+      },
+      'freeze': {
+        name: `block the semester's evaluation card and activate the defense's evaluation card, evaluation cards won't be available for students to view until they are published`,
+        action: this.freezeGrading.bind(this),
+      }
+    }
+
+    const dialogRef = this.dialog.open(AreYouSureDialogComponent, {
+      data: { actionName: actionMap[action].name },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        actionMap[action].action()
+      }
+    });
+  }
+
 
   onTabChange(event: MatTabChangeEvent){
     const semesterMap: {[key: number]: string} = {
