@@ -88,6 +88,7 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
         .pipe(takeUntil(this.unsubscribe$)).subscribe(
           (value: ChangeGradeResponse) => {
             this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(key);
+
             this.grade = value.grade;
             this.data.grade = value.grade;
             this.data.criteriaMet = value.criteriaMet;
