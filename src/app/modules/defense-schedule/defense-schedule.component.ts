@@ -28,7 +28,7 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     this.store.select('user').subscribe(user => {
       this.user = user;
 
-      if(this.user.role === 'COORDINATOR'){
+      if(this.user.role === 'COORDINATOR' || this.user.role === 'SUPERVISOR'){
 
         this.defenseScheduleService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
           assignments => this.defenseAssignments = assignments
@@ -99,7 +99,7 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   }
 
   get showCommitteeSelectionSurvey(): boolean {
-    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
+    return (this.user?.role === 'COORDINATOR' || this.user?.role === 'SUPERVISOR') && this.defenseAssignments !== null;
   }
 
   get showDefensesList(): boolean {
