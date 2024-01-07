@@ -84,10 +84,11 @@ export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
 
   selectCriterion(sectionIndex: string, groupIndex: string, key: string): void {
     if(this.data.editable){
+      this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(key);
+
       this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: key } )
         .pipe(takeUntil(this.unsubscribe$)).subscribe(
           (value: ChangeGradeResponse) => {
-            this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(key);
 
             this.grade = value.grade;
             this.data.grade = value.grade;
