@@ -21,6 +21,9 @@
     </div>
 </div>
 
+<defense-schedule-selection  [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>
+
+
 <div *ngIf="showSupervisorAccessibilitySurvey && false" class="supervisor-survey-container">
     <div class="tables-container">
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
