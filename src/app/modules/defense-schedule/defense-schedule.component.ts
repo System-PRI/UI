@@ -21,6 +21,7 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   statistics: SupervisorStatistics[] = [];
   user!: User;
   defenses!: ProjectDefense[];
+  currentPhase!: string;
 
   constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>, private dialog: MatDialog){}
 
@@ -45,6 +46,10 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   
       this.defenseScheduleService.getProjectDefenses().subscribe(
         defenses =>  this.defenses = defenses
+      )
+
+      this.defenseScheduleService.getCurrentPhase().pipe(takeUntil(this.unsubscribe$)).subscribe(
+        response => this.currentPhase = response.phase
       )
     });
   }
@@ -95,11 +100,11 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   }
 
   get showSupervisorAccessibilitySurvey(): boolean {
-    return this.user?.role === 'SUPERVISOR';
+    return this.user?.role === 'SUPERVISOR' && this.currentPhase === 'SCHEDULE_PLANNING';
   }
 
   get showCommitteeSelectionSurvey(): boolean {
-    return (this.user?.role === 'COORDINATOR' || this.user?.role === 'SUPERVISOR') && this.defenseAssignments !== null;
+    return (this.user?.role === 'COORDINATOR' || (this.user?.role === 'SUPERVISOR' && this.currentPhase !== 'SCHEDULE_PLANNING')) && this.defenseAssignments !== null;
   }
 
   get showDefensesList(): boolean {
