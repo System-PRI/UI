@@ -40,12 +40,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
       private store: Store<State>,
       private _snackbar: MatSnackBar,
       private router: Router,
-      private externalLinkService: ExternalLinkService
+      private externalLinkService: ExternalLinkService,
   ) {}
 
   ngOnInit(): void {
     this.checkUserRoleAndAssociatedProject();
-    this.projectService.students$.pipe(takeUntil(this.unsubscribe$)).subscribe(students => this.students = students)
+    this.userService.students$.pipe(takeUntil(this.unsubscribe$)).subscribe(students => this.students = students)
     this.userService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(supervisors => this.supervisors = supervisors)
 
     this.externalLinkService.columnHeaders$.pipe(takeUntil(this.unsubscribe$))

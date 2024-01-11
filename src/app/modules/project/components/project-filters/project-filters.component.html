@@ -36,7 +36,7 @@
     <mat-select-trigger>
       Selected columns: {{displayedColumns.length}}
     </mat-select-trigger>
-    <mat-option *ngFor="let column of allColumns" [value]="column">{{column}}</mat-option>
+    <mat-option *ngFor="let column of allColumnsView!.columns" [value]="column">{{column}}</mat-option>
   </mat-select>
 </mat-form-field>
 
