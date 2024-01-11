@@ -1,14 +1,11 @@
-import { Component, OnDestroy, OnInit, Input } from '@angular/core';
-import { Observable, Subject, combineLatest, takeUntil } from 'rxjs';
+import { Component, OnDestroy, OnInit, Input, OnChanges } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 import { changeFilters } from '../../state/project.actions';
 import { getFilters } from '../../state/project.selectors';
 import { UserService } from 'src/app/modules/user/user.service';
-import { ActivatedRoute } from '@angular/router';
-import { isCoordinator, isSupervisor } from 'src/app/modules/user/state/user.selectors';
-import { ExternalLinkService } from '../../services/external-link.service';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
@@ -16,7 +13,7 @@ import { MatSelectChange } from '@angular/material/select';
   templateUrl: './project-filters.component.html',
   styleUrls: ['./project-filters.component.scss']
 })
-export class ProjectFiltersComponent implements OnInit, OnDestroy {
+export class ProjectFiltersComponent implements OnInit, OnChanges, OnDestroy {
   allColumns: string[] = [
     'name',
     'supervisorName',
@@ -30,7 +27,6 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
     'committee',
     'students',
   ];
-  displayedColumns: string[] = [];
   predefinedViews = [
     {
       id: 'PROJECT_GROUPS',
@@ -72,10 +68,11 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
       columns: []
     },
   ]
+  displayedColumns: string[] = [];
   selectedView =  this.predefinedViews.find(view => view.id === 'ALL')
   supervisors$!: Observable<Supervisor[]>
   unsubscribe$ = new Subject()
-  @Input() showExternalLinkColumns?: boolean
+  @Input() externalLinkColumnHeaders!: string[];
 
   searchValue: string = '';
   supervisorIndexNumber!: string | undefined;
@@ -85,7 +82,6 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService, 
     private store: Store<State>,
-    private externalLinkService: ExternalLinkService,
   ){}
 
   ngOnInit(): void {
@@ -99,22 +95,15 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
         this.displayedColumns = filters.columns;
       }
     )
+  }
 
+  ngOnChanges(): void {
+    this.allColumns = [...this.allColumns, ...this.externalLinkColumnHeaders]
+    this.predefinedViews.find(view => view.id === 'PROJECT_GROUPS')!.columns = 
+      [...this.predefinedViews.find(view => view.id === 'PROJECT_GROUPS')!.columns, ...this.externalLinkColumnHeaders]
     this.predefinedViews.find(view => view.id === 'ALL')!.columns = this.allColumns;
     this.displayedColumns = this.predefinedViews.find(view => view.id === 'ALL')!.columns;
     this.onFiltersChange();
-
-    if(this.showExternalLinkColumns){
-      this.externalLinkService.columnHeaders$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-        columnHeaders => {
-          this.allColumns = [...this.allColumns, ...columnHeaders]
-          this.predefinedViews.find(view => view.id === 'PROJECT_GROUPS')!.columns = [...this.predefinedViews.find(view => view.id === 'PROJECT_GROUPS')!.columns, ...columnHeaders]
-          this.predefinedViews.find(view => view.id === 'ALL')!.columns = this.allColumns;
-          this.displayedColumns = this.predefinedViews.find(view => view.id === 'ALL')!.columns;
-          this.onFiltersChange();
-        }
-      )
-    }
   }
 
   onViewChange(event: MatSelectChange){
@@ -148,8 +137,6 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
       this.criteriaMetStatus !== undefined
     )
   }
-
-
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);

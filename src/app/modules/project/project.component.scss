@@ -69,15 +69,6 @@ mat-spinner {
     align-items: center;
 }
 
-.tables.full-width {
-    flex-wrap: wrap;
-
-    div {
-        flex: 100%;
-    }
-}
-
-
 @media (max-width: 1300px) {
     .tables {
         flex-wrap: wrap;

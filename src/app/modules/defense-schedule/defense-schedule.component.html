@@ -20,7 +20,7 @@
         </mat-tab-group>
     </div>
     <defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>
-
+    <mat-spinner *ngIf="!defenseAssignments"></mat-spinner>
 </div>
 
 <defense-schedule-selection  [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>

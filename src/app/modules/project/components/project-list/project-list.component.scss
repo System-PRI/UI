@@ -1,6 +1,9 @@
 :host {
     max-width: calc(100% - 300px);
 
+    mat-spinner {
+        margin: 50px auto;
+    }
         
     .centered-header {
         ::ng-deep .mat-sort-header-container {

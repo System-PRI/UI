@@ -1,4 +1,4 @@
-<div style="overflow-x:auto;" class="mat-elevation-z8">
+<div *ngIf="!loading" style="overflow-x:auto;" class="mat-elevation-z8">
   <table mat-table [dataSource]="projects" matSort>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
@@ -80,4 +80,6 @@
   <mat-paginator [pageSizeOptions]="[50, 100, 150]" showFirstLastButtons aria-label="Select page">
   </mat-paginator>
 </div>
+
 <mat-spinner *ngIf="loading"></mat-spinner>
+

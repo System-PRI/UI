@@ -26,16 +26,21 @@
             border-bottom: 1px solid #e7e7e7;
         }
 
-
         td h2 {
             margin: 0px;
         }
-        
 
         th {
             font-weight: normal;
             font-size: 1em;
             text-align: left
+        }
+
+      
+
+        th span {
+            display: block;
+            width: 70px;
         }
 
         td, th {
@@ -62,6 +67,25 @@
         }
 }
 
+.points-and-criterion-columns {
+    display: flex;
+    .points {
+        display: flex;
+        align-items: center;
+    }
+
+    .criterion-header-and-expand-button {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
 .selected-criterion {
     min-width: 500px;
     display: grid;
@@ -74,6 +98,7 @@
         cursor: pointer;
     }
 }
+
 
 
 
@@ -132,109 +157,6 @@ td h3 {
     justify-content: space-between;
     align-items: center;
 }
-
-.criterion-details-cell-container {
-    position: relative;
-    padding: 0px !important;
-    max-width: 500px;
-
-    .all-criteria  {
-        display: grid;
-        .criterion-description {
-            display: flex;
-            padding: 10px;
-            cursor: pointer;
-            justify-content: space-between;
-            border-bottom: 1px solid #e7e7e7;
-
-            div {
-                display: flex;
-                column-gap: 10px;
-                max-width: 500px;
-            }
-            
-
-            p {
-                margin: 0px;
-                padding: 0px;
-                display: flex;
-                align-items: center;
-            }
-
-            mat-icon {
-                color: gray;
-            }
-
-           
-            
-        }
-
-        .criterion-description:last-of-type  {
-            border-bottom: none
-
-        }
-        .selected-row {
-            background:#e2ffe2;
-        }
-    
-        .selected-row.disqualifying {
-            background: rgb(255 202 202);
-        }
-    }
-
-    .selected-criterion {
-        p {
-            padding: 10px;
-            width: 500px;
-            max-width: 500px;
-        }
-
-        span {
-            padding: 10px;
-            cursor: pointer;
-        }
-    }
-
-    .action-buttons {
-        display: flex;
-        justify-content: flex-end;
-
-        mat-icon, span {
-            color: #757575;
-            padding: 10px;
-            cursor: pointer;
-        }
-    }
-
-
-
-    
-
-
-}
-
-
-
-
-mat-radio-button {
-    --mdc-radio-selected-focus-icon-color: rgb(59, 188, 59) !important;
-    --mdc-radio-selected-hover-icon-color: rgb(59, 188, 59) !important;
-    --mdc-radio-selected-icon-color: rgb(59, 188, 59) !important;
-    --mdc-radio-selected-pressed-icon-color: rgb(59, 188, 59) !important;
-    --mat-mdc-radio-checked-ripple-color: rgb(59, 188, 59) !important;
-    --mdc-radio-selected-icon-color: rgb(59, 188, 59) !important;
-}
-
-.disqualifying mat-radio-button {
-    --mdc-radio-selected-focus-icon-color: rgb(236, 99, 99) !important;
-    --mdc-radio-selected-hover-icon-color: rgb(236, 99, 99) !important;
-    --mdc-radio-selected-icon-color: rgb(236, 99, 99) !important;
-    --mdc-radio-selected-pressed-icon-color: rgb(236, 99, 99) !important;
-    --mat-mdc-radio-ripple-color: #000;
-    --mat-mdc-radio-checked-ripple-color: rgb(236, 99, 99) !important;    
-}
-
-
 
 .buttons-container {
     position: sticky;

@@ -104,16 +104,7 @@ export class ProjectListComponent implements OnDestroy, OnInit{
   }
 
   navigateToDetails(projectId: string){
-    switch(this.page){
-      case 'PROJECT_GROUPS':
-        this.router.navigate([{outlets: {modal: `projects/details/${projectId}`}}]) 
-      break;
-      case 'GRADES':
-        this.router.navigate([{outlets: {modal: `grades/details/${projectId}`}}]) 
-
-        //this.router.navigate([`grades/details/${projectId}`]) 
-      break;
-    }
+    this.router.navigate([{outlets: {modal: `projects/details/${projectId}`}}]) 
   }
 
   ngOnDestroy(): void {
