@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { User } from '../user/models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you-sure-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'defense-schedule',
@@ -23,7 +24,12 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   currentPhase!: string;
   loadingCommitteeSelectionSurvey = true;
   
-  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>, private dialog: MatDialog){}
+  constructor(
+    private defenseScheduleService: DefenseScheduleService,
+    private store: Store<State>,
+    private dialog: MatDialog,
+    private _snackbar: MatSnackBar,
+  ){}
 
   ngOnInit(): void {
     this.store.select('user').subscribe(user => {
@@ -68,6 +74,10 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     this.defenseScheduleService.archiveDefenseSchedule().pipe(takeUntil(this.unsubscribe$)).subscribe(
       () => window.location.reload()
     )
+  }
+
+  openAdditionalDayDialog(): void {
+    
   }
 
   
@@ -116,6 +126,10 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   }
 
   get showArchiveDefenseScheduleButton(): boolean {
+    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
+  }
+
+  get showAdditionalDayButton(): boolean {
     return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
   }
 
