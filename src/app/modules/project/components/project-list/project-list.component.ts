@@ -31,7 +31,6 @@ export class ProjectListComponent implements OnDestroy, OnInit{
   constructor(
     private store: Store<State>,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {

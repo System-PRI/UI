@@ -9,6 +9,7 @@ import { UserService } from 'src/app/modules/user/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { isCoordinator, isSupervisor } from 'src/app/modules/user/state/user.selectors';
 import { ExternalLinkService } from '../../services/external-link.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'project-filters',
@@ -30,6 +31,48 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
     'students',
   ];
   displayedColumns: string[] = [];
+  predefinedViews = [
+    {
+      id: 'PROJECT_GROUPS',
+      name: 'Project groups',
+      columns: [
+        'name',
+        'supervisorName',
+        'accepted',
+      ]
+    },
+    {
+      id: 'GRADES',
+      name: 'Grades',
+      columns: [
+        'name',
+        'supervisorName',
+        'evaluationPhase',
+        'firstSemesterGrade',
+        'secondSemesterGrade',
+        'criteriaMetStatus',
+      ]
+    },
+    {
+      id: 'DEFENSE_SCHEDULE',
+      name: 'Defense schedule',
+      columns: [
+        'name',
+        'supervisorName',
+        'defenseDay',
+        'evaluationPhase',
+        'classroom',
+        'committee',
+        'students',
+      ]
+    },
+    {
+      id: 'ALL',
+      name: 'All columns',
+      columns: []
+    },
+  ]
+  selectedView =  this.predefinedViews.find(view => view.id === 'ALL')
   supervisors$!: Observable<Supervisor[]>
   unsubscribe$ = new Subject()
   @Input() showExternalLinkColumns?: boolean
@@ -38,46 +81,14 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
   supervisorIndexNumber!: string | undefined;
   acceptanceStatus!: boolean | undefined;
   criteriaMetStatus: boolean | undefined;
-  page: string = 'PROJECT_GROUPS';
-
-  showSupervisorSelect: boolean = false;
-  showAcceptanceStatusSelect: boolean = false;
-  showCriteriaMetStatusSelect: boolean = false;
-  showDisplayedColumnsSelect: boolean = false;
 
   constructor(
     private userService: UserService, 
     private store: Store<State>,
     private externalLinkService: ExternalLinkService,
-    private activatedRoute: ActivatedRoute
   ){}
 
   ngOnInit(): void {
-    combineLatest([
-      this.activatedRoute.queryParamMap,
-      this.store.select(isCoordinator),
-      this.store.select(isSupervisor),
-      this.store.select(getFilters)
-    ])
-      .pipe(takeUntil(this.unsubscribe$)).subscribe(
-        ([params, isCoordinator, isSupervisor, filters ]) => {
-          if (params.get('page')) {
-            this.page = params.get('page')!;
-          }
-
-          this.searchValue = filters.searchValue;
-          this.supervisorIndexNumber = filters.supervisorIndexNumber;
-          this.acceptanceStatus = filters.acceptanceStatus;
-          this.displayedColumns = filters.columns;
-
-          this.showSupervisorSelect = isCoordinator || this.page === 'PROJECT_GROUPS';
-          this.showAcceptanceStatusSelect = this.page === 'PROJECT_GROUPS';
-          this.showCriteriaMetStatusSelect = 
-            (this.page === 'GRADES' && (isCoordinator || isSupervisor))  || this.displayedColumns.includes('criteriaMetStatus');
-          this.showDisplayedColumnsSelect = this.page === 'PROJECT_GROUPS';
-        }
-      )
-
     this.supervisors$ = this.userService.supervisors$;
 
     this.store.select(getFilters).pipe(takeUntil(this.unsubscribe$)).subscribe(
@@ -89,15 +100,26 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
       }
     )
 
+    this.predefinedViews.find(view => view.id === 'ALL')!.columns = this.allColumns;
+    this.displayedColumns = this.predefinedViews.find(view => view.id === 'ALL')!.columns;
+    this.onFiltersChange();
+
     if(this.showExternalLinkColumns){
       this.externalLinkService.columnHeaders$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-        columnHeaders => this.allColumns = [
-            ...this.allColumns,
-
-            ...columnHeaders
-          ]
+        columnHeaders => {
+          this.allColumns = [...this.allColumns, ...columnHeaders]
+          this.predefinedViews.find(view => view.id === 'PROJECT_GROUPS')!.columns = [...this.predefinedViews.find(view => view.id === 'PROJECT_GROUPS')!.columns, ...columnHeaders]
+          this.predefinedViews.find(view => view.id === 'ALL')!.columns = this.allColumns;
+          this.displayedColumns = this.predefinedViews.find(view => view.id === 'ALL')!.columns;
+          this.onFiltersChange();
+        }
       )
     }
+  }
+
+  onViewChange(event: MatSelectChange){
+    this.displayedColumns = event.value.columns;
+    this.onFiltersChange();
   }
 
   onFiltersChange(){

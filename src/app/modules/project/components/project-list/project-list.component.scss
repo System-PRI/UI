@@ -49,13 +49,16 @@
     }
 
     .mat-column-supervisorName {
-        text-wrap: nowrap;
+        white-space: nowrap;
     }
 
     td {
         padding: 16px;
     }
 
+    .studentsCell {
+        min-width: 300px;
+    }
 
     .projectNameCell {
         min-width: 350px;

@@ -59,7 +59,7 @@
 
     <ng-container matColumnDef="students">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Students </th>
-      <td mat-cell *matCellDef="let project"> {{project.students}} </td>
+      <td class="studentsCell" mat-cell *matCellDef="let project"> {{project.students}} </td>
     </ng-container>
   
     <ng-container *ngFor="let externalLinkColumnHeader of externalLinkColumnHeaders; let i = index;" [matColumnDef]="externalLinkColumnHeader">

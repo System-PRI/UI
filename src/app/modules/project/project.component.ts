@@ -57,12 +57,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
     )
 
     combineLatest([
-      this.activatedRoute.queryParamMap,
       this.store.select('user'),
       this.externalLinkService.columnHeaders$
     ])
       .pipe(takeUntil(this.unsubscribe$)).subscribe(
-        ([params, user, externalLinkColumnHeaders]) => {
+        ([user, externalLinkColumnHeaders]) => {
           this.externalLinkColumnHeaders = externalLinkColumnHeaders;
 
           this.user = user;
@@ -84,23 +83,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
               break;
           }
 
-          if (params.get('page')) {
-            this.page = params.get('page')!;
-          }
-
-          this.displayedColumns = [
-            'name',
-            'supervisorName',
-            'accepted',
-            'firstSemesterGrade',
-            'secondSemesterGrade',
-            'criteriaMetStatus',
-            'defenseDay',
-            'evaluationPhase',
-            'classroom',
-          ];
           //this.displayedColumns.push(...externalLinkColumnHeaders)
-          this.store.dispatch(updateDisplayedColumns({columns: this.displayedColumns}));
+          //this.store.dispatch(updateDisplayedColumns({columns: this.displayedColumns}));
         }
       )
   
