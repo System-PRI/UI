@@ -315,15 +315,15 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   get showFreezeGradingButton(){
-    return this.user.role === 'COORDINATOR' && this.data.freezeButtonShown
+    return this.data.freezeButtonShown
   }
 
   get showOpenRetakePhaseButton(){
-    return this.user.role === 'COORDINATOR' && this.data.retakeButtonShown
+    return this.data.retakeButtonShown
   }
 
   get showPublishButton(){
-    return this.user.role === 'COORDINATOR' && this.data.publishButtonShown
+    return this.data.publishButtonShown
   }
 
   get showEditButton(){

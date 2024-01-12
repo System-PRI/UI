@@ -1,8 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { acceptProjectSuccess, addProjectSuccess, changeFilters, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, removeProjectSuccess, unacceptProjectSuccess, updateDisplayedColumns, updateGrade, updateGradingPhase, updateProjectSuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
 import { initialState, ProjectState } from './project.state';
-import { act } from '@ngrx/effects';
-
 
 export const projectReducer = createReducer(
     initialState,
