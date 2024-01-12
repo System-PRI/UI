@@ -65,7 +65,7 @@ export const projectReducer = createReducer(
                 if (project.id === action.projectId) {
                     return {
                         ...project,
-                        accepted: true
+                        accepted: project.confirmed!
                     }
                 }
                 return project;

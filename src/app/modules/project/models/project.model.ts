@@ -12,6 +12,7 @@ export interface Project {
     criteriaMet?: boolean | null;
     firstSemesterGrade?: string | null;
     secondSemesterGrade?: string | null;
+    confirmed?: boolean;
     defenseDay?: string | null;
     defenseTime?: string | null;
     evaluationPhase?: string | null;   
