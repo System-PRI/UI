@@ -8,6 +8,7 @@ import { User } from '../user/models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you-sure-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DefenseAdditonalDayFormComponent } from './components/defense-additional-day-form/defense-additional-day-form.component';
 
 @Component({
   selector: 'defense-schedule',
@@ -28,7 +29,6 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     private defenseScheduleService: DefenseScheduleService,
     private store: Store<State>,
     private dialog: MatDialog,
-    private _snackbar: MatSnackBar,
   ){}
 
   ngOnInit(): void {
@@ -77,7 +77,14 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   }
 
   openAdditionalDayDialog(): void {
-    
+    const dialogRef = this.dialog.open(DefenseAdditonalDayFormComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.defenseScheduleService.additionalDay(result).pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => window.location.reload())
+      }
+    });
   }
 
   

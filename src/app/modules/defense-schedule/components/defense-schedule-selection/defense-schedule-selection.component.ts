@@ -51,8 +51,6 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
-    console.log(this.user)
     if(this.defenses){
       this.dataSource = new MatTableDataSource<ProjectDefense>(this.defenses);
       this.dataSource.paginator = this.paginator;
@@ -68,13 +66,6 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
   })
-  }
-
-  projectChanged(event: MatSelectChange, defense: ProjectDefense){
-    //console.log(this.defenses)
-    /*if(this.updatedDefenses.findIndex(def => def.projectDefenseId === defense.projectDefenseId) === -1){
-      this.updatedDefenses.push(defense)
-    }*/
   }
 
   doesDefenseIncludeMyProject(projectId: string): boolean {
