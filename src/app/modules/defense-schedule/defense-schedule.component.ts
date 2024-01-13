@@ -23,7 +23,6 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   user!: User;
   defenses!: ProjectDefense[];
   currentPhase!: string;
-  loadingCommitteeSelectionSurvey = true;
   
   constructor(
     private defenseScheduleService: DefenseScheduleService,

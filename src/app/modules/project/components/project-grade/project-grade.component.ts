@@ -78,6 +78,7 @@ export class ProjectGradeComponent implements OnDestroy, OnChanges {
       this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: key } )
         .pipe(takeUntil(this.unsubscribe$)).subscribe(
           (value: ChangeGradeResponse) => {
+
             this.grade = value.grade;
             this.data.grade = value.grade;
             this.data.criteriaMet = value.criteriaMet;            
