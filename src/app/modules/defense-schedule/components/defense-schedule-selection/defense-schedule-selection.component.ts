@@ -90,6 +90,14 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
       })
   }
 
+  getDefenseDayForProject(projectId: string): string {
+    return this.defenses.find(defense => defense.projectId === projectId)?.date || '';
+  }
+
+  get registeredDefenses(): string {
+    return `${this.defenses?.filter(defense => defense.projectId !== null).length.toString()}/${this.defenses?.length.toString()}`
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete();

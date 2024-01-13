@@ -140,6 +140,8 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
   }
 
+
+
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete()

@@ -4,7 +4,7 @@
   <table mat-table [dataSource]="projects" matSort>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td class="projectNameCell" mat-cell *matCellDef="let project"> 
+      <td  class="projectNameCell" mat-cell *matCellDef="let project"> 
         <div>
           <span>{{project.name}} </span>
           <mat-icon *ngIf="isProjectAccepted(project.id)">person</mat-icon>
