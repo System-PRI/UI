@@ -31,7 +31,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   acceptedProjects: string[] = [];
   assignedProjects: string[] = [];
   unsubscribe$ = new Subject();
-  externalLinkColumnHeaders: string[] = [];
 
   constructor(
       public dialog: MatDialog, 
@@ -40,16 +39,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
       private store: Store<State>,
       private _snackbar: MatSnackBar,
       private router: Router,
-      private externalLinkService: ExternalLinkService,
   ) {}
 
   ngOnInit(): void {
     this.checkUserRoleAndAssociatedProject();
     this.userService.students$.pipe(takeUntil(this.unsubscribe$)).subscribe(students => this.students = students)
     this.userService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(supervisors => this.supervisors = supervisors)
-
-    this.externalLinkService.columnHeaders$.pipe(takeUntil(this.unsubscribe$))
-      .subscribe(externalLinkColumnHeaders => this.externalLinkColumnHeaders = externalLinkColumnHeaders)
   }
 
   checkUserRoleAndAssociatedProject(): void{
@@ -131,10 +126,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   get showEditOrAddProjectButton(){
     return (this.user.role === 'STUDENT' && this.user.acceptedProjects.length === 0) || (this.user.role === 'PROJECT_ADMIN') || (this.user.role === 'COORDINATOR') 
-  }
-
-  get showExternalLinkColumns(){
-    return this.user.role === 'COORDINATOR' || this.user.role === 'SUPERVISOR'
   }
 
   get showPublishAllButton(){

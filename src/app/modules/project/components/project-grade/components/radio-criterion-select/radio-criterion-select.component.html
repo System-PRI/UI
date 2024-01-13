@@ -1,4 +1,4 @@
-<mat-radio-group (change)="onChange($event)" [(ngModel)]="criteriaGroup.selectedCriterion">
+<mat-radio-group (change)="selectCriterion($event.value)" [(ngModel)]="criteriaGroup.selectedCriterion">
     <mat-radio-button
         *ngFor="let key of criteriaKeys"
         [class.disqualifying]="criteriaGroup.criteria[key.id].isDisqualifying"
@@ -9,7 +9,7 @@
 <div  class="criterion-details-cell-container">
     <div *ngIf="expanded" class="all-criteria">
         <div class="criterion-description" 
-            (click)="editable ? criteriaGroup.selectedCriterion = key.id : false"
+            (click)="selectCriterion(key.id)"
             [ngClass]="{
                 'selected-row': key.id === criteriaGroup.selectedCriterion,
                 'disqualifying': criteriaGroup.criteria[key.id].isDisqualifying,

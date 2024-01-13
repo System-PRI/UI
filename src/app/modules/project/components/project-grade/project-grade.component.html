@@ -2,7 +2,7 @@
 <table class="grade-table">
     <thead>
         <tr>
-            <th></th>
+            <th class="criterion-title-column"></th>
             <th class="points-and-criterion-columns">
                 <div class="points">
                     <span class="centered-cell">0p</span>
@@ -28,14 +28,18 @@
             <ng-container *ngFor="let criteriaGroup of section.criteriaGroups;">
                 <tr>
                     <td class="criteria-group-name">
-                        <h3>{{ criteriaGroup.name }}</h3>
+                        <h3>
+                            {{ criteriaGroup.name }}
+                            <p>Modification date: {{ criteriaGroup.modificationDate }}</p>
+                        </h3>
+                       
                     </td>
-                    <td>
+                    <td class="radio-buttons-and-criteria-description"> 
                         <radio-criterion-select 
                             [expanded]="expanded"
                             [editable]="data.editable"
                             [criteriaGroup]="criteriaGroup"
-                            (selectCriterion)="selectCriterion(criteriaGroup.id, $event)"
+                            (selectCriterionEvent)="selectCriterion(criteriaGroup.id, $event)"
                         >
                         </radio-criterion-select>
                     </td>

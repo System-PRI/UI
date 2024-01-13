@@ -11,7 +11,7 @@ export class RadioCriterionSelectComponent {
   @Input() expanded!: boolean;
   @Input() criteriaGroup!: CriteriaGroup;
   @Input() editable!: boolean;
-  @Output() selectCriterion: EventEmitter<string | null> = new EventEmitter();
+  @Output() selectCriterionEvent: EventEmitter<string | null> = new EventEmitter();
   criteriaKeys = [
     {
       id: 'CRITERION_NOT_MET',
@@ -31,16 +31,17 @@ export class RadioCriterionSelectComponent {
     },
   ]
 
-  onChange(event: MatRadioChange){
+  selectCriterion(key: string){
     if(this.editable){
-      this.selectCriterion.emit(event.value)
+      this.criteriaGroup.selectedCriterion =  key;
+      this.selectCriterionEvent.emit(key)
     }
   }
-
+ 
   unselectCriterion(){
     if(this.editable){
       this.criteriaGroup.selectedCriterion = null;
-      this.selectCriterion.emit(null)
+      this.selectCriterionEvent.emit(null)
     }
   }
 }
