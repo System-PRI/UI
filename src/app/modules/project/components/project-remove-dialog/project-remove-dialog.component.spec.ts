@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProjectRemoveDialogComponent } from './project-remove-dialog.component';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ProjectRemoveDialogComponent', () => {
   let component: ProjectRemoveDialogComponent;
@@ -8,7 +12,18 @@ describe('ProjectRemoveDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProjectRemoveDialogComponent ]
+      imports: [
+        MatFormFieldModule,
+        FormsModule,
+        MatDialogModule,
+        MatInputModule,
+        BrowserAnimationsModule
+      ],
+      declarations: [ ProjectRemoveDialogComponent ],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} } 
+      ]
     })
     .compileComponents();
 

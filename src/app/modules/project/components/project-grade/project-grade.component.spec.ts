@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProjectGradeComponent } from './project-grade.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('ProjectGradeComponent', () => {
   let component: ProjectGradeComponent;
@@ -7,7 +9,11 @@ describe('ProjectGradeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProjectGradeComponent ]
+      imports: [
+        HttpClientTestingModule,
+      ],
+      declarations: [ ProjectGradeComponent ],
+      providers: [provideMockStore({})],
     })
     .compileComponents();
 

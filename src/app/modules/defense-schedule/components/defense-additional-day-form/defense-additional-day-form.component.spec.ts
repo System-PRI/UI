@@ -1,17 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DefenseDateRangeSelectionComponent } from '../defense-date-range-selection/defense-date-range-selection.component';
+import { DefenseAdditonalDayFormComponent } from './defense-additional-day-form.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
-describe('DefenseDateRangeSelectionComponent', () => {
-  let component: DefenseDateRangeSelectionComponent;
-  let fixture: ComponentFixture<DefenseDateRangeSelectionComponent>;
+describe('DefenseAdditionalDayForm', () => {
+  let component: DefenseAdditonalDayFormComponent
+  let fixture: ComponentFixture<DefenseAdditonalDayFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DefenseDateRangeSelectionComponent ]
+      imports: [
+        HttpClientTestingModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+      ],
+      declarations: [ DefenseAdditonalDayFormComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DefenseDateRangeSelectionComponent);
+    fixture = TestBed.createComponent(DefenseAdditonalDayFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

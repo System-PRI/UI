@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectFiltersComponent } from './project-filters.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 describe('ProjectFiltersComponent', () => {
   let component: ProjectFiltersComponent;
@@ -8,7 +13,14 @@ describe('ProjectFiltersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProjectFiltersComponent ]
+      imports: [
+        HttpClientTestingModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule
+      ],
+      declarations: [ ProjectFiltersComponent ],
+      providers: [provideMockStore({})],
     })
     .compileComponents();
 

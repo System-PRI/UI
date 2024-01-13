@@ -9,7 +9,6 @@ import { Student } from '../user/models/student.model';
 import { User } from '../user/models/user.model';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
-import { ExternalLinkService } from './services/external-link.service';
 import { ProjectDetails } from './models/project.model';
 import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you-sure-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';

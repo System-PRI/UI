@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SupervisorAvailabilityListComponent } from './supervisor-availability-list.component';
+import { provideMockStore } from '@ngrx/store/testing';
+import { MatTableModule } from '@angular/material/table';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SupervisorAvailabilityListComponent', () => {
   let component: SupervisorAvailabilityListComponent;
@@ -7,7 +10,12 @@ describe('SupervisorAvailabilityListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SupervisorAvailabilityListComponent ]
+      imports: [
+        MatTableModule,
+        HttpClientTestingModule
+      ],
+      declarations: [ SupervisorAvailabilityListComponent ],
+      providers: [provideMockStore({})],
     })
     .compileComponents();
 
