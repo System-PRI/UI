@@ -1,3 +1,5 @@
+<project-filters [externalLinkColumnHeaders]="externalLinkColumnHeaders"/>
+
 <div *ngIf="!loading" style="overflow-x:auto;" class="mat-elevation-z8">
   <table mat-table [dataSource]="projects" matSort>
     <ng-container matColumnDef="name">
@@ -71,7 +73,7 @@
               </a>
           </div>
       </td>
-  </ng-container>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr style="cursor: pointer" (click)="navigateToDetails(project.id)" mat-row *matRowDef="let row; columns: columns; let project"></tr>

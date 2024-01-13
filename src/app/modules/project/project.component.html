@@ -23,17 +23,11 @@
         </div>
        
     </div>
-    <div class="project-filters-container">
-        <project-filters [externalLinkColumnHeaders]="externalLinkColumnHeaders"/>
-    </div>
-    <div class="tables">   
-        <div class="project-list-container">
-            <project-list 
-                [assignedProjects]="assignedProjects"
-                [acceptedProjects]="acceptedProjects" 
-                [externalLinkColumnHeaders]="externalLinkColumnHeaders"
-            />
-        </div>
+    <div class="project-list-container">
+        <project-list 
+            [assignedProjects]="assignedProjects"
+            [acceptedProjects]="acceptedProjects" 
+        />
     </div>
 </div>
 

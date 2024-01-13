@@ -65,6 +65,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
         this.dataSource = new MatTableDataSource<ProjectDefense>(defenses);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this._snackbar.open('Defenses successfully updated', 'close')
   })
   }
 

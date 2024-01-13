@@ -72,9 +72,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     document.getElementsByClassName('mat-drawer-content')[0].scrollTo(0, 0);
 
-    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
+    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, evaluationCards}) => {
       this.data = projectDetails;
-      this.user = user;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
           role: 'SUPERVISOR', 
@@ -102,6 +101,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       this.selectedSemesterIndex = this.selectedSemester;
       this.selectedPhaseIndex = this.selectedPhase;
     })
+
+    this.store.select('user').pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
+      this.user = user;
+    });
   }
 
   onGradeChange({grade, criteriaMet, selectedCriteria}: {grade: string, criteriaMet: boolean, selectedCriteria: string}){
@@ -124,7 +127,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
             return member
           }
         ))
-
+        this._snackbar.open('Project successfully accepted', 'close');
     });
   }
 
@@ -150,7 +153,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
             return member
           }
         ))
-
+        this._snackbar.open('Project successfully unaccepted', 'close');
     })
   }
 
@@ -167,7 +170,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       if(result){
         this.store.dispatch(removeProject({projectId: this.data.id!}))
         this.actions$.pipe(ofType(removeProjectSuccess),takeUntil(this.unsubscribe$),).subscribe(() => {
-          this.router.navigate ([`projects`]) 
+          this.router.navigate([{outlets: {modal: null}}]);
           this._snackbar.open('Project successfully removed', 'close');
         })
       }
@@ -221,8 +224,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
           this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
           this.selectedSemesterIndex = this.selectedSemester;
           this.selectedPhaseIndex = this.selectedPhase;
-        },
-        () => this._snackbar.open('An error ocurred, unsuccessful freeze', 'close')
+        }
     );
   }
 
@@ -236,8 +238,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
         this.selectedSemesterIndex = this.selectedSemester;
         this.selectedPhaseIndex = this.selectedPhase;
-      },
-      () => this._snackbar.open('An error ocurred, unuccessful retake phase opening', 'close')
+      }
     );
   }
 
@@ -251,8 +252,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
         this.selectedSemesterIndex = this.selectedSemester;
         this.selectedPhaseIndex = this.selectedPhase;
-      },
-      () => this._snackbar.open('An error ocurred, unsuccessful publishing', 'close')
+      }
     );
   }
 
@@ -311,7 +311,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
   
   get showUnacceptButton(){
-    return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!)
+    return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!) && !this.data.accepted
   }
 
   get showFreezeGradingButton(){
@@ -345,15 +345,15 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   get showAcceptButton(){
     if(
-       (this.user.role === 'STUDENT' && 
-       this.user.acceptedProjects.length === 0 && 
-       this.user.projects.includes(this.data.id!))
-       ||
-       ((this.user.role === 'SUPERVISOR' || this.user.role === 'COORDINATOR') &&
-       !this.user.acceptedProjects.includes(this.data.id!) &&
-       this.user.projects.includes(this.data.id!) &&
-       this.data.confirmed &&
-       !this.maxAvailabilityFilled)
+      (this.user.role === 'STUDENT' && 
+      this.user.acceptedProjects.length === 0 && 
+      this.user.projects.includes(this.data.id!))
+      ||
+      ((this.user.role === 'SUPERVISOR' || this.user.role === 'COORDINATOR') &&
+      !this.user.acceptedProjects.includes(this.data.id!) &&
+      this.user.projects.includes(this.data.id!) &&
+      this.data.confirmed &&
+      !this.maxAvailabilityFilled)
      ){
        return true
      } else {

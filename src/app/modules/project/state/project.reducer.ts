@@ -14,12 +14,15 @@ export const projectReducer = createReducer(
     on(addProjectSuccess, (state, action): ProjectState => {
         return {
             ...state,
-            projects: [...state.projects!, {
-                id: action.project.id,
-                name: action.project.name,
-                supervisor: action.project.supervisor,
-                accepted: action.userRole === 'COORDINATOR'
-            }]
+            projects: [
+                {
+                    id: action.project.id,
+                    name: action.project.name,
+                    supervisor: action.project.supervisor,
+                    accepted: action.userRole === 'COORDINATOR'
+                },
+                ...state.projects!
+            ]
         }
     }),
     on(updateProjectSuccess, (state, action): ProjectState => {
