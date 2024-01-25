@@ -1,0 +1,8 @@
+<h1>{{projectDetails.name}}</h1>
+<p>{{projectDetails.description}}</p>
+
+<mat-chip-set class="chips" cdkDropList cdkDropListOrientation="horizontal">
+    <mat-chip cdkDrag *ngFor="let technology of projectDetails.technologies">
+        {{technology}}
+    </mat-chip>
+</mat-chip-set>

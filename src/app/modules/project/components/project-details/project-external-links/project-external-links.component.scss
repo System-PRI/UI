@@ -1,0 +1,13 @@
+.link {
+    display: flex;
+    align-items: center;
+
+    a {
+        text-decoration: none;
+        color: black;
+    
+        mat-icon {
+            color: #4050b5;
+        }
+    }
+}

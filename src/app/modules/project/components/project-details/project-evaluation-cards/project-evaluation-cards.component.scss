@@ -1,0 +1,64 @@
+:host {
+    ::ng-deep .mdc-tab {
+        border-right: 2px solid #e7e7e7 !important;
+    }
+
+    ::ng-deep .mdc-tab-indicator__content {
+        border-color:  #e7e7e7 !important;
+        opacity: 1 !important;
+    }
+
+    ::ng-deep .mdc-tab-indicator--active .mdc-tab-indicator__content {
+        border-color: var(--mdc-tab-indicator-active-indicator-color, #3f51b5) !important;
+    }
+
+    ::ng-deep .mat-mdc-tab-body-content {
+        overflow-y: hidden !important;
+    }
+    
+    ::ng-deep .mat-mdc-tab-disabled {
+        display: none !important;  
+    }
+}
+
+.grade-info {
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    background: #fafafa;
+    padding: 20px 30px;
+    z-index: 999;
+
+    div {
+        display: flex;
+        column-gap: 20px;
+    }
+}
+
+
+.criteriaMet {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
+
+.ellipse {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ff6a6a;
+    margin: 0 auto;
+}
+
+.ellipse.accepted {
+    background: #92e882;
+}
+
+
+
+h2 {
+    margin: 0px;
+}

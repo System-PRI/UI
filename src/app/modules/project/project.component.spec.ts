@@ -10,7 +10,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { SupervisorAvailabilityListComponent } from './components/supervisor-availability-list/supervisor-availability-list.component';
 import { ProjectListComponent } from './components/project-list/project-list.component';
-import { ProjectFiltersComponent } from './components/project-filters/project-filters.component';
+import { ProjectFiltersComponent } from './components/project-list/project-filters/project-filters.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 

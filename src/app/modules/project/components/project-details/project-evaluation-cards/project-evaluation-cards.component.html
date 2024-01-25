@@ -1,0 +1,28 @@
+<div *ngIf="gradesShown">
+    <mat-tab-group (selectedTabChange)="onSemesterTabChange($event)" [selectedIndex]="selectedSemesterIndex" class="mat-elevation-z8">
+        <mat-tab #semesterTab *ngFor="let semester of objectKeys(evaluationCards)" [label]="getEvaluationCardsTranslations(semester)">
+        <mat-tab-group (selectedTabChange)="onPhaseTabChange($event)" [selectedIndex]="selectedPhaseIndex">
+            <mat-tab 
+            #phaseTab
+            *ngFor="let phase of objectKeys(evaluationCards[semester])"
+            [label]="getEvaluationCardsTranslations(phase)"
+            >
+            <project-grade 
+                [isActive]="phaseTab.isActive && semesterTab.isActive"
+                (gradeChange)="onGradeChange($event)"
+                [projectId]="projectId"
+                [semester]="semester"
+                [evaulationCard]="evaluationCards[semester][phase]"
+            />
+            </mat-tab>
+        </mat-tab-group>
+        </mat-tab>
+    </mat-tab-group>
+    
+    <div class="grade-info mat-elevation-z8">
+        <h2>Grade: {{grade}}</h2>
+        <div>
+        <h2 class="criteriaMet">Criteria met: <div [class.accepted]="criteriaMet" class="ellipse"></div></h2>
+        <h2>Selected criteria: {{selectedCriteria}}</h2>
+    </div>
+</div>

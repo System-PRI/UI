@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProjectListComponent } from './project-list.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ProjectFiltersComponent } from '../project-filters/project-filters.component';
+import { ProjectFiltersComponent } from './project-filters/project-filters.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 

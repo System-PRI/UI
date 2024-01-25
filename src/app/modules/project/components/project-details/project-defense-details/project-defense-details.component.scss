@@ -1,0 +1,23 @@
+:host {
+    max-width: 300px;
+    p {
+        margin: 0px 0px 0px 10px;
+        color: black;
+
+        span {
+            font-weight: 500;
+        }
+    }
+
+    ul {
+        margin: 0px;
+    }
+
+    li {
+        color: #4758b8;
+        height: 48px;
+        line-height: 48px;
+        align-items: center;
+    }
+}
+

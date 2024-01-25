@@ -1,0 +1,22 @@
+:host {
+    ::ng-deep .mat-mdc-standard-chip {
+        background-color: #dde2ff !important;
+    }
+
+    ::ng-deep .mat-mdc-chip-action-label {
+        color: #4758b8 !important;
+    }
+}
+
+.chips {
+    margin: 22px 0px  10px 0px;
+}
+
+p {
+    text-align: justify;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+h3 {
+    margin: 0px;
+}

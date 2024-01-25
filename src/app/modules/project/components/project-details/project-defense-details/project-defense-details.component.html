@@ -1,0 +1,17 @@
+<ul>
+    <li *ngIf="projectDetails.defenseDay"> 
+        <p><span>Defense day:</span> {{projectDetails.defenseDay}}</p>
+    </li>
+    <li *ngIf="projectDetails.defenseTime">
+        <p><span>Defense time:</span> {{projectDetails.defenseTime}}</p>
+    </li>
+    <li *ngIf="projectDetails.classroom">
+        <p><span>Classroom:</span> {{projectDetails.classroom}}</p>
+    </li>
+    <li *ngIf="projectDetails.evaluationPhase && false">
+        <p><span>Evaluation phase</span> {{projectDetails.evaluationPhase}}</p>
+    </li>
+    <li *ngIf="projectDetails.committee">
+        <p><span>Committee:</span> {{projectDetails.committee}}</p>
+    </li>
+</ul>

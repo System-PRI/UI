@@ -1,114 +1,17 @@
 
 <div class="project-details">
-  <div class="details">
-    <div class="back" (click)="navigateBack()">
-      <mat-icon>arrow_back</mat-icon>
-        Project List
-    </div>
-    <h1>{{data.name}}</h1>
-    <p>{{data.description}}</p>
-    
-    <mat-chip-set
-          class="chips"
-          cdkDropList 
-          cdkDropListOrientation="horizontal">
-      <mat-chip
-        class="example-box"
-        cdkDrag
-        *ngFor="let technology of data.technologies">
-        {{technology}}
-      </mat-chip>
-    </mat-chip-set>
-    <div class="links-and-defense-data">
-      <div class="links">
-        <div class="link" *ngFor="let externalLink of data.externalLinks">
-          <div>
-              <a target="_blank" 
-                  [href]="externalLink.url" 
-                  [class.hidden]="!externalLink.url" 
-                  mat-icon-button>
-                  <mat-icon>link</mat-icon>
-              </a>
-          </div>
-          <a target="_blank" [href]="externalLink.url">{{ externalLink.name }}</a>
-        </div>  
-      </div>
-      <div class="defense-data">
-        <p *ngIf="data.defenseDay"><span>Defense day:</span> {{data.defenseDay}}</p>
-        <p *ngIf="data.defenseTime"><span>Defense time:</span> {{data.defenseTime}}</p>
-        <p *ngIf="data.classroom"><span>Classroom:</span> {{data.classroom}}</p>
-        <p *ngIf="data.evaluationPhase"><span>Evaluation phase</span> {{data.evaluationPhase}}</p>
-        <p *ngIf="data.committee"><span>Committee:</span> {{data.committee}}</p>
-      </div>
-    </div>
-  </div>
-  <div class="table">
-    <table class="mat-elevation-z5" mat-table [dataSource]="members" matSort>
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let member"> 
-          <div class="cellWithIcon">
-            {{member.name}} 
-            <mat-icon *ngIf="isProjectAdmin(member)">manage_accounts</mat-icon>
-            <mat-icon *ngIf="isSupervisor(member)">supervisor_account</mat-icon>
-          </div>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef> Email </th>
-          <td mat-cell *matCellDef="let member"> {{member.email}} </td>
-      </ng-container>
-      <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef> Role </th>
-        <td mat-cell *matCellDef="let member"> {{getRole(member.role)}} </td>
-      </ng-container>
-      <ng-container matColumnDef="status">
-        <th class="acceptance-status-header" mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let member">
-          <div [class.accepted]="member.accepted" class="ellipse"></div>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columns"></tr>
-      <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-    </table>
-    <div class="buttons">
-      <button *ngIf="showPublishButton" (click)="openAreYouSureDialog('publish')" mat-raised-button color="primary" cdkFocusInitial>Publish</button>
-      <button *ngIf="showOpenRetakePhaseButton" (click)="openAreYouSureDialog('retake')" mat-raised-button color="primary" cdkFocusInitial>Open retake phase</button>
-      <button *ngIf="showFreezeGradingButton" (click)="openAreYouSureDialog('freeze')" mat-raised-button color="primary" cdkFocusInitial>Freeze grading</button>
-      <button *ngIf="showEditButton" (click)="editProject()" mat-raised-button color="primary" cdkFocusInitial>Edit project</button>
-      <button *ngIf="showRemoveButton" (click)="openRemoveProjectDialog()" mat-raised-button color="primary" cdkFocusInitial>Remove project</button>
-      <button *ngIf="showAcceptButton" (click)="acceptProject()" mat-raised-button color="primary" cdkFocusInitial>Accept project</button>
-      <button *ngIf="showUnacceptButton" (click)="unacceptProject()" mat-raised-button color="primary" cdkFocusInitial>Unaccept project</button>  
-    </div>
-  </div>
-</div>
-<mat-tab-group (selectedTabChange)="onSemesterTabChange($event)" [selectedIndex]="selectedSemesterIndex" *ngIf="gradesShown" class="mat-elevation-z8">
-  <mat-tab #semesterTab *ngFor="let semester of objectKeys(evaluationCards)" [label]="getEvaluationCardsTranslations(semester)">
-    <mat-tab-group (selectedTabChange)="onPhaseTabChange($event)" [selectedIndex]="selectedPhaseIndex">
-      <mat-tab 
-        #phaseTab
-        *ngFor="let phase of objectKeys(evaluationCards[semester])"
-        [label]="getEvaluationCardsTranslations(phase)"
-      >
-        <project-grade 
-          [isActive]="phaseTab.isActive && semesterTab.isActive"
-          (gradeChange)="onGradeChange($event)"
-          [projectId]="data.id!"
-          [semester]="semester"
-          [evaulationCard]="evaluationCards[semester][phase]"
-        />
-      </mat-tab>
-    </mat-tab-group>
-  </mat-tab>
-</mat-tab-group>
-
-<div *ngIf="gradesShown" class="grade-info mat-elevation-z8">
-  <h2>Grade: {{grade}}</h2>
   <div>
-    <h2 class="criteriaMet">Criteria met: <div [class.accepted]="criteriaMet" class="ellipse"></div></h2>
-    <h2>Selected criteria: {{selectedCriteria}}</h2>
+    <div class="back" (click)="navigateBack()"><mat-icon>arrow_back</mat-icon> Project List </div>
+    <project-title-desc-tech-details [projectDetails]="projectDetails" />
+    <div class="links-and-defense-details">
+      <project-external-links [externalLinks]="projectDetails.externalLinks!" />
+      <project-defense-details [projectDetails]="projectDetails" />
+    </div>
+  </div>
+  <div>
+    <project-members-table [members]="projectDetails.members!" />
+    <project-action-buttons [projectDetails]="projectDetails" [user]="user" />
   </div>
 </div>
 
-
-
+<project-evaluation-cards [evaluationCards]="projectDetails.evaluationCards!" [projectId]="projectDetails.id!" />

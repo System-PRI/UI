@@ -1,0 +1,7 @@
+<button *ngIf="showPublishButton" (click)="openAreYouSureDialog('publish')" mat-raised-button color="primary" cdkFocusInitial>Publish</button>
+<button *ngIf="showOpenRetakePhaseButton" (click)="openAreYouSureDialog('retake')" mat-raised-button color="primary" cdkFocusInitial>Open retake phase</button>
+<button *ngIf="showFreezeGradingButton" (click)="openAreYouSureDialog('freeze')" mat-raised-button color="primary" cdkFocusInitial>Freeze grading</button>
+<button *ngIf="showEditButton" (click)="editProject()" mat-raised-button color="primary" cdkFocusInitial>Edit project</button>
+<button *ngIf="showRemoveButton" (click)="openRemoveProjectDialog()" mat-raised-button color="primary" cdkFocusInitial>Remove project</button>
+<button *ngIf="showAcceptButton" (click)="acceptProject()" mat-raised-button color="primary" cdkFocusInitial>Accept project</button>
+<button *ngIf="showUnacceptButton" (click)="unacceptProject()" mat-raised-button color="primary" cdkFocusInitial>Unaccept project</button>
