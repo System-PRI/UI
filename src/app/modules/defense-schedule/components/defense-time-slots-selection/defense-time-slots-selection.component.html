@@ -3,7 +3,6 @@
         <th *ngFor="let date of dates">{{ date }}</th>
     </tr>
     <tr *ngFor="let time of times">
-        
         <td 
             (mouseenter)="onMouseEnter(date, time)"
             (mousedown)="onMouseDown(date, time)"
@@ -13,9 +12,7 @@
             *ngFor="let date of dates"
         >
             {{ time }}
-            <span>
-
-            </span>
+            <span></span>
         </td>
     </tr>
 </table>

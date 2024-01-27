@@ -28,10 +28,10 @@
                 [class.project-assigned]="isProjectAssigned(time, selectedSlots[supervisor.id][time].committeeIdentifier)" 
                 [class.hovered]="hoveredSlots[supervisor.id] && hoveredSlots[supervisor.id][time] && user.role === 'COORDINATOR'" 
                 [class.last-selection]="lastSelectedSlots[supervisor.id] && lastSelectedSlots[supervisor.id][time]" 
+                [class.selected]="(selectedSlots[supervisor.id] && selectedSlots[supervisor.id][time].committeeIdentifier)"
                 (mouseenter)="onMouseEnter(supervisor.id, time)"
                 (mousedown)="onMouseDown(supervisor.id, time)"
                 (mouseup)="onMouseUp(supervisor.id, time, $event)"
-                [class.selected]="(selectedSlots[supervisor.id] && selectedSlots[supervisor.id][time].committeeIdentifier)"
                 *ngFor="let supervisor of supervisors"
             >
             <div class="committee-role-info">

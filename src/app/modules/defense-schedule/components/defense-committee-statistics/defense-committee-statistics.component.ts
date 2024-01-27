@@ -13,11 +13,10 @@ export class DefenseCommitteeStatisticsComponent implements OnDestroy {
   @Input() statistics!: SupervisorStatistics[];
   objectKeys = Object.keys;
 
-  constructor(private defenseScheduleService: DefenseScheduleService){}
+  constructor(){}
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete()
   }
-
 }
