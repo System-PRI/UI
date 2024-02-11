@@ -3,6 +3,8 @@ name: Docker Image CI
 on:
   push:
     branches: [ "SYSPRI-999-Open-source-dev" ]
+  pull_request:
+    branches: [ "SYSPRI-999-Open-source-dev" ]
 
 jobs:
   build:
