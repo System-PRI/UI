@@ -18,13 +18,11 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
       - name: 'Build and publish the Docker image without SSL config'
-        uses: actions/checkout@v3
         run: |
-          docker build . --file Dockerfile --build-arg NGINX_CONF=nginx-no-ssl.conf --tag pri-ui-no-ssl:$(date +%s)
+          docker build . --build-arg NGINX_CONF=nginx-no-ssl.conf --tag pri-ui-no-ssl:$(date +%s)
           docker push ghcr.io/System-PRI/pri-ui-no-ssl:$(date +%s)
 
       - name: 'Build and publish the Docker image with SSL config'
-        uses: actions/checkout@v3
         run: |
-          docker build . --file Dockerfile --build-arg NGINX_CONF=nginx-ssl.conf --tag pri-ui-ssl:$(date +%s)
+          docker build . --build-arg NGINX_CONF=nginx-ssl.conf --tag pri-ui-ssl:$(date +%s)
           docker push ghcr.io/System-PRI/pri-ui-ssl:$(date +%s)
