@@ -9,9 +9,8 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:1.18.0-alpine-perl
+FROM nginx:latest
 ARG NGINX_CONF
-RUN apk add --no-cache nginx-mod-http-perl
 RUN rm -rf /usr/share/nginx/html/*
 COPY $NGINX_CONF /etc/nginx/nginx.conf
 COPY --from=builder /app/dist/pri /usr/share/nginx/html
