@@ -14,10 +14,7 @@
             </button>
             <mat-menu xPosition="before" #supervisorAvailability="matMenu">
                 <div class="supervisor-availability-menu" >
-                    <supervisor-availability-list/>
-                    <button [class.hidden]="!isCoordinator" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary">
-                        Edit availability
-                    </button>
+                    <supervisor-availability-list [editMaxAvailability]="isCoordinator" />
                 </div>
             </mat-menu>
         </div>

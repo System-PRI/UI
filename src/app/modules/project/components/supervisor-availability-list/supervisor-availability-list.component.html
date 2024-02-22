@@ -1,16 +1,25 @@
-<table mat-table [dataSource]="supervisorAvailability">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Supervisor </th>
-      <td mat-cell *matCellDef="let element"> {{element.supervisor.name}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="availability">
-      <th class="availability" mat-header-cell *matHeaderCellDef> Availability </th>
-      <td class="availability" mat-cell *matCellDef="let element"> {{element.assigned}} / {{element.max}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+<table *ngIf="!editMaxAvailability || !editFormShown">
+  <tr *ngFor="let availability of supervisorAvailability">
+    <td>{{ availability.supervisor.name }}</td>
+    <td>
+      {{ availability.assigned }} / {{ availability.max }}
+    </td>
+  </tr>
 </table>
-  
-  
+
+<form *ngIf="editMaxAvailability" [formGroup]="form">
+  <div class="fields" *ngIf="editFormShown">
+    <mat-form-field *ngFor="let availability of availability.controls" (click)="$event.stopPropagation()">
+      <mat-label>{{ availability.value.supervisor.name }}</mat-label>
+      <input type="number" min="0" matInput [formControl]="getMaxFormControl(availability)">
+    </mat-form-field>
+  </div>
+  <div class="actions">
+    <button [ngClass]="{'fullwidth': !editFormShown}" color="primary" mat-raised-button (click)="editFormShown = !editFormShown; $event.stopPropagation()">
+      {{ !editFormShown ? 'Edit availability' : 'Cancel' }}
+    </button>
+    <button *ngIf="editFormShown" type="submit" color="primary" mat-raised-button (click)="onSubmit();">
+      Submit
+    </button>
+  </div>
+</form>

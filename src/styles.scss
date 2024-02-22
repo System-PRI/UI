@@ -23,3 +23,7 @@ button[mat-icon-button] {
 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
     line-height: 35px;
 }
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+    max-width: 500px !important;
+}
