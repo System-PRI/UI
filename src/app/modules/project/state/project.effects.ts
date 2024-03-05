@@ -2,8 +2,18 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { addProject, addProjectSuccess, addProjectFailure, loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateProject, updateProjectSuccess, updateProjectFailure, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess, acceptProject, acceptProjectSuccess, unacceptProject, unacceptProjectSuccess, acceptProjectFailure, unacceptProjectFailure, removeProject, removeProjectSuccess, removeProjectFailure } from './project.actions';
+import { 
+    addProject,
+    loadProjects,
+    loadSupervisorAvailability,
+    updateProject,
+    updateSupervisorAvailability,
+    acceptProject,
+    unacceptProject,
+    removeProject 
+} from './project.actions';
 import { ProjectService } from '../project.service';
+import { acceptProjectFailure, acceptProjectSuccess, addProjectFailure, addProjectSuccess, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, removeProjectFailure, removeProjectSuccess, unacceptProjectFailure, unacceptProjectSuccess, updateProjectFailure, updateProjectSuccess, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess } from './project-api.actions';
 
 @Injectable()
 export class ProjectEffects {

@@ -23,7 +23,6 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { ProjectFiltersComponent } from './components/project-list/project-filters/project-filters.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
-import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
 import { SupervisorAvailabilityListComponent } from './components/supervisor-availability-list/supervisor-availability-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProjectRemoveDialogComponent } from './components/project-details/project-remove-dialog/project-remove-dialog.component';
@@ -53,7 +52,6 @@ import { ProjectTitleDescTechDetailsComponent } from './components/project-detai
     ProjectComponent,
     ProjectGradeComponent,
     SupervisorAvailabilityListComponent,
-    SupervisorAvailabilityFormComponent,
     ProjectRemoveDialogComponent,
     RadioCriterionSelectComponent,
     ProjectMembersTableComponent,
@@ -90,7 +88,7 @@ import { ProjectTitleDescTechDetailsComponent } from './components/project-detai
     MatMenuModule,
     StoreModule.forFeature('project', projectReducer),
     EffectsModule.forFeature([ProjectEffects]),
-    SharedModule
+    SharedModule,
   ]
 })
 export class ProjectModule { }

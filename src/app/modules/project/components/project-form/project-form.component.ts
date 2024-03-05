@@ -9,11 +9,12 @@ import { UserState } from 'src/app/modules/user/state/user.state';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
-import { addProject, addProjectSuccess, updateProject, updateProjectSuccess } from '../../state/project.actions';
+import { addProject, updateProject } from '../../state/project.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExternalLink } from '../../models/external-link.model';
 import { ProjectDetails } from '../../models/project.model';
+import { addProjectSuccess, updateProjectSuccess } from '../../state/project-api.actions';
 
 @Component({
   selector: 'project-form',

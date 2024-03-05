@@ -7,7 +7,7 @@ import {
     removeProjectSuccess,
     unacceptProjectSuccess,
     updateProjectSuccess 
-} from '../../project/state/project.actions';
+} from '../../project/state/project-api.actions';
 
 export const userReducer = createReducer(
     initialState,

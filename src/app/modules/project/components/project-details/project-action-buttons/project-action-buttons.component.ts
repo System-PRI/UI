@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
-import { acceptProject, acceptProjectSuccess, removeProject, removeProjectSuccess, unacceptProject, unacceptProjectSuccess, updateGradingPhase } from '../../../state/project.actions';
+import { acceptProject, removeProject,unacceptProject, updateGradingPhase } from '../../../state/project.actions';
 import { Subject, takeUntil } from 'rxjs';
 import { AreYouSureDialogComponent } from 'src/app/modules/shared/are-you-sure-dialog/are-you-sure-dialog.component';
 import { GradeService } from '../../../services/grade.service';
 import { PhaseChangeResponse } from '../../../models/grade.model';
+import { acceptProjectSuccess, removeProjectSuccess, unacceptProjectSuccess } from '../../../state/project-api.actions';
 
 @Component({
   selector: 'project-action-buttons',

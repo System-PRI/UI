@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,11 @@ import {MatSelectModule} from '@angular/material/select';
     MatIconModule,
     MatListModule,
     StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      name: 'PRI',
+      maxAge: 25,
+      logOnly: !isDevMode(),
+    }),
     EffectsModule.forRoot([]),
     MatMenuModule,
     MatButtonToggleModule,

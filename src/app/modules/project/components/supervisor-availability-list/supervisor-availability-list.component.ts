@@ -1,14 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { SupervisorAvailability } from '../../models/supervisor-availability.model';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 import { Subject, takeUntil } from 'rxjs';
 import { getSupervisorAvailability } from '../../state/project.selectors';
-import { loadSupervisorAvailability, updateSupervisorAvailability, updateSupervisorAvailabilitySuccess } from '../../state/project.actions';
+import { loadSupervisorAvailability, updateSupervisorAvailability } from '../../state/project.actions';
 import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, ofType } from '@ngrx/effects';
+import { updateSupervisorAvailabilitySuccess } from '../../state/project-api.actions';
 
 @Component({
   selector: 'supervisor-availability-list',
