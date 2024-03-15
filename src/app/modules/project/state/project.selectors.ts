@@ -5,7 +5,7 @@ const getProjectFeatureState = createFeatureSelector<ProjectState>('project');
 
 export const getProjects = createSelector(
     getProjectFeatureState,
-    state => state.projects
+    state => state.filteredProjects
 );
 
 export const getFilters = createSelector(

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { Store } from '@ngrx/store';
@@ -15,7 +15,7 @@ import { predefinedViews } from './predefinedViews';
   styleUrls: ['./project-filters.component.scss']
 })
 export class ProjectFiltersComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() externalLinkColumnHeaders!: string[];
+  @Input() externalLinkColumnHeaders!: string[]
   displayedColumns: string[] = [];
   selectedView!: {id: string, columns: string[]};
   predefinedViews!: {id: string, name: string, columns: string[]}[];
@@ -40,6 +40,7 @@ export class ProjectFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.searchValue = filters.searchValue;
         this.supervisorIndexNumber = filters.supervisorIndexNumber;
         this.acceptanceStatus = filters.acceptanceStatus;
+        this.criteriaMetStatus = filters.criteriaMetStatus
         this.displayedColumns = filters.columns;
       }
     )

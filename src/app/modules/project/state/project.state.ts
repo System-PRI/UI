@@ -6,13 +6,15 @@ export interface State extends AppState.State {
     projectModule: ProjectState
 }
 
-export interface ProjectState {
+export interface ProjectState { 
+    filteredProjects: Project[] | undefined;
     projects: Project[] | undefined;
     filters: ProjectFilters;
     supervisorsAvailability: SupervisorAvailability[];
 }
 
 export const initialState: ProjectState = {
+    filteredProjects: undefined,
     projects: undefined,
     filters: {
         searchValue: '',
