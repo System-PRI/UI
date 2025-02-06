@@ -10,7 +10,7 @@ export class ExternalLinkService {
     constructor(private http: HttpClient) {}
 
     columnHeaders$: Observable<string[]> = this.http
-        .get<string[]>(`/pri/project/external-link/column-header`)
+        .get<string[]>(`./pri/project/external-link/column-header`)
         .pipe(
             retry(3),
             catchError(
@@ -19,7 +19,7 @@ export class ExternalLinkService {
 
     getExternalLinks(projectId: string): Observable<ExternalLink[]> {
         return this.http
-        .get<ExternalLink[]>(`/pri/project/${projectId}/external-link`)
+        .get<ExternalLink[]>(`./pri/project/${projectId}/external-link`)
         .pipe(
             retry(3),
             catchError(
