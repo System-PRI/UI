@@ -11,7 +11,7 @@ export class DataFeedService {
 
     uploadStudents(data: FormData): Observable<null>  {
         return this.http
-            .post<null>(`/pri/data/import/student`, data)
+            .post<null>(`./pri/data/import/student`, data)
             .pipe(
                 retry(3),
                 catchError(
@@ -33,7 +33,7 @@ export class DataFeedService {
 
     uploadSupervisors(data: FormData): Observable<null>  {
         return this.http
-            .post<null>(`/pri/data/import/supervisor`, data)
+            .post<null>(`./pri/data/import/supervisor`, data)
             .pipe(
                 retry(3),
                 catchError(
@@ -43,7 +43,7 @@ export class DataFeedService {
 
     uploadCriteria(data: FormData): Observable<null>  {
         return this.http
-            .post<null>(`/pri/data/import/criteria`, data)
+            .post<null>(`./pri/data/import/criteria`, data)
             .pipe(
                 retry(3),
                 catchError(
@@ -51,10 +51,10 @@ export class DataFeedService {
             )
     }
 
-
+    
     exportStudents(): Observable<any> {
         return this.http
-            .get<HttpResponse<Blob>>(`/pri/data/export/student`, this.setHttpHeadersForFile())
+            .get<HttpResponse<Blob>>(`./pri/data/export/student`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(
@@ -64,7 +64,7 @@ export class DataFeedService {
 
     exportCriteria(): Observable<any> {
         return this.http
-            .get<HttpResponse<Blob>>(`/pri/data/export/criteria`, this.setHttpHeadersForFile())
+            .get<HttpResponse<Blob>>(`./pri/data/export/criteria`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(
@@ -74,7 +74,7 @@ export class DataFeedService {
 
     exportGrades(): Observable<any> {
         return this.http
-            .get<HttpResponse<Blob>>(`/pri/data/export/grades`, this.setHttpHeadersForFile())
+            .get<HttpResponse<Blob>>(`./pri/data/export/grades`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(
